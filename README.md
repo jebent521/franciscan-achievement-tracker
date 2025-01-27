@@ -4,7 +4,6 @@
 - Miguel Lock
 - Evan Whitmer
 
-
 ## Project Summary
 App were Franciscan students can track achievements earned in their time at Franciscan. Achievemnts range from simple to silly & elaborate.
 
