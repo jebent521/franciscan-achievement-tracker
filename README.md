@@ -4,6 +4,7 @@
 - Miguel Lock
 - Evan Whitmer
 - Jonah Ebent
+- Test person
 
 ## Project Summary
 App where Franciscan students can track achievements earned in their time at Franciscan. Achievemnts range from simple to silly & elaborate.
