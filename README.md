@@ -15,7 +15,7 @@ App were Franciscan students can track achievements earned in their time at Fran
 - All JSON
 
 ### Server Stack
-- **Database:** Postgress
+- **Database:** PostgreSQL
 - **Backend:** Express.js
 
 ### Development
