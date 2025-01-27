@@ -2,6 +2,7 @@
 
 ## Team Members
 - Miguel Lock
+- Evan Whitmer
 
 
 ## Project Summary
