@@ -13,3 +13,4 @@ sleep 1 # downtime for db to setup
 
 psql -d postgres -c "CREATE DATABASE achievements_db;"
 psql -d achievements_db -f ./migrations/0001_create_tables.sql
+psql -d achievements_db -f ./migrations/0002_insert_sample_data.sql
