@@ -1,7 +1,7 @@
 {
   "name": "exress-docker",
   "version": "1.0.0",
-  "description": "",
+  "description": "## Team Members - Miguel Lock - Evan Whitmer - Jonah Ebent",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,5 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.franciscan.edu:spr-25-backend-dev/franciscan-achievement-tracker.git"
   }
 }
