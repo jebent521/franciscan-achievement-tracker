@@ -33,6 +33,9 @@ It downloads Flyway and adds it to your path.
 #### Installing Docker
 Visit the official site [here](https://docs.docker.com/desktop/)
 
+#### Starting the Database
+Run `./database_setup.sh`
+
 ### Resources
 - [Connect Express to Postgres](https://medium.com/@eslmzadpc13/how-to-connect-a-postgres-database-to-express-a-step-by-step-guide-b2fffeb8aeac)
 - Basic Express Setup:
