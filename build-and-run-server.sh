@@ -23,7 +23,7 @@ fi
 
 # Build with verbose output
 echo "Building Docker image..."
-docker build -f dockerfile.dev -t express-docker-dev . || {
+docker build -f dockerfile.dev -t express-be/v0 . || {
     echo "Docker build failed"
     exit 1
 }
