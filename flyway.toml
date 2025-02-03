@@ -21,8 +21,3 @@ filterFile = "filter.rgf"
 
 [redgateCompare.postgresql.options.ignores]
 ignoreNewlinesInTextObjects = "off"
-
-# [environments.development]
-# url = "jdbc:postgresql://localhost:5432/achievemnents-db"
-# user = "postgres"
-# password = "franny_devs"
