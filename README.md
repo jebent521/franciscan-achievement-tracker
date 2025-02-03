@@ -10,6 +10,14 @@ App where Franciscan students can track achievements earned in their time at Fra
 
 ## Technical Details
 
+### To Start Backend:
+```
+./build-and-run-server.sh
+```
+Note:
+ - Backend has hot reload with nodemon
+ - build-and-run-server.sh does *not* install anything locally: if you want to be a special snowflake and have your own node_modules, you can install your own node_modules! Goodness!
+
 ### Data Storage
 - All JSON
 
