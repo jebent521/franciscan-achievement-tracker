@@ -17,6 +17,9 @@ App where Franciscan students can track achievements earned in their time at Fra
 Note:
  - Backend has hot reload with nodemon
 
+### View API Documentation
+After starting the backend you should be able to navigate to this URL: http://localhost:5007/api-docs to view the API documentation.
+
 ### Data Storage
 - All JSON
 
