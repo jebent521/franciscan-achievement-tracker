@@ -2,21 +2,21 @@
 
 readonly PORT=5007
 
-if [ "$(docker ps -q -f name=express-docker-dev)" ]; then
+if [ "$(docker ps -q -f name=achievements-server)" ]; then
     echo "Stopping existing container..."
-    docker stop express-docker-dev
+    docker stop achievements-server
 fi
 
-if [ "$(docker images -q express-docker-dev)" ]; then
+if [ "$(docker images -q express-be/v0)" ]; then
     echo "Removing existing container & image..."
-    docker stop express-docker-dev && docker rm express-docker-dev && docker rmi express-docker-dev
+    docker rm achievements-server && docker rmi express-be/v0
 fi
 
 # Check for node modules
 if [ ! -d "node_modules" ]; then
     echo "Node modules not found. Installing..."
     npm i express
-    sudo npm install nodemon --save-dev
+    npm install nodemon --save-dev
 else
     echo "Node modules found. Skipping installation."
 fi
@@ -34,13 +34,13 @@ docker run -d \
     -p $PORT:$PORT \
     -v $(pwd):/app \
     -v /app/node_modules \
-    --name express-docker-dev express-be/v0
+    --name achievements-server express-be/v0
 
 # Verify container is running
-if [ "$(docker ps -q -f name=express-docker-dev)" ]; then
+if [ "$(docker ps -q -f name=achievements-server)" ]; then
     echo "Container started successfully!"
     echo "App should be accessible at http://localhost:$PORT"
 else
     echo "Container failed to start"
-    docker logs express-docker-dev
+    docker logs achievements-server
 fi
