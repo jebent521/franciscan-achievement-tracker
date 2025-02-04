@@ -84,3 +84,12 @@ components:
           format: int64
         title:
           type: string
+        category:
+          type: string
+        description:
+          type: string
+        prerequisite:
+          type: string
+        points:
+          type: integer
+          format: int64
