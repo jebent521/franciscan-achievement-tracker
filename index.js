@@ -5,7 +5,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 app.get('/',
-  (req, res) => res.send('Dockerizing Node Application'))
+  (req, res) => res.send('Barons of Progress 📈 Homepage'))
 
 app.get('/api/achievements', (req, res) => {
   console.log('achievemets');
