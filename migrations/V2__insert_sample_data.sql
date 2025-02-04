@@ -4,11 +4,12 @@ VALUES
     ('Boring Bob', 'bob@bored.com', 'password123'),
     ('Cranky Carol', 'carol@crank.com', 'password123');
 
-INSERT INTO achievements (title, category, description, prerequisite)
+INSERT INTO achievements (title, category, description, points)
 VALUES
-    ('First Achievement', 'General', 'The first achievement', NULL),
-    ('Second Achievement', 'General', 'The second achievement', 1),
-    ('Third Achievement', 'General', 'The third achievement', 2);
+    ('Cafarrhea', 'General', 'Eat at the Caf', 10),
+    ('The Grand Slam', 'Spiritual', 'Attend all four daily masses in one day', 100),
+    ('Four years of B.S.', 'Academic', 'Be a STEM major', 20);
+
 
 INSERT INTO user_achievements (user_id, achievement_id, date_achieved)
 VALUES
