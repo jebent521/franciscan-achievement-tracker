@@ -2,11 +2,12 @@ openapi: 3.0.0
 
 info:
   title: Franciscan Achievement Tracker
-  description: no you
+  description: App where Franciscan students can track achievements earned in their time at Franciscan. Achievemnts range from simple to silly & elaborate.
   version: 1.0.0
   contact:
     name: Evan Whitmer
     email: ewhitmer001@student.franciscan.edu
+    
 
 servers:
   - url: http://localhost:5007
@@ -21,7 +22,7 @@ paths:
         '200':
           description: Successful response
           content:
-            application/javascript:
+            application/json:
               example:
                 achievements:
                   - id: 1
@@ -45,7 +46,7 @@ paths:
   /api/achievements/{id}:
     get:
       summary: Get achievements by ID
-      description: Get a single user from the API.
+      description: Get a single achievements from the API.
       parameters:
         - in: path
           name: id
