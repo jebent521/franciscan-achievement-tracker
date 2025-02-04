@@ -18,19 +18,21 @@ app.get('/api/achievements/:id', (req, res) => {
   res.send(achievement || { error: 'Achievement not found', id: "404"});
 });
 
-class PossibleAchievements {
-  constructor(id, name, description, points) {
+class Achievements {
+  constructor(id, title, category, description, prerequisite, points) {
     this.id = id;
-    this.name = name;
+    this.title = title;
+    this.category = category;
     this.description = description;
+    this.prerequisite = prerequisite;
     this.points = points;
   }
 }
 
 const allAchievementsList = [
-  new PossibleAchievements(1, 'The Source and The Summit', 'Attend Mass on Campus', 10),
-  new PossibleAchievements(2, 'Cafarrhea', 'Eat at the Caf', 20),
-  new PossibleAchievements(3, 'Lets Shake Things Up', 'Eat at the Pub', 20)
+  new Achievements(1, 'The Source and The Summit', "Franny Basics", 'Attend Mass on Campus', null, 10),
+  new Achievements(2, 'Cafarrhea', "Franny Basics", 'Eat at the Caf', null, 20),
+  new Achievements(3, 'Lets Shake Things Up', "Franny Basics", 'Eat at the Pub', null, 20)
 ];
 
 app.listen(5007,
