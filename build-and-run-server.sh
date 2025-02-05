@@ -2,16 +2,16 @@
 
 readonly PORT=5007
 readonly CONTAINER_NAME="achievements-server"
-readonly IMAGE_NAME="express-be/v0"
+readonly IMAGE_NAME="achievements-server-image"
 
-if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
-    echo "Stopping existing container..."
-    docker stop $CONTAINER_NAME
+if [ "$(docker ps -q -a -f name=$CONTAINER_NAME)" ]; then
+    echo "Removing existing container..."
+    docker rm -vf $CONTAINER_NAME
 fi
 
 if [ "$(docker images -q $IMAGE_NAME)" ]; then
-    echo "Removing existing container & image..."
-    docker rm $CONTAINER_NAME && docker rmi $IMAGE_NAME
+    echo "Removing existing image..."
+    docker rmi $IMAGE_NAME
 fi
 
 # Check for node modules
