@@ -1,7 +1,7 @@
 #Fetch minified node imag on apline linux
 FROM node:slim
 
-# ####Declaring env# JONAH BIG FAT UGLY
+#Declaring env
 # ENV NODE_ENV=production
 
 #Setting up the work directory
