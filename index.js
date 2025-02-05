@@ -15,7 +15,9 @@ app.get('/api/achievements', (req, res) => {
 
 app.get('/api/achievements/:id', (req, res) => {
 	const achievement = allAchievementsList.find(a => a.id === parseInt(req.params.id));
-	res.send(achievement || res.status(404).send('Achievement not found'));
+	res.send(
+		achievement || 
+		res.status(404).send('Achievement not found'));
 });
 
 class Achievements {
