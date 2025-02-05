@@ -15,11 +15,15 @@ App where Franciscan students can track achievements earned in their time at Fra
 
 ### Server Stack
 - **Database:** PostgreSQL
-  - **Database Version Control**: Flyway
+  - **Database Version Control:** Flyway
 - **Backend:** Express.js
 
 ### Development
 - **IDE:** VS Code
+- **Database Client:** pgAdmin (or other client of choice)
+
+#### Installing psql
+On Linux, `sudo apt-get install -y psql-client`.
 
 #### Installing Flyway
 Create a directory to put flyway's files. I would recommend putting it in `~/dev`.
