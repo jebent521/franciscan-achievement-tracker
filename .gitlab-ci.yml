@@ -6,7 +6,6 @@ stages:          # List of stages for jobs, and their order of execution
 flyway-test-job:
   services:
     - postgres:latest
-    - flyway/flyway:latest
   variables:
     POSTGRES_DB: achievements_db
     POSTGRES_USER: postgres
@@ -16,6 +15,8 @@ flyway-test-job:
     POSTGRES_URL: jdbc:postgresql://$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB
   image: postgres
   stage: test
+  before_script:
+    - wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.0/flyway-commandline-11.3.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-11.3.0/flyway /usr/local/bin
   script:
     - flyway -url=$POSTGRES_URL -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD migrate
 # unit-test-job:   # This job runs in the test stage.
