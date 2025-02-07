@@ -3,21 +3,27 @@ stages:          # List of stages for jobs, and their order of execution
   - test
   # - deploy
 
-flyway-test-job:  # This job runs in the build stage, which runs first.
+flyway-test-job:
   services:
     - postgres:latest
   variables:
     POSTGRES_DB: achievements_db
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: franny_devs
-    POSTGRES_URL: jdbc:postgresql://postgres:5432/achievements_db
-  image: postgres
+    POSTGRES_HOST: postgres  # Important: Use the service name as the hostname
+    POSTGRES_PORT: 5432       # Explicitly define the port (optional but good practice)
+    POSTGRES_URL: jdbc:postgresql://$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB
+  image: postgres # You might want to use a smaller image with flyway and psql if possible
   stage: test
-  script:
+  before_script:  # Use before_script for setup tasks
     - export PGPASSWORD=$POSTGRES_PASSWORD
-    - psql -d postgres -c "CREATE DATABASE $POSTGRES_DB;"
-    - flyway -url=$POSTGRES_URL -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD migrate
-
+    - psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -d postgres -c "CREATE DATABASE $POSTGRES_DB;"
+    - psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE USER flyway WITH PASSWORD 'flyway';"
+    - psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -d $POSTGRES_DB -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO flyway;"
+    - psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -d $POSTGRES_DB -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO flyway;"
+    - psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -d $POSTGRES_DB -c "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO flyway;"
+  script:
+    - flyway -url=$POSTGRES_URL -user=flyway -password=flyway migrate
 # unit-test-job:   # This job runs in the test stage.
 #   stage: test    # It only starts when the job in the build stage completes successfully.
 #   script:
