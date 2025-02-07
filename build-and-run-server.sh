@@ -1,15 +1,17 @@
 #!/bin/bash
 
 readonly PORT=5007
+readonly CONTAINER_NAME="achievements-server"
+readonly IMAGE_NAME="achievements-server-image"
 
-if [ "$(docker ps -q -f name=achievements-server)" ]; then
-    echo "Stopping existing container..."
-    docker stop achievements-server
+if [ "$(docker ps -q -a -f name=$CONTAINER_NAME)" ]; then
+    echo "Removing existing container..."
+    docker rm -vf $CONTAINER_NAME
 fi
 
-if [ "$(docker images -q express-be/v0)" ]; then
-    echo "Removing existing container & image..."
-    docker rm achievements-server && docker rmi express-be/v0
+if [ "$(docker images -q $IMAGE_NAME)" ]; then
+    echo "Removing existing image..."
+    docker rmi $IMAGE_NAME
 fi
 
 # Check for node modules
@@ -23,7 +25,7 @@ fi
 
 # Build with verbose output
 echo "Building Docker image..."
-docker build -f dockerfile.dev -t express-be/v0 . || {
+docker build -f Dockerfile -t $IMAGE_NAME . || {
     echo "Docker build failed"
     exit 1
 }
@@ -34,13 +36,13 @@ docker run -d \
     -p $PORT:$PORT \
     -v $(pwd):/app \
     -v /app/node_modules \
-    --name achievements-server express-be/v0
+    --name $CONTAINER_NAME $IMAGE_NAME
 
 # Verify container is running
-if [ "$(docker ps -q -f name=achievements-server)" ]; then
+if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
     echo "Container started successfully!"
     echo "App should be accessible at http://localhost:$PORT"
 else
     echo "Container failed to start"
-    docker logs achievements-server
+    docker logs $CONTAINER_NAME
 fi
