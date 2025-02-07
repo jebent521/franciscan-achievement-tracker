@@ -18,7 +18,7 @@
 
 stages:          # List of stages for jobs, and their order of execution
 #  - build
-#  - test
+  - test
 #  - deploy
   - validate
 
@@ -28,6 +28,16 @@ validate_swagger:   # giving validate yaml
   script:
     - npm install -g @apidevtools/swagger-cli
     - swagger-cli validate swagger.yaml
+
+check-openapi-contract:
+  stage: test
+  retry: 1
+  timeout: 15m
+  script:
+    - docker run --name=my-container -d -i -p 8080:8080 --rm $BUILD_IMAGE npm start
+    - bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8080/swagger.json)" != "200" ]]; do sleep 5; done'
+    - docker exec -i my-container curl http://localhost:8080/swagger.json -o ./swagger.json
+    - docker exec -i my-container npx swagger-cli validate ./swagger.json
 
 # build-job:       # This job runs in the build stage, which runs first.
 #   stage: build
