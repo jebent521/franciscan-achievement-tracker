@@ -1,42 +1,32 @@
 # Franciscan Achievement Tracker
 
-## Team Members
+App where Franciscan students can track achievements earned in their time at Franciscan. Achievemnts range from simple to silly & elaborate.
+
+### Team Members
 - Miguel Lock
 - Evan Whitmer
 - Jonah Ebent
 
-## Project Summary
-App where Franciscan students can track achievements earned in their time at Franciscan. Achievemnts range from simple to silly & elaborate.
-
 ## Technical Details
-
-### To Start Backend:
-#### Starting the Server
-```
-./build-and-run-server.sh
-```
-Note:
- - Backend has hot reload with nodemon
-
-#### Starting the Database
-```
-./database_setup.sh
-```
-
-### Data Storage
-- All JSON
-
 ### Server Stack
 - **Database:** PostgreSQL
   - **Database Version Control:** Flyway
 - **Backend:** Express.js
 
+### Data Storage
+- All JSON
+
 ### Development
 - **IDE:** VS Code
-- **Database Client:** [pgAdmin](https://www.pgadmin.org/download/) or [dBeaver](https://dbeaver.io/download/)
+- **Database Client:** [dBeaver](https://dbeaver.io/download/)
 
+## Getting Started
+### Installation Instructions
 #### Installing psql
-On Linux, `sudo apt-get install -y psql-client`.
+```
+sudo apt update
+sudo apt install postgresql-client
+```
 
 #### Installing Flyway
 Create a directory to put flyway's files. I would recommend putting it in `~/dev`.
@@ -49,6 +39,19 @@ It downloads Flyway and adds it to your path.
 
 #### Installing Docker
 Visit the official site [here](https://docs.docker.com/desktop/)
+
+### Development
+#### Starting the Server
+```
+./build-and-run-server.sh
+```
+Note:
+ - Backend has hot reload with nodemon
+
+#### Starting the Database
+```
+./database_setup.sh
+```
 
 ### Resources
 - [Connect Express to Postgres](https://medium.com/@eslmzadpc13/how-to-connect-a-postgres-database-to-express-a-step-by-step-guide-b2fffeb8aeac)
