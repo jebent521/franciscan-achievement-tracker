@@ -11,11 +11,17 @@ App where Franciscan students can track achievements earned in their time at Fra
 ## Technical Details
 
 ### To Start Backend:
+#### Starting the Server
 ```
 ./build-and-run-server.sh
 ```
 Note:
  - Backend has hot reload with nodemon
+
+#### Starting the Database
+```
+./database_setup.sh
+```
 
 ### Data Storage
 - All JSON
@@ -36,16 +42,13 @@ On Linux, `sudo apt-get install -y psql-client`.
 Create a directory to put flyway's files. I would recommend putting it in `~/dev`.
 
 Run this command from `~/dev`:
-```bash
+```
 wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.0/flyway-commandline-11.3.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-11.3.0/flyway /usr/local/bin
 ```
 It downloads Flyway and adds it to your path.
 
 #### Installing Docker
 Visit the official site [here](https://docs.docker.com/desktop/)
-
-#### Starting the Database
-Run `./database_setup.sh`
 
 ### Resources
 - [Connect Express to Postgres](https://medium.com/@eslmzadpc13/how-to-connect-a-postgres-database-to-express-a-step-by-step-guide-b2fffeb8aeac)
