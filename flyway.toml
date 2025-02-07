@@ -1,0 +1,23 @@
+databaseType = "postgresql"
+id = "31719398-e9ff-47c0-986d-3e8a5ce8b22b"
+name = "franciscan-achievement-tracker"
+
+[flyway]
+locations = [ "filesystem:migrations" ]
+mixed = true
+outOfOrder = true
+schemaModelLocation = "schema-model"
+validateMigrationNaming = true
+
+[flyway.check]
+majorTolerance = 0
+
+[flywayDesktop]
+developmentEnvironment = "development"
+shadowEnvironment = "shadow"
+
+[redgateCompare]
+filterFile = "filter.rgf"
+
+[redgateCompare.postgresql.options.ignores]
+ignoreNewlinesInTextObjects = "off"
