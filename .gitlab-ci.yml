@@ -6,6 +6,7 @@ stages:          # List of stages for jobs, and their order of execution
 flyway-test-job:
   services:
     - postgres:latest
+    - flyway/flyway:latest
   variables:
     POSTGRES_DB: achievements_db
     POSTGRES_USER: postgres
