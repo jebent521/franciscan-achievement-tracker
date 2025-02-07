@@ -20,7 +20,7 @@ App where Franciscan students can track achievements earned in their time at Fra
 
 ### Development
 - **IDE:** VS Code
-- **Database Client:** pgAdmin (or other client of choice)
+- **Database Client:** [pgAdmin](https://www.pgadmin.org/download/) or [dBeaver](https://dbeaver.io/download/)
 
 #### Installing psql
 On Linux, `sudo apt-get install -y psql-client`.
