@@ -16,6 +16,7 @@ flyway-test-job:
   image: postgres
   stage: test
   before_script:
+    - sudo apt-get update -y && sudo apt-get install -y wget
     - wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.0/flyway-commandline-11.3.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-11.3.0/flyway /usr/local/bin
   script:
     - flyway -url=$POSTGRES_URL -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD migrate
