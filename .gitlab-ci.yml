@@ -1,0 +1,18 @@
+stages:
+  - build
+
+variables:
+  IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  KANIKO_IMAGE: gcr.io/kaniko-project/executor:v1.21.1-debug
+
+build:
+  stage: build
+  image:
+    name: $KANIKO_IMAGE
+    entrypoint: [""]
+  script:
+    - /kaniko/executor
+      --cache=true --cache-copy-layers=true --cache-ttl=24h
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --destination "${IMAGE_NAME}-test"
