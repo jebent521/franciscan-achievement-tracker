@@ -48,13 +48,13 @@ Visit the official site [here](https://docs.docker.com/desktop/)
 Note:
  - Backend has hot reload with nodemon
 
-### View API Documentation
-After starting the backend you should be able to navigate to this URL: http://localhost:5007/api-docs to view the API documentation.
-
 #### Starting the Database
 ```
 ./database_setup.sh
 ```
+
+### View API Documentation
+After starting the backend you should be able to navigate to this URL: http://localhost:5007/api-docs to view the API documentation.
 
 ### Resources
 - [Connect Express to Postgres](https://medium.com/@eslmzadpc13/how-to-connect-a-postgres-database-to-express-a-step-by-step-guide-b2fffeb8aeac)
