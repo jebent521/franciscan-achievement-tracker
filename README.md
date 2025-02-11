@@ -50,7 +50,7 @@ Visit the official site [here](https://docs.docker.com/desktop/)
 
 #### Starting the Server
 ```
-./build-and-run-server.sh
+./build_and_run_server.sh
 ```
 Note:
  - Backend has hot reload with nodemon
