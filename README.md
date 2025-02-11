@@ -1,6 +1,7 @@
 # Franciscan Achievement Tracker
 
-App where Franciscan students can track achievements earned in their time at Franciscan. Achievemnts range from simple to silly & elaborate.
+App where Franciscan students can track achievements earned in their time at
+Franciscan. Achievements range from simple to silly & elaborate.
 
 ### Team Members
 - Miguel Lock
@@ -29,7 +30,8 @@ sudo apt install postgresql-client
 ```
 
 #### Installing Flyway
-Create a directory to put flyway's files. I would recommend putting it in `~/dev`.
+Create a directory to put flyway's files. I would recommend putting it in
+`~/dev` (outside the project directory).
 
 Run this command from `~/dev`:
 ```
@@ -41,6 +43,11 @@ It downloads Flyway and adds it to your path.
 Visit the official site [here](https://docs.docker.com/desktop/)
 
 ### Development
+#### Starting the Database
+```
+./database_setup.sh
+```
+
 #### Starting the Server
 ```
 ./build-and-run-server.sh
@@ -48,13 +55,9 @@ Visit the official site [here](https://docs.docker.com/desktop/)
 Note:
  - Backend has hot reload with nodemon
 
-#### Starting the Database
-```
-./database_setup.sh
-```
-
 ### View API Documentation
-After starting the backend you should be able to navigate to this URL: http://localhost:5007/api-docs to view the API documentation.
+After starting the backend you should be able to navigate to this URL:
+http://localhost:5007/api-docs to view the API documentation.
 
 ### Resources
 - [Connect Express to Postgres](https://medium.com/@eslmzadpc13/how-to-connect-a-postgres-database-to-express-a-step-by-step-guide-b2fffeb8aeac)
