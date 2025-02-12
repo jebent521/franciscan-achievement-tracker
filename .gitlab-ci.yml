@@ -41,4 +41,4 @@ validate-swagger:
   image: node:latest
   script:
     - npm install -g @apidevtools/swagger-cli
-    - swagger-cli validate src/swagger.yaml
+    - swagger-cli validate swagger/swagger.yaml
