@@ -31,7 +31,8 @@ app.get('/api/achievements/:id', (req, res) => {
 });
 
 class Achievements {
-    constructor(id, title, category, description, prerequisite, points) {
+    constructor(id = -1, title = "Empty Title", category = "No category", description = "Empty description", 
+        prerequisite = null, points = 10) {
         this.id = id;
         this.title = title;
         this.category = category;
