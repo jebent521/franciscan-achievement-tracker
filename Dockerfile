@@ -16,4 +16,4 @@ COPY . .
 EXPOSE 5007
 
 # Starting our application
-CMD ["nodemon", "src/index.js"]
+CMD ["nodemon", "index.js"]
