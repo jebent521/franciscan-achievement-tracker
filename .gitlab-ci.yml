@@ -1,13 +1,30 @@
 stages:
   - build
   - validate
-  - test
 
 variables:
   IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   KANIKO_IMAGE: gcr.io/kaniko-project/executor:v1.21.1-debug
 
-build:
+flyway-migrate:
+  services:
+    - postgres:latest
+  variables:
+    POSTGRES_DB: achievements_db
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: franny_devs
+    POSTGRES_HOST: postgres
+    POSTGRES_PORT: 5432
+    POSTGRES_URL: jdbc:postgresql://$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB
+  image: postgres
+  stage: build
+  before_script:  # install wget and flyway
+    - apt-get update -y && apt-get install -y wget
+    - wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.0/flyway-commandline-11.3.0-linux-x64.tar.gz | tar -xvz && ln -s `pwd`/flyway-11.3.0/flyway /usr/local/bin
+  script:
+    - flyway -url=$POSTGRES_URL -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD migrate
+
+build-server:
   stage: build
   image:
     name: $KANIKO_IMAGE
@@ -19,27 +36,9 @@ build:
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
       --destination "${IMAGE_NAME}-test"
 
-flyway-test-job:
-  services:
-    - postgres:latest
-  variables:
-    POSTGRES_DB: achievements_db
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: franny_devs
-    POSTGRES_HOST: postgres
-    POSTGRES_PORT: 5432
-    POSTGRES_URL: jdbc:postgresql://$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB
-  image: postgres
-  stage: test
-  before_script:  # install wget and flyway
-    - apt-get update -y && apt-get install -y wget
-    - wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.0/flyway-commandline-11.3.0-linux-x64.tar.gz | tar -xvz && ln -s `pwd`/flyway-11.3.0/flyway /usr/local/bin
-  script:
-    - flyway -url=$POSTGRES_URL -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD migrate
-
-validate_swagger:
+validate-swagger:
   stage: validate
   image: node:latest
   script:
     - npm install -g @apidevtools/swagger-cli
-    - swagger-cli validate swagger.yaml
+    - swagger-cli validate src/swagger.yaml
