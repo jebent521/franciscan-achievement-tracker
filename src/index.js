@@ -30,21 +30,8 @@ app.get('/api/achievements/:id', (req, res) => {
     }
 });
 
-// Export anything needed for jest testing
-export class Achievements {
-    constructor(id = -1, title = "Empty Title", category = "No category", description = "Empty description", 
-        prerequisite = null, points = 10) {
-        this.id = id;
-        this.title = title;
-        this.category = category;
-        this.description = description;
-        this.prerequisite = prerequisite;
-        this.points = points;
-    }
-}
-
-function sum(a,b) {return a+b}
-module.exports = sum;
+// imports achievements class from seperate file
+const achievements = require('./achievements');
 
 const allAchievementsList = [
     new Achievements(1, 'The Source and The Summit', "Franny Basics", 'Attend Mass on Campus', null, 10),
