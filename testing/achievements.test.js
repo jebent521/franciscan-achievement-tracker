@@ -1,5 +1,5 @@
 // How to include a class!
-const achievements = require('./achievements');
+const achievements = require('../achievements');
 
 const achievement = new achievements();
 

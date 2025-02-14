@@ -1,5 +1,5 @@
 // How to include a class!
-const users = require('./users');
+const users = require('../users');
 
 const user = new users();
 
