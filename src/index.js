@@ -43,6 +43,9 @@ export class Achievements {
     }
 }
 
+function sum(a,b) {return a+b}
+module.exports = sum;
+
 const allAchievementsList = [
     new Achievements(1, 'The Source and The Summit', "Franny Basics", 'Attend Mass on Campus', null, 10),
     new Achievements(2, 'Cafarrhea', "Franny Basics", 'Eat at the Caf', null, 20),
