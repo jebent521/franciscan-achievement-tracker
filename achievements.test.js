@@ -32,3 +32,14 @@ test ("Test achievements class default values: points", () => {
     //toBeInstanceOf
     expect(achievement.points).toBe(10);
 })
+
+test ("Test achievements class: overloading valueOf()", () => {
+    expect(achievement.valueOf()).toBe(achievement.points);
+})
+
+test ("Test achievements class: overloading equals()", () => {
+    //toBeInstanceOf
+    const achievement2 = new achievements();
+    const achievement3 = new achievements(1);
+    expect(achievement2.equals(achievement3)).toBe(false);
+})

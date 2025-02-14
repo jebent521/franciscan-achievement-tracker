@@ -9,6 +9,21 @@ class achievements {
         this.prerequisite = prerequisite;
         this.points = points;
     }
+
+    valueOf() {
+        // value used in comparisions
+        return this.points;
+    }
+
+    equals(other) {
+        // equals if exact matches in all properties
+        return (this.id == other.id) && 
+        (this.title == other.title) && 
+        (this.category == other.category) && 
+        (this.description == other.description) && 
+        (this.prerequisite == other.prerequisite) && 
+        (this.points == other.points);
+    }
 }
 
 module.exports = achievements;
