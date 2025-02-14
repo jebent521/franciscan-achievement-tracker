@@ -30,7 +30,8 @@ app.get('/api/achievements/:id', (req, res) => {
     }
 });
 
-class Achievements {
+// Export anything needed for jest testing
+export class Achievements {
     constructor(id = -1, title = "Empty Title", category = "No category", description = "Empty description", 
         prerequisite = null, points = 10) {
         this.id = id;
