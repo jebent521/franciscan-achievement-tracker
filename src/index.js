@@ -1,3 +1,5 @@
+// imports achievements class from seperate file
+const Achievements = require('./achievements');
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
@@ -29,9 +31,6 @@ app.get('/api/achievements/:id', (req, res) => {
         res.status(404).send('Achievement not found');
     }
 });
-
-// imports achievements class from seperate file
-const achievements = require('./achievements');
 
 const allAchievementsList = [
     new Achievements(1, 'The Source and The Summit', "Franny Basics", 'Attend Mass on Campus', null, 10),
