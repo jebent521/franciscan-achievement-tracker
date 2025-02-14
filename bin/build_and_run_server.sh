@@ -14,14 +14,10 @@ if [ "$(docker images -q $IMAGE_NAME)" ]; then
     docker rmi $IMAGE_NAME
 fi
 
-# Check for node modules
-if [ ! -d "node_modules" ]; then
-    echo "Node modules not found. Installing..."
-    npm i express
-    npm install nodemon --save-dev
-else
-    echo "Node modules found. Skipping installation."
-fi
+echo "Installing dependencies..."
+npm install
+npm update
+echo "Dependencies installed"
 
 # Build with verbose output
 echo "Building Docker image..."
