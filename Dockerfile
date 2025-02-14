@@ -1,5 +1,5 @@
-#Fetch minified node imag on apline linux
-FROM node:slim
+# Fetch minified node image on Alpine Linux
+FROM node:slim AS base
 
 #Declaring env
 # ENV NODE_ENV=production
@@ -8,12 +8,19 @@ FROM node:slim
 WORKDIR /app
 COPY package*.json ./
 
-RUN npm install && npm install -g nodemon
+RUN npm install
 
-COPY . .
+COPY src/ ./src/
 
 # Exposing server port
 EXPOSE 5007
 
 # Starting our application
+CMD ["npm", "start"]
+
+# If running in dev mode
+FROM base AS dev
+
+RUN npm install -g nodemon
+
 CMD ["nodemon", "src/index.js"]
