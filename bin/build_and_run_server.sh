@@ -25,7 +25,7 @@ fi
 
 # Build with verbose output
 echo "Building Docker image..."
-docker build -f Dockerfile -t $IMAGE_NAME . || {
+docker build --target dev -f Dockerfile -t $IMAGE_NAME . || {
     echo "Docker build failed"
     exit 1
 }

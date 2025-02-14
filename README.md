@@ -48,12 +48,18 @@ Visit the official site [here](https://docs.docker.com/desktop/)
 ./database_setup.sh
 ```
 
-#### Starting the Server
+#### Starting the Server (in Docker)
 ```
 ./build_and_run_server.sh
 ```
+#### Starting the Server (locally)
+```
+npm install
+npm run dev
+```
 Note:
- - Backend has hot reload with nodemon
+ - npm run dev runs in dev mode with nodemon
+ - npm run start runs without nodemon
 
 ### View API Documentation
 After starting the backend you should be able to navigate to this URL:
