@@ -1,5 +1,6 @@
-class users {
-    constructor(username= null, password=null, email=null) {
+class user {
+    constructor(id, username, password, email) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -7,7 +8,8 @@ class users {
 
     equals(other) {
         // equals if exact matches in all properties
-        return (this.username == other.username) && 
+        return (this.id == other.id) &&
+        (this.username == other.username) && 
         (this.password == other.password) && 
         (this.email == other.email);
     }
@@ -18,4 +20,4 @@ class users {
     }
 }
 
-module.exports = users;
+module.exports = user;

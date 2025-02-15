@@ -1,18 +1,12 @@
 // Export anything needed for jest testing
-class achievements {
-    constructor(id = -1, title = "Empty Title", category = "No category", description = "Empty description", 
-        prerequisite = null, points = 10) {
+class Achievement {
+    constructor(id, title, category, description, prerequisite, points) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.description = description;
         this.prerequisite = prerequisite;
         this.points = points;
-    }
-
-    valueOf() {
-        // value used in comparisions
-        return this.points;
     }
 
     equals(other) {
@@ -26,4 +20,4 @@ class achievements {
     }
 }
 
-module.exports = achievements;
+module.exports = Achievement;
