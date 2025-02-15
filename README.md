@@ -58,19 +58,31 @@ npm install
 npm run dev
 ```
 Note:
- - npm run dev runs in dev mode with nodemon
- - npm run start runs without nodemon
+ - `npm run dev` runs in dev mode with nodemon
+ - `npm run start` runs without nodemon
 
-### Run Test with Jest
-```
-npm test
-```
 
 ### View API Documentation
 After starting the backend you should be able to navigate to this URL:
 http://localhost:5007/api-docs to view the API documentation.
 
-### Resources
+## Run Tests:
+Run all tests:
+```
+npm test
+```
+
+Run API tests:
+```
+npm run test:api
+```
+
+Run Unit tests:
+```
+npm run test:unit
+```
+
+## Resources
 - [Connect Express to Postgres](https://medium.com/@eslmzadpc13/how-to-connect-a-postgres-database-to-express-a-step-by-step-guide-b2fffeb8aeac)
 - Basic Express Setup:
   - [MDN Express/Node.js Development Environment](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/development_environment)

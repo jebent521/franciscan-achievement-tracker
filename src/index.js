@@ -38,5 +38,8 @@ const allAchievementsList = [
     new Achievement(3, 'Lets Shake Things Up', "Franny Basics", 'Eat at the Pub', null, 20)
 ];
 
-app.listen(5007,
-    () => console.log(`⚡[bootup]: Server is running at port: 5007`));
+if (require.main === module) {
+    app.listen(5007, () => console.log(`⚡[bootup]: Server is running at port: 5007`));
+}
+
+module.exports = app;
