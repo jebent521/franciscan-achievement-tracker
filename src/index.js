@@ -1,5 +1,5 @@
 // imports achievements class from seperate file
-const Achievement = require('./achievement');
+const Achievement = require('./models/achievement');
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
