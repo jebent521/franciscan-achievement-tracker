@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
   - validate
 
 variables:
@@ -35,6 +36,13 @@ build-server:
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
       --destination "${IMAGE_NAME}-test"
+
+unit-test:
+  stage: test
+  image: node:latest
+  script:
+    - npm install --save-dev jest
+    - npm test
 
 validate-swagger:
   stage: validate
