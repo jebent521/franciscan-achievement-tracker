@@ -63,7 +63,6 @@ Note:
 
 ### Run Test with Jest
 ```
-npm install --save-dev jest
 npm test
 ```
 
