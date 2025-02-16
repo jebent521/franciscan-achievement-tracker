@@ -42,7 +42,7 @@ unit-test:
   image: node:latest
   script:
     - npm install --save-dev jest
-    - npm test
+    - npm run test:unit
 
 validate-swagger:
   stage: validate
