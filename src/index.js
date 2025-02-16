@@ -24,8 +24,8 @@ app.get('/api/achievements', (req, res) => {
 });
 
 app.get('/api/achievements/:id', (req, res) => {
-    const Achievement = allAchievementsList.find(a => a.id === parseInt(req.params.id));
-    if (Achievement) {
+    const achievement = allAchievementsList.find(a => a.id === parseInt(req.params.id));
+    if (achievement) {
         res.send(achievement);
     } else {
         res.status(404).send('Achievement not found');
