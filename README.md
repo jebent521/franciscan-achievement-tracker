@@ -51,12 +51,12 @@ Visit the official site [here](https://docs.docker.com/desktop/)
 ### Development
 #### Starting the Database
 ```
-./database_setup.sh
+bin/database_setup.sh
 ```
 
 #### Starting the Server (in Docker)
 ```
-./build_and_run_server.sh
+bin/build_and_run_server.sh
 ```
 #### Starting the Server (locally)
 ```
