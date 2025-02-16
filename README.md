@@ -61,6 +61,11 @@ Note:
  - npm run dev runs in dev mode with nodemon
  - npm run start runs without nodemon
 
+### Run Test with Jest
+```
+npm test
+```
+
 ### View API Documentation
 After starting the backend you should be able to navigate to this URL:
 http://localhost:5007/api-docs to view the API documentation.
