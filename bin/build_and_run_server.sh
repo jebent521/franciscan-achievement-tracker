@@ -32,6 +32,7 @@ docker run -d \
     -p $PORT:$PORT \
     -v $(pwd):/app \
     -v /app/node_modules \
+    -e DB_HOST=`route -n | awk '/UG[ \t]/{print $2}'` \
     --name $CONTAINER_NAME $IMAGE_NAME
 
 # Verify container is running

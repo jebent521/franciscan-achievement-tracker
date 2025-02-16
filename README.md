@@ -23,6 +23,12 @@ Franciscan. Achievements range from simple to silly & elaborate.
 
 ## Getting Started
 ### Installation Instructions
+#### Installing net-tools
+```
+sudo apt update
+sudo apt install net-tools
+```
+
 #### Installing psql
 ```
 sudo apt update
