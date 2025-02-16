@@ -1,5 +1,5 @@
 // imports achievements class from seperate file
-const Achievements = require('./achievements');
+const Achievement = require('./achievement');
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
@@ -33,9 +33,9 @@ app.get('/api/achievements/:id', (req, res) => {
 });
 
 const allAchievementsList = [
-    new Achievements(1, 'The Source and The Summit', "Franny Basics", 'Attend Mass on Campus', null, 10),
-    new Achievements(2, 'Cafarrhea', "Franny Basics", 'Eat at the Caf', null, 20),
-    new Achievements(3, 'Lets Shake Things Up', "Franny Basics", 'Eat at the Pub', null, 20)
+    new Achievement(1, 'The Source and The Summit', "Franny Basics", 'Attend Mass on Campus', null, 10),
+    new Achievement(2, 'Cafarrhea', "Franny Basics", 'Eat at the Caf', null, 20),
+    new Achievement(3, 'Lets Shake Things Up', "Franny Basics", 'Eat at the Pub', null, 20)
 ];
 
 app.listen(5007,
