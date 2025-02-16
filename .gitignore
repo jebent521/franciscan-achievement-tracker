@@ -1,3 +1,4 @@
+.vscode
 
 # Flyway ignores
 *.user.toml
