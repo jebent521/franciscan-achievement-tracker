@@ -18,14 +18,16 @@ async function testConnection() {
 
 /**
  * Get achievements from the database
- * 
+ *
  * @param {number?} id - The ID of the achievement to retreive. Leave empty to get all achievements.
-*/
+ */
 async function getAchievements(id) {
   const client = await pool.connect();
   let result;
   if (id) {
-    result = await client.query('SELECT * FROM achievements WHERE id = $1', [id]);
+    result = await client.query('SELECT * FROM achievements WHERE id = $1', [
+      id,
+    ]);
   } else {
     result = await client.query('SELECT * FROM achievements');
   }
@@ -41,4 +43,4 @@ process.on('exit', () => {
   pool.end();
 });
 
-module.exports =  {testConnection, getAchievements, pool};
+module.exports = { testConnection, getAchievements, pool };

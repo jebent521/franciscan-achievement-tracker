@@ -16,5 +16,10 @@
     "test": "jest",
     "test:api": "jest tests/api_tests",
     "test:unit": "jest tests/unit_tests"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "singleQuote": true
   }
 }
