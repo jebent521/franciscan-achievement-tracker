@@ -22,39 +22,29 @@ Franciscan. Achievements range from simple to silly & elaborate.
 - **Database Client:** [dBeaver](https://dbeaver.io/download/)
 
 ## Getting Started
-### Installation Instructions
-#### Installing net-tools
+#### Install net-tools and psql
 ```
 sudo apt update
 sudo apt install net-tools
-```
-
-#### Installing psql
-```
-sudo apt update
 sudo apt install postgresql-client
 ```
 
-#### Installing Flyway
+#### Install Flyway
 Create a directory to put flyway's files. I would recommend putting it in
 `~/dev` (outside the project directory).
 
-Run this command from `~/dev`:
+Run this command from `~/dev` to download Flyway and addd it to your path:
 ```
 wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.0/flyway-commandline-11.3.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-11.3.0/flyway /usr/local/bin
 ```
-It downloads Flyway and adds it to your path.
 
-#### Installing Docker
-Visit the official site [here](https://docs.docker.com/desktop/)
-
-### Development
-#### Starting the Database
+## Development
+### Starting the Database
 ```
 bin/database_setup.sh
 ```
 
-#### Starting the Server (in Docker)
+### Starting the Server (in Docker)
 ```
 bin/build_and_run_server.sh
 ```
@@ -63,7 +53,6 @@ bin/build_and_run_server.sh
 npm install
 npm run dev
 ```
-Note:
  - `npm run dev` runs in dev mode with nodemon
  - `npm run start` runs without nodemon
 
@@ -87,10 +76,3 @@ Run Unit tests:
 ```
 npm run test:unit
 ```
-
-## Resources
-- [Connect Express to Postgres](https://medium.com/@eslmzadpc13/how-to-connect-a-postgres-database-to-express-a-step-by-step-guide-b2fffeb8aeac)
-- Basic Express Setup:
-  - [MDN Express/Node.js Development Environment](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/development_environment)
-  - [Creating a Basic Website with Express.js](https://dev.to/aurelkurtula/creating-a-basic-website-with-expressjs-j92)
-  - [Setting up Node.js and Express Development Environment](https://www.geeksforgeeks.org/how-to-set-up-your-node-js-and-express-development-environment/)
