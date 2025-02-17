@@ -1,6 +1,5 @@
 const { Pool } = require('pg');
 
-// Connection details (best practice to store these in environment variables)
 const pool = new Pool({
   user: process.env.DB_USER || 'postgres',
   host: process.env.DB_HOST || 'localhost',
@@ -9,8 +8,10 @@ const pool = new Pool({
   port: process.env.DB_PORT || 5432,
 });
 
-// Test the connection
-module.exports.testConnection = async function () {
+/**
+ * Test the connection
+ */
+async function testConnection() {
   const client = await pool.connect(); // Get a client from the pool
   client.release(); // Return the client to the pool
 }
@@ -20,7 +21,7 @@ module.exports.testConnection = async function () {
  * 
  * @param {number?} id - The ID of the achievement to retreive. Leave empty to get all achievements.
 */
-module.exports.getAchievements = async function (id) {
+async function getAchievements(id) {
   const client = await pool.connect();
   let result;
   if (id) {
@@ -33,12 +34,11 @@ module.exports.getAchievements = async function (id) {
   return result.rows;
 }
 
-// Export the pool for use in other modules
-module.exports.pool = pool;
-
 // Important: Close the pool when your application is finished (good practice)
 // This releases all clients back to the pool and prevents resource leaks
 // You would typically do this when your Node.js application is shutting down.
 process.on('exit', () => {
   pool.end();
 });
+
+module.exports =  {testConnection, getAchievements, pool};
