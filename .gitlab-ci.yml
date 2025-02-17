@@ -19,7 +19,7 @@ flyway-migrate:
     POSTGRES_URL: jdbc:postgresql://$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB
   image: postgres
   stage: build
-  before_script:  # install wget and flyway
+  before_script: # install wget and flyway
     - apt-get update -y && apt-get install -y wget
     - wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.0/flyway-commandline-11.3.0-linux-x64.tar.gz | tar -xvz && ln -s `pwd`/flyway-11.3.0/flyway /usr/local/bin
   script:
@@ -29,7 +29,7 @@ build-server:
   stage: build
   image:
     name: $KANIKO_IMAGE
-    entrypoint: [""]
+    entrypoint: ['']
   script:
     - /kaniko/executor
       --cache=true --cache-copy-layers=true --cache-ttl=24h

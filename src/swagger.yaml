@@ -18,14 +18,14 @@ paths:
       summary: Get a list of achievements
       description: Get a list of achievements from the API.
       responses:
-        "200":
+        '200':
           description: Successful response
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/achievements"
+                  $ref: '#/components/schemas/achievements'
               example:
                 achievements:
                   - id: 1
@@ -57,12 +57,12 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/achievements"
+                $ref: '#/components/schemas/achievements'
               example:
                 - id: 1
                   title: Cafarrhea
@@ -70,7 +70,7 @@ paths:
                   description: Eat at the Caf
                   prerequisite: null
                   points: 10
-        "404":
+        '404':
           description: Achievement not found
 
 components:
