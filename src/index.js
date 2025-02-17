@@ -18,7 +18,6 @@ app.get('/',
     (req, res) => res.send('Barons of Progress 📈 Homepage'))
 
 app.get('/api/achievements', async (req, res) => {
-    console.log('achievements');
     try {
         const achievements = await connection.getAchievements();
         res.send(achievements);
@@ -29,7 +28,6 @@ app.get('/api/achievements', async (req, res) => {
 });
 
 app.get('/api/achievements/:id', async (req, res) => {
-    // const achievement = allAchievementsList.find(a => a.id === parseInt(req.params.id));
     try {
         const achievement = await connection.getAchievements(req.params.id);
         if (achievement.length == 1) {
@@ -42,12 +40,6 @@ app.get('/api/achievements/:id', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-
-const allAchievementsList = [
-    new Achievement(1, 'The Source and The Summit', "Franny Basics", 'Attend Mass on Campus', null, 10),
-    new Achievement(2, 'Cafarrhea', "Franny Basics", 'Eat at the Caf', null, 20),
-    new Achievement(3, 'Lets Shake Things Up', "Franny Basics", 'Eat at the Pub', null, 20)
-];
 
 if (require.main === module) {
     app.listen(5007, () => console.log(`⚡[bootup]: Server is running at port: 5007`));
