@@ -6,19 +6,18 @@ stages:
 variables:
   IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   KANIKO_IMAGE: gcr.io/kaniko-project/executor:v1.21.1-debug
+  POSTGRES_DB: achievements_db
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: franny_devs
+  POSTGRES_HOST: postgres
+  POSTGRES_PORT: 5432
+  POSTGRES_URL: jdbc:postgresql://$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB
 
 flyway-migrate:
+  stage: build
   services:
     - postgres:latest
-  variables:
-    POSTGRES_DB: achievements_db
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: franny_devs
-    POSTGRES_HOST: postgres
-    POSTGRES_PORT: 5432
-    POSTGRES_URL: jdbc:postgresql://$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB
   image: postgres
-  stage: build
   before_script: # install wget and flyway
     - apt-get update -y && apt-get install -y wget
     - wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.0/flyway-commandline-11.3.0-linux-x64.tar.gz | tar -xvz && ln -s `pwd`/flyway-11.3.0/flyway /usr/local/bin
@@ -43,6 +42,20 @@ unit-test:
   script:
     - npm install --save-dev jest
     - npm run test:unit
+
+api-test:
+  stage: test
+  services:
+    - postgres:latest
+    - ${IMAGE_NAME}-test
+  image: node:latest
+  before_script:
+    - apt-get update -y && apt-get install -y wget
+    - wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.0/flyway-commandline-11.3.0-linux-x64.tar.gz | tar -xvz && ln -s `pwd`/flyway-11.3.0/flyway /usr/local/bin
+    - npm install
+    - flyway -url=$POSTGRES_URL -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD migrate
+  script:
+    - npm run test:api
 
 validate-swagger:
   stage: validate

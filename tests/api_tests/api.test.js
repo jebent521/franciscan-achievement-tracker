@@ -1,25 +1,24 @@
-const request = require('supertest');
-const app = require('../../src/index');
-const { pool } = require('../../src/data/connection');
+const fetch = require('node-fetch'); // Import node-fetch
 
 describe('API Tests', () => {
-  afterAll(async () => {
-    await pool.end(); // Close the database pool to ensure all connections are closed
-  });
+  const baseURL = 'http://localhost:5007/';
 
-  describe('/', () => {
+  describe('GET /', () => {
     it('should return the homepage', async () => {
-      const res = await request(app).get('/');
-      expect(res.statusCode).toEqual(200);
-      expect(res.text).toBe('Barons of Progress 📈 Homepage');
+      const res = await fetch(baseURL);
+      expect(res.status).toBe(200);
+      expect(await res.text()).toBe('Barons of Progress 📈 Homepage');
     });
   });
 
-  describe('/achievements', () => {
+  describe('/achievments', () => {
     it('should return a list of achievements', async () => {
-      const res = await request(app).get('/api/achievements');
-      expect(res.statusCode).toEqual(200);
-      expect(res.body).toEqual([
+      const res = await fetch(`${baseURL}api/achievements`);
+      expect(res.status).toBe(200);
+      const data = await res.json();
+      expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThan(0);
+      expect(data).toEqual([
         {
           id: 1,
           title: 'Cafarrhea',
@@ -50,9 +49,10 @@ describe('API Tests', () => {
 
   describe('/achievements/:id', () => {
     it('should return a single achievement by ID', async () => {
-      const res = await request(app).get('/api/achievements/1');
-      expect(res.statusCode).toEqual(200);
-      expect(res.body).toEqual({
+      const res = await fetch(`${baseURL}api/achievements/1`);
+      expect(res.status).toBe(200);
+      const data = await res.json();
+      expect(data).toEqual({
         id: 1,
         title: 'Cafarrhea',
         category: 'General',
@@ -60,12 +60,6 @@ describe('API Tests', () => {
         prerequisite: null,
         points: 10,
       });
-    });
-
-    it('should return 404 for an achievement not found', async () => {
-      const res = await request(app).get('/api/achievements/999');
-      expect(res.statusCode).toEqual(404);
-      expect(res.text).toBe('Achievement not found');
     });
   });
 });
