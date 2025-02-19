@@ -25,6 +25,16 @@ sleep 2 # downtime for db to setup
 
 psql -d postgres -c "CREATE DATABASE $PGNAME;"
 
-flyway -user=$PGUSER -password=$PGPASSWORD \
-    -url=jdbc:postgresql://$PGHOST:$PGPORT/$PGNAME \
-    migrate
+flyway migrate  # apply schema changes
+
+# seed test data
+for file in migrations/data/*.sql; do
+    # Check if there are any SQL files
+    if [[ -f $file ]]; then
+        echo "Running: $file"
+        psql -d $PGNAME -f $file
+    else
+        echo "No SQL files found in migrations/data"
+    fi
+done
+
