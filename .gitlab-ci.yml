@@ -1,7 +1,6 @@
 stages:
   - build
-  - test
-  - validate
+  - integration
 
 variables:
   IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
@@ -37,14 +36,21 @@ build-server:
       --destination "${IMAGE_NAME}-test"
 
 unit-test:
-  stage: test
+  stage: build
   image: node:latest
   script:
     - npm install --save-dev jest
     - npm run test:unit
 
+validate-swagger:
+  stage: build
+  image: node:latest
+  script:
+    - npm install -g @apidevtools/swagger-cli
+    - swagger-cli validate src/swagger.yaml
+
 api-test:
-  stage: test
+  stage: integration
   services:
     - postgres:latest
     - ${IMAGE_NAME}-test
@@ -56,10 +62,3 @@ api-test:
     - flyway -url=$POSTGRES_URL -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD migrate
   script:
     - npm run test:api
-
-validate-swagger:
-  stage: validate
-  image: node:latest
-  script:
-    - npm install -g @apidevtools/swagger-cli
-    - swagger-cli validate src/swagger.yaml
