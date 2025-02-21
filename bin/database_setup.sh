@@ -29,16 +29,8 @@ echo "PostgreSQL is ready!"
 
 psql -d postgres -c "CREATE DATABASE $PGNAME;"
 
-flyway migrate  # apply schema changes
-
-# seed test data
-for file in migrations/data/*.sql; do
-    # Check if there are any SQL files
-    if [[ -f $file ]]; then
-        echo "Running: $file"
-        psql -d $PGNAME -f $file
-    else
-        echo "No SQL files found in migrations/data"
-    fi
-done
-
+if [ "$ENV" == "dev" ]; then
+    flyway -configFiles=flyway.dev.conf migrate
+else
+    flyway -configFiles=flyway.prod.conf migrate
+fi
