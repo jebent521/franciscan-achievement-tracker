@@ -21,7 +21,11 @@ docker run --name $CONTAINER_NAME \
     -e POSTGRES_PASSWORD=$PGPASSWORD \
     -d postgres
 
-sleep 2 # downtime for db to setup
+echo "Waiting for PostgreSQL to be ready..."
+until PGPASSWORD=$PGPASSWORD pg_isready -h $PGHOST -p $PGPORT -U $PGUSER; do
+    sleep 1
+done
+echo "PostgreSQL is ready!"
 
 psql -d postgres -c "CREATE DATABASE $PGNAME;"
 
