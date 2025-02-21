@@ -10,10 +10,26 @@ const pool = new Pool({
 
 /**
  * Test the connection
-*/
+ */
 async function testConnection() {
   const client = await pool.connect(); // Get a client from the pool
   client.release(); // Return the client to the pool
+}
+
+/**
+ * Remove achievement from the database
+ *
+ * @param {number?} id - The ID of the achievement to delete. Leave empty will not delete anything.
+ */
+async function deleteAchievement(id) {
+  const client = await pool.connect();
+  const result = await client.query('DELETE FROM achievements WHERE id = $1', [
+    id,
+  ]);
+  if (result.rows === 0) {
+    return 'Achievement not found.';
+  }
+  client.release();
 }
 
 // Important: Close the pool when your application is finished (good practice)
@@ -23,4 +39,7 @@ process.on('exit', () => {
   pool.end();
 });
 
-module.exports = { pool, testConnection };
+module.exports = {
+  testConnection,
+  pool
+};

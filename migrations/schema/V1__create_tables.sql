@@ -17,8 +17,8 @@ CREATE TABLE achievements (
 );
 
 CREATE TABLE user_achievements (
-    user_id INTEGER REFERENCES users(id),
-    achievement_id INTEGER REFERENCES achievements(id),
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    achievement_id INTEGER REFERENCES achievements(id) ON DELETE CASCADE,
     date_achieved DATE DEFAULT CURRENT_DATE,
     PRIMARY KEY (user_id, achievement_id)
 );

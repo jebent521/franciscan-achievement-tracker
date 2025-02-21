@@ -55,6 +55,7 @@ wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-
 ```
 
 ## Development
+You must delete old docker containers and run the "Starting the Database" and "Starting the Server" sh files after each merge.
 
 ### Starting the Database
 

@@ -14,22 +14,22 @@ class Repository {
     }
 
     // note, this is untested, ai-generated code that is not necessary yet
-    // async create(params) {
-    //     try {
-    //         const client = await pool.connect();
-    //         const keys = Object.keys(params).join(', ');
-    //         const values = Object.values(params);
-    //         const placeholders = values.map((_, i) => `$${i + 1}`).join(', ');
-    //         const result = await client.query(
-    //             `INSERT INTO ${this.tableName} (${keys}) VALUES (${placeholders}) RETURNING *`,
-    //             values
-    //         );
-    //         client.release();
-    //         return new ApiResult(201, result.rows);
-    //     } catch (error) {
-    //         return this._parseError(error);
-    //     }
-    // }
+    async create(params) {
+        try {
+            const client = await pool.connect();
+            const keys = Object.keys(params).join(', ');
+            const values = Object.values(params);
+            const placeholders = values.map((_, i) => `$${i + 1}`).join(', ');
+            const result = await client.query(
+                `INSERT INTO ${this.tableName} (${keys}) VALUES (${placeholders}) RETURNING *`,
+                values
+            );
+            client.release();
+            return new ApiResult(201, result.rows);
+        } catch (error) {
+            return this._parseError(error);
+        }
+    }
 
     async read() {
         try {
@@ -77,6 +77,7 @@ class Repository {
     _parseError(error) {
         // type error
         if (error.code === '22P02') return new ApiResult(400, error.toString());
+        if (error.code === '23502') return new ApiResult(400, error.toString());
         // foreign key error
         if (error.code === '23503') return new ApiResult(400, error.detail);
         // unique value conflict

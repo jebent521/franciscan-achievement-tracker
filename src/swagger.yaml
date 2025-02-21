@@ -46,6 +46,28 @@ paths:
                     description: Be a STEM major
                     prerequisite: null
                     points: 20
+    post:
+      summary: Add an achievement to the database.
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/achievements'
+              example:
+                title: Pub Food
+                category: Franny Basics
+                description: Eat at the Pub
+                prerequisite: null
+                points: 10
+      responses:
+        '201':
+          description: Successfully created achievement.
+        '400':
+          description: Missing criteria, invalid type, or invalid reference.
+        '409':
+          description: Unique field already exist in the database.
+        '500':
+          description: Internal Server Error
   /api/achievements/{id}:
     get:
       summary: Get achievements by ID
@@ -72,6 +94,24 @@ paths:
                   points: 10
         '404':
           description: Achievement not found
+    delete:
+      summary: Delete achievement from database by ID.
+      description: Removed a single achievement from the API.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted achievement.
+        '400':
+          description: Achievement is prerequisite or invalid ID type.
+        '404':
+          description: ID not found.
+        '500':
+          description: Internal Server Error
 
 components:
   schemas:
