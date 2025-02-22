@@ -29,8 +29,10 @@ echo "PostgreSQL is ready!"
 
 psql -d postgres -c "CREATE DATABASE $PGNAME;"
 
-if [ "$ENV" == "dev" ]; then
-    flyway -configFiles=flyway.dev.conf migrate
-else
+if [ $ENV == "prod" ]; then
+    echo "Creating production database..."
     flyway -configFiles=flyway.prod.conf migrate
+else
+    echo "Creating development database..."
+    flyway -configFiles=flyway.dev.conf migrate
 fi
