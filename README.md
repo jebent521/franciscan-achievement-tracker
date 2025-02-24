@@ -30,7 +30,7 @@ Franciscan. Achievements range from simple to silly & elaborate.
 
 #### Install net-tools and psql
 
-```
+```bash
 sudo apt update
 sudo apt install net-tools
 sudo apt install postgresql-client
@@ -43,7 +43,7 @@ Create a directory to put flyway's files. I would recommend putting it in
 
 Run this command from `~/dev` to download Flyway and addd it to your path:
 
-```
+```bash
 wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.0/flyway-commandline-11.3.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-11.3.0/flyway /usr/local/bin
 ```
 
@@ -63,19 +63,21 @@ wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-
 
 ### Starting the Database
 
-```
+```bash
 bin/database_setup.sh
 ```
 
+Run `database_setup.sh -h` for usage options.
+
 ### Starting the Server (in Docker)
 
-```
+```bash
 bin/build_and_run_server.sh
 ```
 
 #### Starting the Server (locally)
 
-```
+```bash
 npm install
 npm run dev
 ```
@@ -92,18 +94,18 @@ http://localhost:5007/api-docs to view the API documentation.
 
 Run all tests:
 
-```
+```bash
 npm test
 ```
 
 Run API tests:
 
-```
+```bash
 npm run test:api
 ```
 
 Run Unit tests:
 
-```
+```bash
 npm run test:unit
 ```
