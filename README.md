@@ -67,6 +67,8 @@ wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-
 bin/database_setup.sh
 ```
 
+Run `database_setup.sh -h` for usage options.
+
 ### Starting the Server (in Docker)
 
 ```bash

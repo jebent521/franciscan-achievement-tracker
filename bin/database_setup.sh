@@ -10,6 +10,15 @@ export PGUSER='postgres'
 export PGPASSWORD='franny_devs'
 export PGNAME='achievements_db'
 
+usage () {
+    echo "Usage: $0 [-d|--dev] [-p|--prod]"
+    echo "Options:"
+    echo "  -d, --dev    Set up development database [default]"
+    echo "  -p, --prod   Set up production database (can also be run with ENV=prod)"
+    echo "  -h, --help   Display this help message and exit."
+    exit 1
+}
+
 while [[ $# -gt 0 ]]; do
   case $1 in
     (-d|--dev)
@@ -21,11 +30,13 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     (-h|--help)
-      help
+      usage
+      exit 1
       ;;
-    (-*|--*|*)
+    (*)
       echo "Unknown option $1"
-      help
+      usage
+      exit 1
       ;;
   esac
 done
@@ -57,12 +68,3 @@ else
     echo "🛠️  Creating development database..."
     flyway -configFiles=flyway.dev.conf migrate
 fi
-
-help () {
-    echo "Usage: $0 [-d|--dev] [-p|--prod]"
-    echo "Options:"
-    echo "  -d, --dev    Set up development database [default]"
-    echo "  -p, --prod   Set up production database [can also be run with ENV=prod]"
-    echo "  -h, --help   Display this help message and exit."
-    exit 1
-}
