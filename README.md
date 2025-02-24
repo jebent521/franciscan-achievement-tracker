@@ -13,27 +13,22 @@ Franciscan. Achievements range from simple to silly & elaborate.
 
 ### Server Stack
 
-- **Database:** PostgreSQL
-  - **Database Version Control:** Flyway
+- **Database:** PostgreSQL (with Flyway for version control)
 - **Backend:** Express.js
+- **Data Storage:** All JSON
 
-### Data Storage
-
-- All JSON
-
-### Development
+### Development Tools
 
 - **IDE:** VS Code
 - **Database Client:** [dBeaver](https://dbeaver.io/download/)
 
 ## Getting Started
 
-#### Install net-tools and psql
+#### Install Dependencies
 
-```bash
+```sh
 sudo apt update
-sudo apt install net-tools
-sudo apt install postgresql-client
+sudo apt install net-tools postgresql-client
 ```
 
 #### Install Flyway
@@ -43,7 +38,7 @@ Create a directory to put flyway's files. I would recommend putting it in
 
 Run this command from `~/dev` to download Flyway and addd it to your path:
 
-```bash
+```sh
 wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.0/flyway-commandline-11.3.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-11.3.0/flyway /usr/local/bin
 ```
 
@@ -63,21 +58,23 @@ wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-
 
 ### Starting the Database
 
-```bash
+```sh
 bin/database_setup.sh
 ```
 
 Run `database_setup.sh -h` for usage options.
 
-### Starting the Server (in Docker)
+### Starting the Server
 
-```bash
+#### In Docker
+
+```sh
 bin/build_and_run_server.sh
 ```
 
-#### Starting the Server (locally)
+#### Locally
 
-```bash
+```sh
 npm install
 npm run dev
 ```
@@ -87,25 +84,24 @@ npm run dev
 
 ### View API Documentation
 
-After starting the backend you should be able to navigate to this URL:
-http://localhost:5007/api-docs to view the API documentation.
+Navigate to: http://localhost:5007/api-docs after starting the backend.
 
 ## Run Tests:
 
 Run all tests:
 
-```bash
+```sh
 npm test
 ```
 
 Run API tests:
 
-```bash
+```sh
 npm run test:api
 ```
 
 Run Unit tests:
 
-```bash
+```sh
 npm run test:unit
 ```
