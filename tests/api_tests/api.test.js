@@ -1,7 +1,8 @@
+require('dotenv').config();
 const fetch = require('node-fetch'); // Import node-fetch
 
 describe('API Tests', () => {
-  const baseURL = 'http://localhost:5007';
+  const baseURL = `http://localhost:${+process.env.PORT || 5007}`;
 
   describe('GET /', () => {
     it('should return the homepage', async () => {
