@@ -53,7 +53,7 @@ api-test:
   stage: integration
   services:
     - postgres:latest
-    - ${IMAGE_NAME}-test
+    #- ${IMAGE_NAME}-test
   image: node:latest
   before_script:
     - apt-get update -y && apt-get install -y wget
