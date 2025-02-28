@@ -30,10 +30,6 @@ app.get('/api/achievements/:id', async (req, res) => {
   res.status(result.status).send(result.message);
 });
 
-if (require.main === module) {
-  app.listen(5007, () =>
-    console.log(`⚡[bootup]: Server is running at port: 5007`)
-  );
-}
-
-module.exports = app;
+app.listen(5007, () =>
+  console.log(`⚡[bootup]: Server is running at port: 5007`)
+);
