@@ -16,29 +16,6 @@ async function testConnection() {
   client.release(); // Return the client to the pool
 }
 
-/**
- * Remove achievement from the database
- *
- * @param {number?} id - The ID of the achievement to delete. Leave empty will not delete anything.
- */
-async function deleteAchievement(id) {
-  const client = await pool.connect();
-  const result = await client.query('DELETE FROM achievements WHERE id = $1', [
-    id,
-  ]);
-  if (result.rows === 0) {
-    return 'Achievement not found.';
-  }
-  client.release();
-}
-
-// Important: Close the pool when your application is finished (good practice)
-// This releases all clients back to the pool and prevents resource leaks
-// You would typically do this when your Node.js application is shutting down.
-process.on('exit', () => {
-  pool.end();
-});
-
 module.exports = {
   testConnection,
   pool

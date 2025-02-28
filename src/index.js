@@ -39,27 +39,10 @@ app.post('/api/achievements', async (req, res) => {
 });
 
 app.delete('/api/achievements/:id', async (req, res) => {
-  try {
-    const result = await connection.deleteAchievement(req.params.id);
-    if (result) {
-      // no achievement with id to be delete
-      res.status(404).send(result);
-    }
-    res.status(200).send();
-  } catch (error) {
-    if (error.code === '23503') {
-      // error with deleting an achievement that is a prerequisite to at least 1 other achievement
-      res.status(400).send(error.detail);
-      return;
-    }
-    if (error.code === '22P02') {
-      // thrown if trying to input an invalid variable type such as id:"apple" instead of an id: 20
-      res.status(400).send(error.toString());
-      return;
-    }
-    console.error(error);
-    res.status(500).send('Interal Server Error.');
-  }
+  const repository = new Repository('achievements');
+  const result = await repository.delete(req.params.id);
+  if (result.error) console.error(result.error);
+  res.status(result.status).send(result.message);
 });
 
 if (require.main === module) {
