@@ -26,7 +26,7 @@ describe('API Tests', () => {
           {
             id: 1,
             title: 'Cafarrhea',
-            category: 'General',
+            group_id: 1,
             description: 'Eat at the Caf',
             prerequisite: null,
             points: 10,
@@ -34,7 +34,7 @@ describe('API Tests', () => {
           {
             id: 2,
             title: 'The Grand Slam',
-            category: 'Spiritual',
+            group_id: 2,
             description: 'Attend all four daily masses in one day',
             prerequisite: null,
             points: 100,
@@ -42,7 +42,7 @@ describe('API Tests', () => {
           {
             id: 3,
             title: 'Four Years of B.S.',
-            category: 'Academic',
+            group_id: 3,
             description: 'Be a STEM major',
             prerequisite: null,
             points: 20,
@@ -64,7 +64,7 @@ describe('API Tests', () => {
         },
         body: JSON.stringify({
           title: 'Test case 4',
-          category: 'Challenge me if you dare',
+          group_id: 1,
           description: "Don't even think about it",
           prerequisite: 1,
           points: 12,
@@ -76,7 +76,7 @@ describe('API Tests', () => {
         expect(data).toEqual({
           id: 4,
           title: 'Test case 4',
-          category: 'Challenge me if you dare',
+          group_id: 1,
           description: "Don't even think about it",
           prerequisite: 1,
           points: 12,
@@ -97,7 +97,7 @@ describe('API Tests', () => {
         expect(data).toEqual({
           id: 1,
           title: 'Cafarrhea',
-          category: 'General',
+          group_id: 1,
           description: 'Eat at the Caf',
           prerequisite: null,
           points: 10,
