@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
@@ -5,6 +6,7 @@ const YAML = require('yamljs');
 const connection = require('./data/connection');
 const Repository = require('./data/repository');
 
+const PORT = +process.env.PORT || 5007;
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
