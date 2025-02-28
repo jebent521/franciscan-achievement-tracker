@@ -10,30 +10,10 @@ const pool = new Pool({
 
 /**
  * Test the connection
- */
+*/
 async function testConnection() {
   const client = await pool.connect(); // Get a client from the pool
   client.release(); // Return the client to the pool
-}
-
-/**
- * Get achievements from the database
- *
- * @param {number?} id - The ID of the achievement to retreive. Leave empty to get all achievements.
- */
-async function getAchievements(id) {
-  const client = await pool.connect();
-  let result;
-  if (id) {
-    result = await client.query('SELECT * FROM achievements WHERE id = $1', [
-      id,
-    ]);
-  } else {
-    result = await client.query('SELECT * FROM achievements');
-  }
-  client.release();
-  // TODO: use an ORM to map the results to a class
-  return result.rows;
 }
 
 // Important: Close the pool when your application is finished (good practice)
@@ -43,4 +23,4 @@ process.on('exit', () => {
   pool.end();
 });
 
-module.exports = { testConnection, getAchievements, pool };
+module.exports = { pool, testConnection };
