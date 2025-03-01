@@ -6,7 +6,6 @@ class Repository {
         this.tableName = tableName;
     }
 
-    // note, this is untested, ai-generated code that is not necessary yet
     async create(params) {
         try {
             const client = await pool.connect();
@@ -52,7 +51,6 @@ class Repository {
 
     // async update(id, params) { }
 
-    // note, this is untested, ai-generated code that is not necessary yet
     async delete(id) {
         try {
             const client = await pool.connect();
