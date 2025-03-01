@@ -1,9 +1,9 @@
 // Export anything needed for jest testing
 class Achievement {
-  constructor(id, title, category, description, prerequisite, points) {
+  constructor(id, title, group_id, description, prerequisite, points) {
     this.id = id;
     this.title = title;
-    this.category = category;
+    this.group_id = group_id;
     this.description = description;
     this.prerequisite = prerequisite;
     this.points = points;
@@ -14,7 +14,7 @@ class Achievement {
     return (
       this.id == other.id &&
       this.title == other.title &&
-      this.category == other.category &&
+      this.group_id == other.group_id &&
       this.description == other.description &&
       this.prerequisite == other.prerequisite &&
       this.points == other.points

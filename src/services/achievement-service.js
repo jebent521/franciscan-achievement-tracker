@@ -9,7 +9,7 @@ class AchievementService extends Service {
     validateCreate(req) {
         const missingFields = [];
         if (!req.body.title) missingFields.push('title');
-        if (!req.body.category) missingFields.push('category');
+        if (!req.body.group_id) missingFields.push('group_id');
         if (!req.body.description) missingFields.push('description');
         if (!req.body.points) missingFields.push('points');
         if (missingFields.length > 0) {

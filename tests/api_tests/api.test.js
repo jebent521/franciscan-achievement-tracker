@@ -32,7 +32,7 @@ describe('API Tests', () => {
           {
             id: 1,
             title: 'Cafarrhea',
-            category: 'General',
+            group: 1,
             description: 'Eat at the Caf',
             prerequisite: null,
             points: 10,
@@ -40,7 +40,7 @@ describe('API Tests', () => {
           {
             id: 2,
             title: 'The Grand Slam',
-            category: 'Spiritual',
+            group: 2,
             description: 'Attend all four daily masses in one day',
             prerequisite: null,
             points: 100,
@@ -48,7 +48,7 @@ describe('API Tests', () => {
           {
             id: 3,
             title: 'Four Years of B.S.',
-            category: 'Academic',
+            group: 3,
             description: 'Be a STEM major',
             prerequisite: null,
             points: 20,
@@ -70,7 +70,7 @@ describe('API Tests', () => {
         expect(data).toEqual({
           id: 1,
           title: 'Cafarrhea',
-          category: 'General',
+          group: 'General',
           description: 'Eat at the Caf',
           prerequisite: null,
           points: 10,
@@ -80,7 +80,9 @@ describe('API Tests', () => {
         throw e;
       }
     });
+  });
 
+  describe('POST /achievements', () => {
     it('should add an achievement to the database', async () => {
       const res = await fetch(`${baseURL}/api/achievements`, {
         method: "POST",

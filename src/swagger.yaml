@@ -30,19 +30,19 @@ paths:
                 achievements:
                   - id: 1
                     title: Cafarrhea
-                    category: Franny Basics
+                    group_id: 1
                     description: Eat at the Caf
                     prerequisite: null
                     points: 10
                   - id: 2
                     title: The Grand Slam
-                    category: Spiritual
+                    group_id: 2
                     description: Attend all four daily masses in one day
                     prerequisite: null
                     points: 100
                   - id: 3
                     title: Four Years of B.S.
-                    category: Academic
+                    group_id: 3
                     description: Be a STEM major
                     prerequisite: null
                     points: 20
@@ -50,15 +50,15 @@ paths:
       summary: Add an achievement to the database.
       requestBody:
         content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/achievements'
-              example:
-                title: Pub Food
-                category: Franny Basics
-                description: Eat at the Pub
-                prerequisite: null
-                points: 10
+          application/json:
+            schema:
+              $ref: '#/components/schemas/achievements'
+            example:
+              title: Pub Food
+              group_id: 1
+              description: Eat at the Pub
+              prerequisite: null
+              points: 10
       responses:
         '201':
           description: Successfully created achievement.
@@ -88,7 +88,7 @@ paths:
               example:
                 - id: 1
                   title: Cafarrhea
-                  category: Franny Basics
+                  group_id: 1
                   description: Eat at the Caf
                   prerequisite: null
                   points: 10
@@ -123,8 +123,9 @@ components:
           format: int64
         title:
           type: string
-        category:
-          type: string
+        group_id:
+          type: integer
+          format: int64
         description:
           type: string
         prerequisite:

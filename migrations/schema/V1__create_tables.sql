@@ -15,7 +15,7 @@ CREATE TABLE groups (
 CREATE TABLE achievements (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) UNIQUE NOT NULL,
-    category INTEGER REFERENCES groups(id),
+    group_id INTEGER REFERENCES groups(id),
     description TEXT NOT NULL,
     prerequisite INTEGER REFERENCES achievements(id) DEFAULT NULL,
     points INTEGER NOT NULL
