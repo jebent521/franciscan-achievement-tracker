@@ -1,5 +1,5 @@
 INSERT INTO groups (name, description)
 VALUES
-    ('General', ''),
-    ('Spiritual', ''),
-    ('Academic', '');
+    ('General', 'General achievements'),
+    ('Spiritual', 'Achievements related to spirituality'),
+    ('Academic', 'Achievements related to academics');

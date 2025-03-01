@@ -3,28 +3,15 @@ const fetch = require('node-fetch'); // Import node-fetch
 const { resetDatabase } = require('../test-utils');
 const { pool } = require('../../src/data/connection');
 
-describe('API Tests', () => {
-  const baseURL = 'http://localhost:5007';
+describe('Achievement Endpoint Tests', () => {
+  const baseUrl = 'http://localhost:5007';
 
   beforeEach(async () => await resetDatabase());
   afterAll(async () => await pool.end());
 
-  describe('GET /', () => {
-    it('should return the homepage', async () => {
-      const res = await fetch(baseURL);
-      try {
-        expect(res.status).toBe(200);
-        expect(await res.text()).toBe('Barons of Progress 📈 Homepage');
-      } catch (e) {
-        console.log(res);
-        throw e;
-      }
-    });
-  });
-
   describe('GET /achievements', () => {
     it('should return a list of achievements', async () => {
-      const res = await fetch(`${baseURL}/api/achievements`);
+      const res = await fetch(`${baseUrl}/api/achievements`);
       try {
         expect(res.status).toBe(200);
         const data = await res.json();
@@ -32,7 +19,7 @@ describe('API Tests', () => {
           {
             id: 1,
             title: 'Cafarrhea',
-            group: 1,
+            group_id: 1,
             description: 'Eat at the Caf',
             prerequisite: null,
             points: 10,
@@ -40,7 +27,7 @@ describe('API Tests', () => {
           {
             id: 2,
             title: 'The Grand Slam',
-            group: 2,
+            group_id: 2,
             description: 'Attend all four daily masses in one day',
             prerequisite: null,
             points: 100,
@@ -48,7 +35,7 @@ describe('API Tests', () => {
           {
             id: 3,
             title: 'Four Years of B.S.',
-            group: 3,
+            group_id: 3,
             description: 'Be a STEM major',
             prerequisite: null,
             points: 20,
@@ -63,14 +50,14 @@ describe('API Tests', () => {
 
   describe('GET /achievements/:id', () => {
     it('should return a single achievement by ID', async () => {
-      const res = await fetch(`${baseURL}/api/achievements/1`);
+      const res = await fetch(`${baseUrl}/api/achievements/1`);
       try {
         expect(res.status).toBe(200);
         const data = await res.json();
         expect(data).toEqual({
           id: 1,
           title: 'Cafarrhea',
-          group: 'General',
+          group_id: 1,
           description: 'Eat at the Caf',
           prerequisite: null,
           points: 10,
@@ -84,14 +71,14 @@ describe('API Tests', () => {
 
   describe('POST /achievements', () => {
     it('should add an achievement to the database', async () => {
-      const res = await fetch(`${baseURL}/api/achievements`, {
+      const res = await fetch(`${baseUrl}/api/achievements`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           title: "Test case 4",
-          category: "Challenge me if you dare",
+          group_id: 1,
           description: "Don't even think about it",
           prerequisite: 1,
           points: 12
@@ -103,12 +90,11 @@ describe('API Tests', () => {
         expect(data).toEqual({
           id: 4,
           title: "Test case 4",
-          category: "Challenge me if you dare",
+          group_id: 1,
           description: "Don't even think about it",
           prerequisite: 1,
           points: 12
-        }
-        );
+        });
       } catch (e) {
         console.log(res);
         throw e;
@@ -118,7 +104,7 @@ describe('API Tests', () => {
 
   describe('DELETE /achievements/:id', () => {
     it("should fail to delete if achievement doesn't exist", async () => {
-      const res = await fetch(`${baseURL}/api/achievements/5`, {
+      const res = await fetch(`${baseUrl}/api/achievements/5`, {
         method: 'DELETE'
       });
 
@@ -132,7 +118,7 @@ describe('API Tests', () => {
     });
 
     it('should delete achievement if ID is a valid number and exists', async () => {
-      const res = await fetch(`${baseURL}/api/achievements/apple`, {
+      const res = await fetch(`${baseUrl}/api/achievements/apple`, {
         method: 'DELETE'
       });
 
@@ -146,7 +132,7 @@ describe('API Tests', () => {
     });
 
     it('should delete an achievement by ID', async () => {
-      const res = await fetch(`${baseURL}/api/achievements/3`, {
+      const res = await fetch(`${baseUrl}/api/achievements/3`, {
         method: 'DELETE'
       });
 
@@ -154,7 +140,7 @@ describe('API Tests', () => {
         expect(res.status).toBe(200);
         expect(await res.text()).toBe('Success');
       } catch (e) {
-        console.log(res);
+        console.log(await res.text());
         throw e;
       }
     });
