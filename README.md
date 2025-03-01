@@ -56,6 +56,10 @@ wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-
 
 ## Development
 
+The database should only need to be re-built if there are schema changes, 
+and the server should only need to be rebuilt if there are changes made to 
+the Dockerfile.
+
 ### Starting the Database
 
 ```sh

@@ -30,6 +30,25 @@ app.get('/api/achievements/:id', async (req, res) => {
   res.status(result.status).send(result.message);
 });
 
-app.listen(5007, () =>
-  console.log(`⚡[bootup]: Server is running at port: 5007`)
-);
+// Post Method to create new achievement
+app.post('/api/achievements', async (req, res) => {
+  const repository = new Repository('achievements');
+  const result = await repository.create(req.body);
+  if (result.error) console.error(result.error);
+  res.status(result.status).send(result.message);
+});
+
+app.delete('/api/achievements/:id', async (req, res) => {
+  const repository = new Repository('achievements');
+  const result = await repository.delete(req.params.id);
+  if (result.error) console.error(result.error);
+  res.status(result.status).send(result.message);
+});
+
+if (require.main === module) {
+  app.listen(5007, () =>
+    console.log(`⚡[bootup]: Server is running at port: 5007`)
+  );
+}
+
+module.exports = app;
