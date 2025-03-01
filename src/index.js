@@ -4,6 +4,7 @@ const YAML = require('yamljs');
 
 const connection = require('./data/connection');
 const AchievementService = require('./services/achievement-service');
+const GroupService = require('./services/group-service');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -20,6 +21,11 @@ app.get('/api/achievements', async (_, res) => new AchievementService().read(res
 app.get('/api/achievements/:id', async (req, res) => new AchievementService().readById(req, res));
 app.post('/api/achievements', async (req, res) => new AchievementService().create(req, res));
 app.delete('/api/achievements/:id', async (req, res) => new AchievementService().delete(req, res));
+
+app.get('/api/groups', async (_, res) => new GroupService().read(res));
+app.get('/api/groups/:id', async (req, res) => new GroupService().readById(req, res));
+app.post('/api/groups', async (req, res) => new GroupService().create(req, res));
+app.delete('/api/groups/:id', async (req, res) => new GroupService().delete(req, res));
 
 app.listen(5007, () =>
   console.log(`⚡[bootup]: Server is running at port: 5007`)
