@@ -58,30 +58,29 @@ describe('API Tests', () => {
   describe('POST /achievements', () => {
     it('should add an achievement to the database', async () => {
       const res = await fetch(`${baseURL}/api/achievements`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "title": "Test case 4",
-          "category": "Challenge me if you dare",
-          "description": "Don't even think about it",
-          "prerequisite": 1,
-          "points": 12
-        })
-      });      
+          title: 'Test case 4',
+          category: 'Challenge me if you dare',
+          description: "Don't even think about it",
+          prerequisite: 1,
+          points: 12,
+        }),
+      });
       try {
         expect(res.status).toBe(201);
         const data = await res.json();
         expect(data).toEqual({
-          "id": 4,
-          "title": "Test case 4",
-          "category": "Challenge me if you dare",
-          "description": "Don't even think about it",
-          "prerequisite": 1,
-          "points": 12
-        }
-        );
+          id: 4,
+          title: 'Test case 4',
+          category: 'Challenge me if you dare',
+          description: "Don't even think about it",
+          prerequisite: 1,
+          points: 12,
+        });
       } catch (e) {
         console.log(res);
         throw e;
@@ -112,13 +111,13 @@ describe('API Tests', () => {
 
   // For a DELETE request : fail, achievement by id is not in database
   describe('DELETE /achievements/:id', () => {
-    it('should fail to delete if achievement doesn\'t exist', async () => {
+    it("should fail to delete if achievement doesn't exist", async () => {
       const res = await fetch(`${baseURL}/api/achievements/5`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
 
       try {
-        expect(res.status).toBe(404); 
+        expect(res.status).toBe(404);
         expect(await res.text()).toBe('Not found');
       } catch (e) {
         console.log(res);
@@ -131,12 +130,14 @@ describe('API Tests', () => {
   describe('DELETE /achievements/:id', () => {
     it('should delete achievement if ID is a valid number and exists', async () => {
       const res = await fetch(`${baseURL}/api/achievements/apple`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
 
       try {
-        expect(res.status).toBe(400); 
-        expect(await res.text()).toBe('error: invalid input syntax for type integer: "apple"');
+        expect(res.status).toBe(400);
+        expect(await res.text()).toBe(
+          'error: invalid input syntax for type integer: "apple"'
+        );
       } catch (e) {
         console.log(res);
         throw e;
@@ -148,11 +149,11 @@ describe('API Tests', () => {
   describe('DELETE /achievements/:id', () => {
     it('should delete an achievement by ID', async () => {
       const res = await fetch(`${baseURL}/api/achievements/3`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
 
       try {
-        expect(res.status).toBe(200); 
+        expect(res.status).toBe(200);
         expect(await res.text()).toBe('Success');
       } catch (e) {
         console.log(res);
