@@ -1,12 +1,5 @@
 const { pool } = require('./connection');
-
-class ApiResult {
-    constructor(status, message, error = null) {
-        this.status = status;
-        this.message = message;
-        this.error = error;
-    }
-};
+const ApiResult = require('../utils/api-result');
 
 class Repository {
     constructor(tableName) {
@@ -83,6 +76,8 @@ class Repository {
         if (error.code === '23503') return new ApiResult(400, error.detail);
         // unique value conflict
         if (error.code === '23505') return new ApiResult(409, error.detail);
+        // column does not exist in table
+        if (error.code === '42703') return new ApiResult(400, error.toString());
         // any other error
         return new ApiResult(500, 'Internal Server Error', error);
     }
