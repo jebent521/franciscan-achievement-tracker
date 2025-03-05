@@ -196,7 +196,102 @@ paths:
           description: ID not found.
         '500':
           description: Internal Server Error
-
+  /api/user:
+    get:
+      summary: Get a list of users
+      description: Get a list of users from the API.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+              example:
+                users:
+                  - id: 1
+                    name: Angsty Alice
+                    email: alice@angst.com
+                    password: password123
+                    points: 0
+                  - id: 2
+                    name: Boring Bob
+                    email: bob@bored.com
+                    password: password123
+                    points: 0
+                  - id: 3
+                    name: Cranky Carol
+                    email: carol@crank.com
+                    password: password123
+                    points: 0
+    post:
+      summary: Add an user to the database.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+            example:
+              name: Lazy Susan
+              email: susan@lazy.com
+              password: password123
+              points: 10
+      responses:
+        '201':
+          description: Successfully created user.
+        '400':
+          description: Missing criteria, invalid type, or invalid reference.
+        '409':
+          description: Unique field already exist in the database.
+        '500':
+          description: Internal Server Error
+  /api/user/{id}:
+    get:
+      summary: Get user by ID
+      description: Get a single user from the API.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+              example:
+                - id: 1
+                  name: Angsty Alice
+                  email: alice@angst.com
+                  password: password123
+                  points: 0
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+    delete:
+      summary: Delete user from database by ID.
+      description: Removed a single user from the API.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted user.
+        '400':
+          description: user is invalid ID type.
+        '404':
+          description: ID not found.
+        '500':
+          description: Internal Server Error
 components:
   schemas:
     achievements:
@@ -227,3 +322,18 @@ components:
           type: string
         description:
           type: string
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        points:
+          type: integer
+          format: int64
