@@ -5,6 +5,7 @@ const YAML = require('yamljs');
 const connection = require('./data/connection');
 const AchievementService = require('./services/achievement-service');
 const GroupService = require('./services/group-service');
+const UserService = require('./services/user-service');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -39,6 +40,15 @@ app.post('/api/groups', async (req, res) =>
 );
 app.delete('/api/groups/:id', async (req, res) =>
   new GroupService().delete(req, res)
+);
+
+app.get('/api/users', async (_, res) => new UserService().read(res));
+app.get('/api/users/:id', async (req, res) =>
+  new UserService().readById(req, res)
+);
+app.post('/api/users', async (req, res) => new UserService().create(req, res));
+app.delete('/api/users/:id', async (req, res) =>
+  new UserService().delete(req, res)
 );
 
 app.listen(5007, () =>

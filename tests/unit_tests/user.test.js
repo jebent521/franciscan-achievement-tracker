@@ -1,4 +1,4 @@
-const User = require('../../src/models/user');
+const User = require('../../src/models/users');
 
 // Good data test
 const user1 = new User('bobert24', '1234', 'bob@gmail.com'); // the original
