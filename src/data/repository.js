@@ -69,6 +69,23 @@ class Repository {
     }
   }
 
+  async deleteCustomById(column, value, column2, value2) {
+    try {
+      const client = await pool.connect();
+      const result = await client.query(
+        `DELETE FROM ${this.tableName} WHERE ${column} = $1 AND ${column2} = $2`,
+        [value, value2]
+      );
+      client.release();
+      if (result.rowCount === 0) {
+        return new ApiResult(404, 'Not found');
+      }
+      return new ApiResult(200, result.rows[0]);
+    } catch (error) {
+      return this._parseError(error);
+    }
+  }
+
   async update(id, params) {
     try {
       const client = await pool.connect();

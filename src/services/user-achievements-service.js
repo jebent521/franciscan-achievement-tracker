@@ -7,16 +7,15 @@ class UserAchievementsService extends Service {
   }
 
   validateCreate(req) {
-    const missingFields = [];
-    if (!req.body.user_id) missingFields.push('user_id');
-    if (!req.body.achievement_id) missingFields.push('achievement_id');
+    const user_id = req.params.user_id;
 
-    if (missingFields.length > 0) {
-      return new ApiResult(400, `Missing fields: ${missingFields.join(', ')}`);
+    if (!req.body.achievement_id) {
+      return new ApiResult(400, 'Missing field: achievement_id');
     }
     if (req.body.date_achieved) {
       return new ApiResult(400, 'Field "date_achieved" must not be provided.');
     }
+    req.body.user_id = user_id;
   }
 }
 

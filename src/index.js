@@ -64,6 +64,19 @@ app.delete('/api/users/:id', async (req, res) =>
 app.get('/api/users/:user_id/achievements', async (req, res) =>
   new UserAchievementsService().readByCustom('user_id', req, res)
 );
+app.post('/api/users/:user_id/achievements', async (req, res) =>
+  new UserAchievementsService().create(req, res)
+);
+app.delete(
+  '/api/users/:user_id/achievements/:achievement_id',
+  async (req, res) =>
+    new UserAchievementsService().deleteCustomById(
+      'user_id',
+      'achievement_id',
+      req,
+      res
+    )
+);
 
 app.listen(5007, () =>
   console.log(`⚡[bootup]: Server is running at port: 5007`)

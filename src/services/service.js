@@ -64,6 +64,20 @@ class Service {
     if (result.error) console.error(result.error);
     res.status(result.status).send(result.message);
   }
+
+  async deleteCustomById(column, column2, req, res) {
+    const value = req.params[column];
+    const value2 = req.params[column2];
+
+    const result = await this.repository.deleteCustomById(
+      column,
+      value,
+      column2,
+      value2
+    );
+    if (result.error) console.error(result.error);
+    res.status(result.status).send(result.message);
+  }
 }
 
 module.exports = Service;
