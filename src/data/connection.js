@@ -18,5 +18,5 @@ async function testConnection() {
 
 module.exports = {
   testConnection,
-  pool
+  pool,
 };

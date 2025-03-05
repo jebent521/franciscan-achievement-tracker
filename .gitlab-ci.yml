@@ -42,12 +42,15 @@ unit-test:
     - npm install --save-dev jest
     - npm run test:unit
 
-validate-swagger:
+lint:
   stage: build
   image: node:latest
-  script:
+  before_script:
     - npm install -g @apidevtools/swagger-cli
-    - swagger-cli validate src/swagger.yaml
+    - npm install prettier
+  script:
+    - swagger-cli validate src/swagger.yaml # validating swagger file
+    - npx prettier -c . # enforcing consistent formatting
 
 api-test:
   stage: integration
