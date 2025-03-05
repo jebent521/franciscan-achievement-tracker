@@ -42,12 +42,12 @@ app.delete('/api/groups/:id', async (req, res) =>
   new GroupService().delete(req, res)
 );
 
-app.get('/api/user', async (_, res) => new UserService().read(res));
-app.get('/api/user/:id', async (req, res) =>
+app.get('/api/users', async (_, res) => new UserService().read(res));
+app.get('/api/users/:id', async (req, res) =>
   new UserService().readById(req, res)
 );
-app.post('/api/user', async (req, res) => new UserService().create(req, res));
-app.delete('/api/user/:id', async (req, res) =>
+app.post('/api/users', async (req, res) => new UserService().create(req, res));
+app.delete('/api/users/:id', async (req, res) =>
   new UserService().delete(req, res)
 );
 

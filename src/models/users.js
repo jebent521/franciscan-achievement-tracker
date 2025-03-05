@@ -1,9 +1,10 @@
 class User {
-  constructor(id, username, password, email) {
+  constructor(id, username, password, email, points) {
     this.id = id;
     this.username = username;
     this.password = password;
     this.email = email;
+    this.points = points;
   }
 
   equals(other) {
@@ -12,7 +13,8 @@ class User {
       this.id == other.id &&
       this.username == other.username &&
       this.password == other.password &&
-      this.email == other.email
+      this.email == other.email &&
+      this.points == other.points
     );
   }
 

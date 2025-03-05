@@ -196,7 +196,7 @@ paths:
           description: ID not found.
         '500':
           description: Internal Server Error
-  /api/user:
+  /api/users:
     get:
       summary: Get a list of users
       description: Get a list of users from the API.
@@ -208,7 +208,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/user'
+                  $ref: '#/components/schemas/users'
               example:
                 users:
                   - id: 1
@@ -232,7 +232,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/user'
+              $ref: '#/components/schemas/users'
             example:
               name: Lazy Susan
               email: susan@lazy.com
@@ -247,7 +247,7 @@ paths:
           description: Unique field already exist in the database.
         '500':
           description: Internal Server Error
-  /api/user/{id}:
+  /api/users/{id}:
     get:
       summary: Get user by ID
       description: Get a single user from the API.
@@ -263,7 +263,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/users'
               example:
                 - id: 1
                   name: Angsty Alice
@@ -322,7 +322,7 @@ components:
           type: string
         description:
           type: string
-    user:
+    users:
       type: object
       properties:
         id:
