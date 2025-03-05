@@ -37,6 +37,17 @@ class Service {
     res.status(result.status).send(result.message);
   }
 
+  async readByCustom(column, req, res) {
+    const value = req.params[column];
+    if (!value) {
+      res.status(400).send(`${column} is required`);
+      return;
+    }
+    const result = await this.repository.readByCustom(column, value);
+    if (result.error) console.error(result.error);
+    res.status(result.status).send(result.message);
+  }
+
   async update(req, res) {
     const validateResult = this.validate(req);
     if (validateResult) {
