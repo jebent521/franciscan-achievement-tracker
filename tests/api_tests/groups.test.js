@@ -129,9 +129,10 @@ describe('Groups Endpoint Tests', () => {
     });
 
     it('should return a 404 for a group that does not exist', async () => {
-      const res = await fetch(`${baseUrl}/api/groups/999`, { method: 'DELETE' });
+      const res = await fetch(`${baseUrl}/api/groups/999`, {
+        method: 'DELETE',
+      });
       expect(res.status).toBe(404);
     });
   });
 });
-
