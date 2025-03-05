@@ -54,6 +54,16 @@ wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-
 }
 ```
 
+**Note**: this project is using `Prettier` to ensure consistent formatting
+throughout. The recommended `settings.json` should set VSCode to automatically
+format the files each time you save them. You can check the project's formatting
+and format it from the command line with:
+
+```sh
+npx prettier -c . # to check formatting
+npx prettier -w . # to automatically format the project
+```
+
 #### Recommended launch.json:
 
 ```JSON
