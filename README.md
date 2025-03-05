@@ -54,10 +54,28 @@ wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-
 }
 ```
 
+#### Recommended launch.json:
+
+```JSON
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program with Nodemon",
+      "runtimeExecutable": "nodemon",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/src/index.js"
+    }
+  ]
+}
+```
+
 ## Development
 
-The database should only need to be re-built if there are schema changes, 
-and the server should only need to be rebuilt if there are changes made to 
+The database should only need to be re-built if there are schema changes,
+and the server should only need to be rebuilt if there are changes made to
 the Dockerfile.
 
 ### Starting the Database
