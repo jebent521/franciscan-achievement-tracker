@@ -1,4 +1,10 @@
-const { Pool } = require('pg');
+const { Pool, types } = require('pg');
+
+// Configure how pg handles DATE types (OID: 1082)
+types.setTypeParser(1082, (str) => {
+  // Return the date as a YYYY-MM-DD string without any time information
+  return str;
+});
 
 const pool = new Pool({
   user: process.env.DB_USER || 'postgres',

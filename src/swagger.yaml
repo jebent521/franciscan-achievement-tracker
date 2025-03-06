@@ -401,10 +401,10 @@ paths:
               example:
                 - user_id: 1
                   achievement_id: 3
-                  date_achieved: 2025-03-05T05:00:00.000Z
+                  date_achieved: 2025-03-05
                 - user_id: 1
                   achievement_id: 2
-                  date_achieved: 2025-05-05T05:00:00.000Z
+                  date_achieved: 2025-05-05
         '404':
           description: User not found
         '500':

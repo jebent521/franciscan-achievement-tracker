@@ -80,7 +80,7 @@ class Repository {
       if (result.rowCount === 0) {
         return new ApiResult(404, 'Not found');
       }
-      return new ApiResult(200, result.rows[0]);
+      return new ApiResult(200, 'Success');
     } catch (error) {
       return this._parseError(error);
     }

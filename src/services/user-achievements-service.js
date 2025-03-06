@@ -6,7 +6,7 @@ class UserAchievementsService extends Service {
     super('user_achievements');
   }
 
-  validateCreate(req) {
+  validate(req) {
     const user_id = req.params.user_id;
 
     if (!req.body.achievement_id) {
