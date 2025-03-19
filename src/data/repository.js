@@ -51,7 +51,7 @@ class Repository {
     }
   }
 
-  // async update(id, params) { }
+  async update(id, params) { }
 
   async delete(id) {
     try {
