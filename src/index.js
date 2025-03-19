@@ -27,26 +27,41 @@ app.get('/api/achievements/:id', async (req, res) =>
 app.post('/api/achievements', async (req, res) =>
   new AchievementService().create(req, res)
 );
+app.put('/api/achievements/:id', async (req, res) =>
+  new AchievementService().update(req, res)
+);
 app.delete('/api/achievements/:id', async (req, res) =>
   new AchievementService().delete(req, res)
 );
 
-app.get('/api/groups', async (_, res) => new GroupService().read(res));
+app.get('/api/groups', async (_, res) => 
+  new GroupService().read(res)
+);
 app.get('/api/groups/:id', async (req, res) =>
   new GroupService().readById(req, res)
 );
 app.post('/api/groups', async (req, res) =>
   new GroupService().create(req, res)
 );
+app.put('/api/groups/:id', async (req, res) =>
+  new GroupService().update(req, res)
+);
 app.delete('/api/groups/:id', async (req, res) =>
   new GroupService().delete(req, res)
 );
 
-app.get('/api/users', async (_, res) => new UserService().read(res));
+app.get('/api/users', async (_, res) => 
+  new UserService().read(res)
+);
 app.get('/api/users/:id', async (req, res) =>
   new UserService().readById(req, res)
 );
-app.post('/api/users', async (req, res) => new UserService().create(req, res));
+app.post('/api/users', async (req, res) => 
+  new UserService().create(req, res)
+);
+app.put('/api/users/:id', async (req, res) => 
+  new UserService().update(req, res)
+);
 app.delete('/api/users/:id', async (req, res) =>
   new UserService().delete(req, res)
 );
