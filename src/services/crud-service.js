@@ -1,8 +1,8 @@
 const Repository = require('../data/repository');
 
-class Service {
+class CrudService {
   constructor(tableName) {
-    if (this.constructor === Service) {
+    if (this.constructor === CrudService) {
       throw new Error(
         'Abstract class "Service" cannot be instantiated directly.'
       );
@@ -55,4 +55,4 @@ class Service {
   }
 }
 
-module.exports = Service;
+module.exports = CrudService;

@@ -1,7 +1,7 @@
-const Service = require('./service');
+const CrudService = require('./crud-service');
 const ApiResult = require('../utils/api-result');
 
-class AchievementService extends Service {
+class AchievementService extends CrudService {
   constructor() {
     super('achievements');
   }
