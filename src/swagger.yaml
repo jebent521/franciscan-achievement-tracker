@@ -456,6 +456,57 @@ paths:
           description: ID not found.
         '500':
           description: Internal Server Error
+  /api/search/{query}:
+    get:
+      summary: Returns all the objects that match the search query.
+      description: |
+        The search query will be case insensitive. The results can
+        be filtered to include/remove achievements, groups, or users.
+      parameters:
+        - name: query
+          in: path
+          required: true
+          schema:
+            type: string
+          style: simple
+          description: 'URL-encoded search query string.'
+
+        - name: filter
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [users, groups, achievements]
+          style: form
+          explode: false
+          description: |
+            Comma-delimited list of filters. Valid values: `users`, `groups`, `achievements`. 
+            Defaults to all if not provided.
+
+      responses:
+        '200':
+          description: 'Successful search results.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/users'
+                  groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/groups'
+                  achievements:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/achievements'
+        '400':
+          description: 'Invalid filter parameter.'
 
 components:
   schemas:
