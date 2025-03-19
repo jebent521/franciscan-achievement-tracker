@@ -38,6 +38,26 @@ const testData = {
       points: 20,
     },
   ],
+  users: [
+    {
+      name: 'Angsty Alice',
+      email: 'alice@angst.com',
+      password: 'password123',
+      points: 0,
+    },
+    {
+      name: 'Boring Bob',
+      email: 'bob@bored.com',
+      password: 'password123',
+      points: 0,
+    },
+    {
+      name: 'Cranky Carol',
+      email: 'carol@crank.com',
+      password: 'password123',
+      points: 0,
+    },
+  ],
 };
 
 async function resetTable(client, tableName, data) {

@@ -133,7 +133,7 @@ describe('Users Endpoint Tests', () => {
           points: 0,
         }),
       });
-      const res = await fetch(`${baseUrl}/api/users/4`, { method: 'DELETE' });
+      const res = await fetch(`${baseUrl}/api/users/3`, { method: 'DELETE' });
       try {
         expect(res.status).toBe(200);
         const data = await res.text();
