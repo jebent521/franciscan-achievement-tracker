@@ -5,6 +5,7 @@ const YAML = require('yamljs');
 const connection = require('./data/connection');
 const AchievementService = require('./services/achievement-service');
 const GroupService = require('./services/group-service');
+const SearchService = require('./services/search-service');
 const UserAchievementService = require('./services/user-achievement-service');
 const UserService = require('./services/user-service');
 
@@ -70,6 +71,10 @@ app.post('/api/users/:user_id/achievements', async (req, res) =>
 app.delete(
   '/api/users/:user_id/achievements/:achievement_id',
   async (req, res) => new UserAchievementService().delete(req, res)
+);
+
+app.get('/api/search', async (req, res) =>
+  new SearchService().search(req, res)
 );
 
 app.listen(5007, () =>
