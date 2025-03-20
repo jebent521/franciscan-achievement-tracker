@@ -136,7 +136,7 @@ paths:
         '201':
           description: Successfully created achievement.
         '204':
-          description: Successfully modified achievement.        
+          description: Successfully modified achievement.
         '400':
           description: Missing criteria, invalid type, or invalid reference.
         '409':
@@ -248,7 +248,7 @@ paths:
         '201':
           description: Successfully created group.
         '204':
-          description: Successfully modified group.        
+          description: Successfully modified group.
         '400':
           description: Missing criteria, invalid type, or invalid reference.
         '409':
@@ -374,7 +374,7 @@ paths:
         '201':
           description: Successfully created group.
         '204':
-          description: Successfully modified group.        
+          description: Successfully modified group.
         '400':
           description: Missing criteria, invalid type, or invalid reference.
         '409':

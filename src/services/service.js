@@ -15,7 +15,7 @@ class Service {
   }
 
   validateUpdate(req) {
-      throw new Error('Abstract method not implemented.');
+    throw new Error('Abstract method not implemented.');
   }
 
   async create(req, res) {
