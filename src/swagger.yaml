@@ -112,6 +112,37 @@ paths:
           description: ID not found.
         '500':
           description: Internal Server Error
+    put:
+      summary: Modify existing achievement or create a new one if it doesn't exist.
+      description: Modify or create a singe achievement from the API by ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/achievements'
+            example:
+              title: Pub Food
+              group_id: 1
+              description: Eat good food at the Pub
+              prerequisite: null
+              points: 10
+      responses:
+        '201':
+          description: Successfully created achievement.
+        '204':
+          description: Successfully modified achievement.
+        '400':
+          description: Missing criteria, invalid type, or invalid reference.
+        '409':
+          description: Unique field already exist in the database.
+        '500':
+          description: Internal Server Error
   /api/groups:
     get:
       summary: Get a list of groups
@@ -194,6 +225,34 @@ paths:
           description: Invalid ID type.
         '404':
           description: ID not found.
+        '500':
+          description: Internal Server Error
+    put:
+      summary: Modify existing group or create a new one if it doesn't exist.
+      description: Modify or create a group from the API by ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/groups'
+            example:
+              name: Graduates
+              description: Achievements related to graduates activities
+      responses:
+        '201':
+          description: Successfully created group.
+        '204':
+          description: Successfully modified group.
+        '400':
+          description: Missing criteria, invalid type, or invalid reference.
+        '409':
+          description: Unique field already exist in the database.
         '500':
           description: Internal Server Error
   /api/users:
@@ -290,6 +349,36 @@ paths:
           description: user is invalid ID type.
         '404':
           description: ID not found.
+        '500':
+          description: Internal Server Error
+    put:
+      summary: Modify existing user or create a new one if it doesn't exist.
+      description: Modify or create a user from the API by ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users'
+            example:
+              name: Dashing Dan
+              email: dan@dashing.com
+              password: password123
+              points: 10
+      responses:
+        '201':
+          description: Successfully created group.
+        '204':
+          description: Successfully modified group.
+        '400':
+          description: Missing criteria, invalid type, or invalid reference.
+        '409':
+          description: Unique field already exist in the database.
         '500':
           description: Internal Server Error
 components:

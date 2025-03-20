@@ -14,9 +14,9 @@ class Service {
     throw new Error('Abstract method not implemented.');
   }
 
-  // validateUpdate(req) {
-  //     throw new Error('Abstract method not implemented.');
-  // }
+  validateUpdate(req) {
+    throw new Error('Abstract method not implemented.');
+  }
 
   async create(req, res) {
     const validateResult = this.validateCreate(req);
@@ -41,9 +41,16 @@ class Service {
     res.status(result.status).send(result.message);
   }
 
-  // async update(req, res) {
-
-  // }
+  async update(req, res) {
+    const validateResult = this.validateUpdate(req);
+    if (validateResult) {
+      res.status(validateResult.status).send(validateResult.message);
+      return;
+    }
+    const result = await this.repository.update(req.body);
+    if (result.error) console.error(result.error);
+    res.status(result.status).send(result.message);
+  }
 
   async delete(req, res) {
     const result = await this.repository.delete(req.params.id);
