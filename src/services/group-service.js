@@ -6,7 +6,7 @@ class GroupService extends Service {
     super('groups');
   }
 
-  validateCreate(req) {
+  validate(req) {
     const missingFields = [];
     if (!req.body.name) missingFields.push('name');
     if (!req.body.description) missingFields.push('description');
