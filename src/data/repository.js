@@ -71,14 +71,22 @@ class Repository {
       // Add the update assignments
       query += keys.map((key, i) => `${key} = EXCLUDED.${key}`).join(', ');
 
+      // Add a RETURNING clause to determine the operation
+      query += ` RETURNING (xmax = 0) AS is_insert;`;
+
       // Execute the query
       const result = await client.query(query, values);
       client.release();
 
-      return new ApiResult(201, result.rows[0]);
+      // Check the value of `is_insert` to determine the operation
+      const isInsert = result.rows[0].is_insert;
+
+      if (isInsert) {
+        return new ApiResult(201, null); // Return 201 for INSERT
+      } else {
+        return new ApiResult(204, null); // Return 204 for UPDATE
+      }
     } catch (error) {
-      // Ensure the client is released in case of an error
-      if (client) client.release();
       return this._parseError(error);
     }
   }

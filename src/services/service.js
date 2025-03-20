@@ -43,7 +43,7 @@ class Service {
       res.status(validateResult.status).send(validateResult.message);
       return;
     }
-    const result = await this.repository.update(req.body);
+    const result = await this.repository.update(req.params.id, req.body);
     if (result.error) console.error(result.error);
     res.status(result.status).send(result.message);
   }
