@@ -64,4 +64,4 @@ api-test:
     - npm install
     - flyway -configFiles=flyway.dev.conf migrate
   script:
-    - npm run test:api
+    - npm run test:api -- --runInBand # run tests serially to avoid deadlocks

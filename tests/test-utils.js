@@ -38,13 +38,35 @@ const testData = {
       points: 20,
     },
   ],
+  users: [
+    {
+      name: 'Angsty Alice',
+      email: 'alice@angst.com',
+      password: 'password123',
+      points: 0,
+    },
+    {
+      name: 'Boring Bob',
+      email: 'bob@bored.com',
+      password: 'password123',
+      points: 0,
+    },
+    {
+      name: 'Cranky Carol',
+      email: 'carol@crank.com',
+      password: 'password123',
+      points: 0,
+    },
+  ],
 };
 
-async function resetTable(client, tableName, data) {
-  await client.query(`TRUNCATE TABLE ${tableName} RESTART IDENTITY CASCADE`);
-  for (const obj of data) {
-    const keys = Object.keys(obj).join(', ');
-    const values = Object.values(obj);
+// Simple function to insert data into tables
+async function insertTableData(client, tableName, dataArray) {
+  if (!dataArray || dataArray.length === 0) return;
+
+  for (const item of dataArray) {
+    const keys = Object.keys(item).join(', ');
+    const values = Object.values(item);
     const placeholders = values.map((_, i) => `$${i + 1}`).join(', ');
     await client.query(
       `INSERT INTO ${tableName} (${keys}) VALUES (${placeholders})`,
@@ -53,13 +75,47 @@ async function resetTable(client, tableName, data) {
   }
 }
 
+// Simple semaphore to prevent concurrent resets
+let isResetting = false;
+let resetPromise = null;
+
+// Streamlined database reset function
 async function resetDatabase() {
+  // If a reset is already in progress, wait for it to complete
+  if (isResetting) {
+    return resetPromise;
+  }
+
+  isResetting = true;
+  resetPromise = _resetDatabase().finally(() => {
+    isResetting = false;
+  });
+
+  return resetPromise;
+}
+
+// The actual database reset implementation
+async function _resetDatabase() {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-    await resetTable(client, 'groups', testData.groups);
-    await resetTable(client, 'achievements', testData.achievements);
+
+    // One single truncate statement for all tables
+    await client.query(`
+      TRUNCATE TABLE 
+        achievements,
+        groups,
+        users
+      RESTART IDENTITY CASCADE
+    `);
+
+    // Insert data in order (parent tables first)
+    await insertTableData(client, 'users', testData.users);
+    await insertTableData(client, 'groups', testData.groups);
+    await insertTableData(client, 'achievements', testData.achievements);
+
     await client.query('COMMIT');
+    return true;
   } catch (error) {
     await client.query('ROLLBACK');
     throw error;
