@@ -1,5 +1,5 @@
 // Export anything needed for jest testing
-class UserAchievements {
+class UserAchievement {
   constructor(user_id, achievement_id, date_achieved) {
     this.user_id = user_id;
     this.achievement_id = achievement_id;

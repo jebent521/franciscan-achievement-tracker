@@ -69,7 +69,7 @@ class Repository {
     }
   }
 
-  async deleteCustomById(column, value, column2, value2) {
+  async deleteByCriteria(column, value, column2, value2) {
     try {
       const client = await pool.connect();
       const result = await client.query(

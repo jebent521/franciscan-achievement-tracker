@@ -37,7 +37,7 @@ class Service {
     res.status(result.status).send(result.message);
   }
 
-  async readByCustom(column, req, res) {
+  async readByCustom(req, res, column) {
     const value = req.params[column];
     if (!value) {
       res.status(400).send(`${column} is required`);
@@ -65,11 +65,11 @@ class Service {
     res.status(result.status).send(result.message);
   }
 
-  async deleteCustomById(column, column2, req, res) {
+  async deleteByCriteria(column, column2, req, res) {
     const value = req.params[column];
     const value2 = req.params[column2];
 
-    const result = await this.repository.deleteCustomById(
+    const result = await this.repository.deleteByCriteria(
       column,
       value,
       column2,
