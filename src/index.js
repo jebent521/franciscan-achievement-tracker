@@ -73,7 +73,7 @@ app.delete(
   async (req, res) => new UserAchievementService().delete(req, res)
 );
 
-app.get('/api/search', async (req, res) =>
+app.get('/api/search/:query', async (req, res) =>
   new SearchService().search(req, res)
 );
 
