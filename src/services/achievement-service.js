@@ -6,7 +6,7 @@ class AchievementService extends Service {
     super('achievements');
   }
 
-  validateCreate(req) {
+  validate(req) {
     const missingFields = [];
     if (!req.body.title) missingFields.push('title');
     if (!req.body.group_id) missingFields.push('group_id');

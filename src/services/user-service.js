@@ -6,7 +6,7 @@ class UserService extends Service {
     super('users');
   }
 
-  validateCreate(req) {
+  validate(req) {
     const missingFields = [];
     if (!req.body.name) missingFields.push('name');
     if (!req.body.email) missingFields.push('email');

@@ -51,7 +51,45 @@ class Repository {
     }
   }
 
-  async update(id, params) {}
+  async update(id, params) {
+    try {
+      const client = await pool.connect();
+      const keys = Object.keys(params);
+      const values = Object.values(params);
+      const placeholders = values.map((_, i) => `$${i + 1}`).join(', ');
+
+      // Add the id to the values array
+      values.push(id);
+
+      // Construct the query
+      let query = `INSERT INTO ${this.tableName} (id, ${keys.join(
+        ', '
+      )}) VALUES ($${values.length}, ${placeholders})
+        ON CONFLICT (id)
+        DO UPDATE SET `;
+
+      // Add the update assignments
+      query += keys.map((key, i) => `${key} = EXCLUDED.${key}`).join(', ');
+
+      // Add a RETURNING clause to determine the operation
+      query += ` RETURNING (xmax = 0) AS is_insert;`;
+
+      // Execute the query
+      const result = await client.query(query, values);
+      client.release();
+
+      // Check the value of `is_insert` to determine the operation
+      const isInsert = result.rows[0].is_insert;
+
+      if (isInsert) {
+        return new ApiResult(201, null); // Return 201 for INSERT
+      } else {
+        return new ApiResult(204, null); // Return 204 for UPDATE
+      }
+    } catch (error) {
+      return this._parseError(error);
+    }
+  }
 
   async delete(id) {
     try {
