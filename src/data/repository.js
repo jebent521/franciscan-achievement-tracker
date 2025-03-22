@@ -69,12 +69,15 @@ class Repository {
     }
   }
 
-  async deleteByCriteria(column, value, column2, value2) {
+  async deleteByCriteria(criteria) {
     try {
       const client = await pool.connect();
       const result = await client.query(
-        `DELETE FROM ${this.tableName} WHERE ${column} = $1 AND ${column2} = $2`,
-        [value, value2]
+        `DELETE FROM ${this.tableName}
+        WHERE ${Object.keys(criteria)
+          .map((k, i) => `${k} = $${i + 1}`)
+          .join(' OR ')}`,
+        Object.values(criteria)
       );
       client.release();
       if (result.rowCount === 0) {

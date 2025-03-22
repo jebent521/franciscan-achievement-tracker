@@ -37,17 +37,6 @@ class Service {
     res.status(result.status).send(result.message);
   }
 
-  async readByCustom(req, res, column) {
-    const value = req.params[column];
-    if (!value) {
-      res.status(400).send(`${column} is required`);
-      return;
-    }
-    const result = await this.repository.readByCustom(column, value);
-    if (result.error) console.error(result.error);
-    res.status(result.status).send(result.message);
-  }
-
   async update(req, res) {
     const validateResult = this.validate(req);
     if (validateResult) {
@@ -61,20 +50,6 @@ class Service {
 
   async delete(req, res) {
     const result = await this.repository.delete(req.params.id);
-    if (result.error) console.error(result.error);
-    res.status(result.status).send(result.message);
-  }
-
-  async deleteByCriteria(column, column2, req, res) {
-    const value = req.params[column];
-    const value2 = req.params[column2];
-
-    const result = await this.repository.deleteByCriteria(
-      column,
-      value,
-      column2,
-      value2
-    );
     if (result.error) console.error(result.error);
     res.status(result.status).send(result.message);
   }

@@ -62,7 +62,7 @@ app.delete('/api/users/:id', async (req, res) =>
 );
 
 app.get('/api/users/:user_id/achievements', async (req, res) =>
-  new UserAchievementService().readByCustom(req, res, 'user_id')
+  new UserAchievementService().read(req, res)
 );
 app.post('/api/users/:user_id/achievements', async (req, res) =>
   new UserAchievementService().create(req, res)

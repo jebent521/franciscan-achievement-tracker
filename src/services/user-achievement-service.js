@@ -19,14 +19,18 @@ class UserAchievementService extends Service {
   }
 
   async delete(req, res) {
-    const userId = req.params.user_id;
-    const achievementId = req.params.achievement_id;
+    const result = await this.repository.deleteByCriteria({
+      user_id: req.params.user_id,
+      achievement_id: req.params.achievement_id,
+    });
+    if (result.error) console.error(result.error);
+    res.status(result.status).send(result.message);
+  }
 
-    const result = await this.repository.deleteByCriteria(
+  async read(req, res) {
+    const result = await this.repository.readByCustom(
       'user_id',
-      req.params.user_id,
-      'achievement_id',
-      req.params.achievement_id
+      req.params.user_id
     );
     if (result.error) console.error(result.error);
     res.status(result.status).send(result.message);
