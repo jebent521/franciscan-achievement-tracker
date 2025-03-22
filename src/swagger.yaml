@@ -381,6 +381,82 @@ paths:
           description: Unique field already exist in the database.
         '500':
           description: Internal Server Error
+  /api/users/{user_id}/achievements:
+    get:
+      summary: Get achievements by user
+      description: Get all of a users's achievements.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_achievements'
+              example:
+                - user_id: 1
+                  achievement_id: 3
+                  date_achieved: 2025-03-05
+                - user_id: 1
+                  achievement_id: 2
+                  date_achieved: 2025-05-05
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+    post:
+      summary: Add an achievement to a user.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_achievements'
+            example:
+              achievement_id: 1
+      responses:
+        '201':
+          description: Successfully added user_achievement.
+        '400':
+          description: Missing criteria, invalid type, or invalid reference.
+        '409':
+          description: Unique field already exist in the database.
+        '500':
+          description: Internal Server Error
+  /api/users/{user_id}/achievements/{achievement_id}:
+    delete:
+      summary: Delete a user's achievement.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: achievement_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted achievement.
+        '400':
+          description: Achievement is prerequisite or invalid ID type.
+        '404':
+          description: ID not found.
+        '500':
+          description: Internal Server Error
+
 components:
   schemas:
     achievements:
@@ -426,3 +502,15 @@ components:
         points:
           type: integer
           format: int64
+    user_achievements:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+        achievement_id:
+          type: integer
+          format: int64
+        date_earned:
+          type: string
+          format: date-time

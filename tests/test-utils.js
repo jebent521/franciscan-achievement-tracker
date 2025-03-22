@@ -58,6 +58,38 @@ const testData = {
       points: 0,
     },
   ],
+  user_achievements: [
+    {
+      user_id: 1,
+      achievement_id: 1,
+      date_achieved: '2025-03-06',
+    },
+    {
+      user_id: 1,
+      achievement_id: 2,
+      date_achieved: '2025-03-06',
+    },
+    {
+      user_id: 1,
+      achievement_id: 3,
+      date_achieved: '2025-03-06',
+    },
+    {
+      user_id: 2,
+      achievement_id: 1,
+      date_achieved: '2020-01-01',
+    },
+    {
+      user_id: 2,
+      achievement_id: 2,
+      date_achieved: '2020-01-02',
+    },
+    {
+      user_id: 3,
+      achievement_id: 1,
+      date_achieved: '2020-01-01',
+    },
+  ],
 };
 
 // Simple function to insert data into tables
@@ -103,6 +135,7 @@ async function _resetDatabase() {
     // One single truncate statement for all tables
     await client.query(`
       TRUNCATE TABLE 
+        user_achievements,
         achievements,
         groups,
         users
@@ -113,6 +146,11 @@ async function _resetDatabase() {
     await insertTableData(client, 'users', testData.users);
     await insertTableData(client, 'groups', testData.groups);
     await insertTableData(client, 'achievements', testData.achievements);
+    await insertTableData(
+      client,
+      'user_achievements',
+      testData.user_achievements
+    );
 
     await client.query('COMMIT');
     return true;

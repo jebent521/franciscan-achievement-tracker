@@ -51,6 +51,44 @@ class Repository {
     }
   }
 
+  async readByCustom(column, value) {
+    try {
+      const client = await pool.connect();
+      const result = await client.query(
+        `SELECT * FROM ${this.tableName} WHERE ${column} = $1`,
+        [value]
+      );
+      client.release();
+
+      if (result.rowCount === 0) {
+        return new ApiResult(404, 'Not found');
+      }
+      return new ApiResult(200, result.rows);
+    } catch (error) {
+      return this._parseError(error);
+    }
+  }
+
+  async deleteByCriteria(criteria) {
+    try {
+      const client = await pool.connect();
+      const result = await client.query(
+        `DELETE FROM ${this.tableName}
+        WHERE ${Object.keys(criteria)
+          .map((k, i) => `${k} = $${i + 1}`)
+          .join(' OR ')}`,
+        Object.values(criteria)
+      );
+      client.release();
+      if (result.rowCount === 0) {
+        return new ApiResult(404, 'Not found');
+      }
+      return new ApiResult(200, 'Success');
+    } catch (error) {
+      return this._parseError(error);
+    }
+  }
+
   async update(id, params) {
     try {
       const client = await pool.connect();
