@@ -1,5 +1,8 @@
-const CrudService = require('./crud-service');
 const ApiResult = require('../utils/api-result');
+const CrudService = require('./crud-service');
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 class UserService extends CrudService {
   constructor() {
@@ -20,11 +23,15 @@ class UserService extends CrudService {
     }
   }
 
-  // TODO: override preprocess to hash password
-  // preprocess(obj) {}
+  async preprocess(obj) {
+    obj.password = await bcrypt.hash(obj.password, saltRounds);
+    return obj;
+  }
 
-  // TODO: override filter to remove password field
-  // filter(obj) {}
+  filter(obj) {
+    delete obj.password;
+    return obj;
+  }
 }
 
 module.exports = UserService;

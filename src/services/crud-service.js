@@ -36,7 +36,7 @@ class CrudService {
    *
    * @param {Object} obj - the incoming data.
    */
-  preprocess(obj) {
+  async preprocess(obj) {
     return obj;
   }
 
@@ -58,7 +58,9 @@ class CrudService {
       res.status(validateResult.status).send(validateResult.message);
       return;
     }
-    const result = await this.repository.create(this.preprocess(req.body));
+    const result = await this.repository.create(
+      await this.preprocess(req.body)
+    );
     if (result.error) console.error(result.error);
     if (result.status == 201) {
       res.status(result.status).send(this.filter(result.message));
