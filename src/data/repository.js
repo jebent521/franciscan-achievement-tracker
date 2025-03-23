@@ -146,6 +146,18 @@ class Repository {
     }
   }
 
+  async search(pattern, searchColumns, returnColumns) {
+    try {
+      const client = await pool.connect();
+      const result = await client.query(`SELECT ${returnColumns.join(', ')}
+FROM ${this.tableName}
+WHERE ${searchColumns.map((c) => `${c} ILIKE '%${pattern}%'`).join(' OR ')};`);
+      return new ApiResult(200, result.rows);
+    } catch (error) {
+      return this._parseError(error);
+    }
+  }
+
   _parseError(error) {
     // type error
     if (error.code === '22P02') return new ApiResult(400, error.toString());
@@ -158,6 +170,7 @@ class Repository {
     // column does not exist in table
     if (error.code === '42703') return new ApiResult(400, error.toString());
     // any other error
+    log.error(error);
     return new ApiResult(500, 'Internal Server Error', error);
   }
 }
