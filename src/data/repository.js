@@ -152,6 +152,7 @@ class Repository {
       const result = await client.query(`SELECT ${returnColumns.join(', ')}
 FROM ${this.tableName}
 WHERE ${searchColumns.map((c) => `${c} ILIKE '%${pattern}%'`).join(' OR ')};`);
+      client.release();
       return new ApiResult(200, result.rows);
     } catch (error) {
       return this._parseError(error);
