@@ -6,3 +6,5 @@
 report.html
 report.json
 node_modules
+
+.env.dev
