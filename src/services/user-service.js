@@ -19,6 +19,12 @@ class UserService extends CrudService {
       return new ApiResult(400, 'Field "id" must not be provided');
     }
   }
+
+  // TODO: override preprocess to hash password
+  // preprocess(obj) {}
+
+  // TODO: override filter to remove password field
+  // filter(obj) {}
 }
 
 module.exports = UserService;
