@@ -12,7 +12,7 @@ class CrudService {
   }
 
   /**
-   * Method used for validation of incoming data on create and update.
+   * Method used for validation of incoming request on create and update.
    * Returns null if it is valid, returns an ApiResult if there are
    * validation errors. If this function is not overridden, the object
    * will be assumed valid.
@@ -20,7 +20,7 @@ class CrudService {
    * Note, basic validation is enforced by the database (e.g. foreign
    * key constraints and type checking).
    *
-   * @param {Object} obj - the incoming data.
+   * @param {Request} obj - the incoming request.
    *
    * @returns {ApiResult?}
    */

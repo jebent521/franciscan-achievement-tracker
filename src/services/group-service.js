@@ -8,12 +8,13 @@ class GroupService extends CrudService {
 
   validate(req) {
     const missingFields = [];
-    if (!req.body.name) missingFields.push('name');
-    if (!req.body.description) missingFields.push('description');
+    if (!req.body.hasOwnProperty('name')) missingFields.push('name');
+    if (!req.body.hasOwnProperty('description'))
+      missingFields.push('description');
     if (missingFields.length > 0) {
       return new ApiResult(400, `Missing fields: ${missingFields.join(', ')}`);
     }
-    if (req.body.id) {
+    if (req.body.hasOwnProperty('id')) {
       return new ApiResult(400, 'Field "id" must not be provided.');
     }
   }
