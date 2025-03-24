@@ -7,15 +7,14 @@ class UserAchievementService extends CrudService {
   }
 
   validate(req) {
-    const user_id = req.params.user_id;
+    req.body.user_id = req.params.user_id;
 
-    if (!req.body.achievement_id) {
+    if (!req.body.hasOwnProperty('achievement_id')) {
       return new ApiResult(400, 'Missing field: achievement_id');
     }
-    if (req.body.date_achieved) {
+    if (req.body.hasOwnProperty('date_achieved')) {
       return new ApiResult(400, 'Field "date_achieved" must not be provided.');
     }
-    req.body.user_id = user_id;
   }
 
   async delete(req, res) {

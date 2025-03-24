@@ -12,7 +12,7 @@ class CrudService {
   }
 
   /**
-   * Method used for validation of incoming data on create and update.
+   * Method used for validation of incoming request on create and update.
    * Returns null if it is valid, returns an ApiResult if there are
    * validation errors. If this function is not overridden, the object
    * will be assumed valid.
@@ -20,7 +20,7 @@ class CrudService {
    * Note, basic validation is enforced by the database (e.g. foreign
    * key constraints and type checking).
    *
-   * @param {Object} obj - the incoming data.
+   * @param {Request} obj - the incoming request.
    *
    * @returns {ApiResult?}
    */
@@ -36,7 +36,7 @@ class CrudService {
    *
    * @param {Object} obj - the incoming data.
    */
-  preprocess(obj) {
+  async preprocess(obj) {
     return obj;
   }
 
@@ -58,7 +58,9 @@ class CrudService {
       res.status(validateResult.status).send(validateResult.message);
       return;
     }
-    const result = await this.repository.create(this.preprocess(req.body));
+    const result = await this.repository.create(
+      await this.preprocess(req.body)
+    );
     if (result.error) console.error(result.error);
     if (result.status == 201) {
       res.status(result.status).send(this.filter(result.message));

@@ -8,14 +8,15 @@ class AchievementService extends CrudService {
 
   validate(req) {
     const missingFields = [];
-    if (!req.body.title) missingFields.push('title');
-    if (!req.body.group_id) missingFields.push('group_id');
-    if (!req.body.description) missingFields.push('description');
-    if (!req.body.points) missingFields.push('points');
+    if (!req.body.hasOwnProperty('title')) missingFields.push('title');
+    if (!req.body.hasOwnProperty('group_id')) missingFields.push('group_id');
+    if (!req.body.hasOwnProperty('description'))
+      missingFields.push('description');
+    if (!req.body.hasOwnProperty('points')) missingFields.push('points');
     if (missingFields.length > 0) {
       return new ApiResult(400, 'Missing fields: ' + missingFields.join(', '));
     }
-    if (req.body.id) {
+    if (req.body.hasOwnProperty('id')) {
       return new ApiResult(400, 'Field "id" must not be provided');
     }
   }
