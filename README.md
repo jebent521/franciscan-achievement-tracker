@@ -24,14 +24,14 @@ Franciscan. Achievements range from simple to silly & elaborate.
 
 ## Getting Started
 
-#### Install Dependencies
+### Install Dependencies
 
 ```sh
 sudo apt update
 sudo apt install net-tools postgresql-client
 ```
 
-#### Install Flyway
+### Install Flyway
 
 Create a directory to put flyway's files. I would recommend putting it in
 `~/dev` (outside the project directory).
@@ -41,6 +41,10 @@ Run this command from `~/dev` to download Flyway and addd it to your path:
 ```sh
 wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.0/flyway-commandline-11.3.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-11.3.0/flyway /usr/local/bin
 ```
+
+### Create a .env.keys file in the root directory
+
+The content of this file must not be checked into source control for security. dotenvx requires the .env.keys file to unencrypt the .env file contents.
 
 #### Recommended settings.json:
 
@@ -73,10 +77,17 @@ npx prettier -w . # to automatically format the project
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program with Nodemon",
-      "runtimeExecutable": "nodemon",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/src/index.js"
+      "name": "Launch Program with dotenvx and nodemon",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/dotenvx",
+      "runtimeArgs": [
+        "run",
+        "-f",
+        ".env.dev",
+        "--",
+        "${workspaceFolder}/node_modules/.bin/nodemon"
+      ],
+      "args": ["${workspaceFolder}/src/index.js"],
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }
