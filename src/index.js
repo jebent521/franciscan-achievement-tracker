@@ -8,6 +8,10 @@ const GroupService = require('./services/group-service');
 const SearchService = require('./services/search-service');
 const UserAchievementService = require('./services/user-achievement-service');
 const UserService = require('./services/user-service');
+const {
+  GroupMembersService,
+  GroupOfficersService,
+} = require('./services/group-member-services');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -107,6 +111,32 @@ app.delete(
 // Search
 app.get('/api/search/:query', async (req, res) => {
   const result = await new SearchService().search(req);
+  res.status(result.status).send(result.message);
+});
+
+app.get('/api/groups/:group_id/members', async (req, res) => {
+  const result = await new GroupMembersService().read(req);
+  res.status(result.status).send(result.message);
+});
+app.post('/api/groups/:group_id/members', async (req, res) => {
+  const result = await new GroupMembersService().read(req);
+  res.status(result.status).send(result.message);
+});
+app.delete('/api/groups/:group_id/members/:user_id', async (req, res) => {
+  const result = await new GroupMembersService().read(req);
+  res.status(result.status).send(result.message);
+});
+
+app.get('/api/groups/:group_id/officers', async (req, res) => {
+  const result = await new GroupOfficersService().read(req);
+  res.status(result.status).send(result.message);
+});
+app.post('/api/groups/:group_id/officers', async (req, res) => {
+  const result = await new GroupOfficersService().create(req);
+  res.status(result.status).send(result.message);
+});
+app.delete('/api/groups/:group_id/officers/:user_id', async (req, res) => {
+  const result = await new GroupOfficersService().delete(req);
   res.status(result.status).send(result.message);
 });
 

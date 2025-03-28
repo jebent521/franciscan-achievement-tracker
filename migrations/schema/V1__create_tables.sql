@@ -12,6 +12,19 @@ CREATE TABLE groups (
     description TEXT NOT NULL
 );
 
+CREATE TABLE group_members (
+    group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY (group_id, user_id)
+);
+
+CREATE TABLE group_officers (
+    group_id INTEGER,
+    user_id INTEGER,
+    PRIMARY KEY (group_id, user_id),
+    FOREIGN KEY (group_id, user_id) REFERENCES group_members(group_id, user_id) ON DELETE CASCADE
+);
+
 CREATE TABLE achievements (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) UNIQUE NOT NULL,

@@ -73,7 +73,7 @@ class Repository {
         `DELETE FROM ${this.tableName}
         WHERE ${Object.keys(criteria)
           .map((k, i) => `${k} = $${i + 1}`)
-          .join(' OR ')}`,
+          .join(' AND ')}`,
         Object.values(criteria)
       );
       client.release();
