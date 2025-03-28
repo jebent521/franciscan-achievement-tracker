@@ -114,25 +114,31 @@ app.get('/api/search/:query', async (req, res) => {
   res.status(result.status).send(result.message);
 });
 
-app.get('/api/groups/:group_id/members', async (req, res) =>
-  new GroupMembersService().read(req, res)
-);
-app.post('/api/groups/:group_id/members', async (req, res) =>
-  new GroupMembersService().create(req, res)
-);
-app.delete('/api/groups/:group_id/members/:user_id', async (req, res) =>
-  new GroupMembersService().delete(req, res)
-);
+app.get('/api/groups/:group_id/members', async (req, res) => {
+  const result = await new GroupMembersService().read(req);
+  res.status(result.status).send(result.message);
+});
+app.post('/api/groups/:group_id/members', async (req, res) => {
+  const result = await new GroupMembersService().read(req);
+  res.status(result.status).send(result.message);
+});
+app.delete('/api/groups/:group_id/members/:user_id', async (req, res) => {
+  const result = await new GroupMembersService().read(req);
+  res.status(result.status).send(result.message);
+});
 
-app.get('/api/groups/:group_id/officers', async (req, res) =>
-  new GroupOfficersService().read(req, res)
-);
-app.post('/api/groups/:group_id/officers', async (req, res) =>
-  new GroupOfficersService().create(req, res)
-);
-app.delete('/api/groups/:group_id/officers/:user_id', async (req, res) =>
-  new GroupOfficersService().delete(req, res)
-);
+app.get('/api/groups/:group_id/officers', async (req, res) => {
+  const result = await new GroupOfficersService().read(req);
+  res.status(result.status).send(result.message);
+});
+app.post('/api/groups/:group_id/officers', async (req, res) => {
+  const result = await new GroupOfficersService().create(req);
+  res.status(result.status).send(result.message);
+});
+app.delete('/api/groups/:group_id/officers/:user_id', async (req, res) => {
+  const result = await new GroupOfficersService().delete(req);
+  res.status(result.status).send(result.message);
+});
 
 app.listen(5007, () =>
   console.log(`⚡[bootup]: Server is running at port: 5007`)

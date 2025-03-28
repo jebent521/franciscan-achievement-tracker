@@ -13,8 +13,8 @@ CREATE TABLE groups (
 );
 
 CREATE TABLE group_members (
-    group_id INTEGER REFERENCES groups(id) ON DELETE NO ACTION,
-    user_id INTEGER REFERENCES users(id) ON DELETE NO ACTION,
+    group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     PRIMARY KEY (group_id, user_id)
 );
 

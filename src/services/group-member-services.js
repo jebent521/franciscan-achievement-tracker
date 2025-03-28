@@ -14,22 +14,22 @@ class Group_Service extends CrudService {
     }
   }
 
-  async delete(req, res) {
+  async delete(req) {
     const result = await this.repository.deleteByCriteria({
       group_id: req.params.group_id,
       user_id: req.params.user_id,
     });
     if (result.error) console.error(result.error);
-    res.status(result.status).send(result.message);
+    return result;
   }
 
-  async read(req, res) {
+  async read(req) {
     const result = await this.repository.readByCustom(
       'group_id',
       req.params.group_id
     );
     if (result.error) console.error(result.error);
-    res.status(result.status).send(result.message);
+    return result;
   }
 }
 
