@@ -60,9 +60,6 @@ class Repository {
       );
       client.release();
 
-      if (result.rowCount === 0) {
-        return new ApiResult(404, 'Not found');
-      }
       return new ApiResult(200, result.rows);
     } catch (error) {
       return this._parseError(error);
@@ -157,6 +154,22 @@ WHERE ${searchColumns.map((c) => `${c} ILIKE $1`).join(' OR ')};`,
       );
       client.release();
       return new ApiResult(200, result.rows);
+    } catch (error) {
+      return this._parseError(error);
+    }
+  }
+
+  async addToColumn(id, column, value) {
+    try {
+      const client = await pool.connect();
+      await client.query(
+        `UPDATE ${this.tableName}
+        SET ${column} = ${column} + $1
+        WHERE id = $2;`,
+        [value, id]
+      );
+      client.release();
+      return new ApiResult(200, null);
     } catch (error) {
       return this._parseError(error);
     }
