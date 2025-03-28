@@ -33,6 +33,10 @@ class UserService extends CrudService {
     delete obj.password;
     return obj;
   }
+
+  async addPoints(id, points) {
+    return this.repository.addToColumn(id, 'points', points);
+  }
 }
 
 module.exports = UserService;

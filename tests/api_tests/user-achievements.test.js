@@ -40,8 +40,12 @@ describe('user_achievement Endpoint Tests', () => {
   });
 
   describe('POST /api/users/:user_id/achievements', () => {
-    it('should create a new user achievement', async () => {
-      const res = await fetch(`${baseUrl}/api/users/3/achievements`, {
+    it("should create a new user achievement and update the user's points", async () => {
+      const beforeUserRes = await fetch(`${baseUrl}/api/users/3`);
+      const beforeUserData = await beforeUserRes.json();
+      const beforePoints = beforeUserData.points;
+
+      const postRes = await fetch(`${baseUrl}/api/users/3/achievements`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -49,17 +53,16 @@ describe('user_achievement Endpoint Tests', () => {
         }),
       });
 
-      try {
-        expect(res.status).toBe(201);
-        const data = await res.json();
-        expect(data).toMatchObject({
-          user_id: 3,
-          achievement_id: 3,
-        });
-      } catch (e) {
-        console.log(res);
-        throw e;
-      }
+      expect(postRes.status).toBe(201);
+      const postData = await postRes.json();
+      expect(postData).toMatchObject({
+        user_id: 3,
+        achievement_id: 3,
+      });
+
+      const afterUserRes = await fetch(`${baseUrl}/api/users/3`);
+      const afterUserData = await afterUserRes.json();
+      expect(afterUserData.points).toBe(beforePoints + 20);
     });
   });
 
@@ -79,17 +82,20 @@ describe('user_achievement Endpoint Tests', () => {
     });
 
     it('should delete a user achievement', async () => {
+      const beforeUserRes = await fetch(`${baseUrl}/api/users/1`);
+      const beforeUserData = await beforeUserRes.json();
+      const beforePoints = beforeUserData.points;
+
       const res = await fetch(`${baseUrl}/api/users/1/achievements/1`, {
         method: 'DELETE',
       });
 
-      try {
-        expect(res.status).toBe(200);
-        expect(await res.text()).toBe('Success');
-      } catch (e) {
-        console.log(res);
-        throw e;
-      }
+      expect(res.status).toBe(200);
+      expect(await res.text()).toBe('Success');
+
+      const afterUserRes = await fetch(`${baseUrl}/api/users/1`);
+      const afterUserData = await afterUserRes.json();
+      expect(afterUserData.points).toBe(beforePoints - 10);
     });
   });
 });
