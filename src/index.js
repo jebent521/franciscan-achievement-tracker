@@ -17,65 +17,98 @@ connection.testConnection();
 
 app.get('/', (_, res) => res.send('Barons of Progress 📈 Homepage'));
 
+// Documentation
 const swaggerDocument = YAML.load('src/swagger.yaml');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get('/api/achievements', async (_, res) =>
-  new AchievementService().read(res)
-);
-app.get('/api/achievements/:id', async (req, res) =>
-  new AchievementService().readById(req, res)
-);
-app.post('/api/achievements', async (req, res) =>
-  new AchievementService().create(req, res)
-);
-app.put('/api/achievements/:id', async (req, res) =>
-  new AchievementService().update(req, res)
-);
-app.delete('/api/achievements/:id', async (req, res) =>
-  new AchievementService().delete(req, res)
-);
+// Achievements
+app.get('/api/achievements', async (_, res) => {
+  const result = await new AchievementService().read();
+  res.status(result.status).send(result.message);
+});
+app.get('/api/achievements/:id', async (req, res) => {
+  const result = await new AchievementService().readById(req);
+  res.status(result.status).send(result.message);
+});
+app.post('/api/achievements', async (req, res) => {
+  const result = await new AchievementService().create(req);
+  res.status(result.status).send(result.message);
+});
+app.put('/api/achievements/:id', async (req, res) => {
+  const result = await new AchievementService().update(req);
+  res.status(result.status).send(result.message);
+});
+app.delete('/api/achievements/:id', async (req, res) => {
+  const result = await new AchievementService().delete(req);
+  res.status(result.status).send(result.message);
+});
 
-app.get('/api/groups', async (_, res) => new GroupService().read(res));
-app.get('/api/groups/:id', async (req, res) =>
-  new GroupService().readById(req, res)
-);
-app.post('/api/groups', async (req, res) =>
-  new GroupService().create(req, res)
-);
-app.put('/api/groups/:id', async (req, res) =>
-  new GroupService().update(req, res)
-);
-app.delete('/api/groups/:id', async (req, res) =>
-  new GroupService().delete(req, res)
-);
+// Groups
+app.get('/api/groups', async (_, res) => {
+  const result = await new GroupService().read();
+  res.status(result.status).send(result.message);
+});
+app.get('/api/groups/:id', async (req, res) => {
+  const result = await new GroupService().readById(req);
+  res.status(result.status).send(result.message);
+});
+app.post('/api/groups', async (req, res) => {
+  const result = await new GroupService().create(req);
+  res.status(result.status).send(result.message);
+});
+app.put('/api/groups/:id', async (req, res) => {
+  const result = await new GroupService().update(req);
+  res.status(result.status).send(result.message);
+});
+app.delete('/api/groups/:id', async (req, res) => {
+  const result = await new GroupService().delete(req);
+  res.status(result.status).send(result.message);
+});
 
-app.get('/api/users', async (_, res) => new UserService().read(res));
-app.get('/api/users/:id', async (req, res) =>
-  new UserService().readById(req, res)
-);
-app.post('/api/users', async (req, res) => new UserService().create(req, res));
-app.put('/api/users/:id', async (req, res) =>
-  new UserService().update(req, res)
-);
-app.delete('/api/users/:id', async (req, res) =>
-  new UserService().delete(req, res)
-);
+// Users
+app.get('/api/users', async (_, res) => {
+  const result = await new UserService().read();
+  res.status(result.status).send(result.message);
+});
+app.get('/api/users/:id', async (req, res) => {
+  const result = await new UserService().readById(req);
+  res.status(result.status).send(result.message);
+});
+app.post('/api/users', async (req, res) => {
+  const result = await new UserService().create(req);
+  res.status(result.status).send(result.message);
+});
+app.put('/api/users/:id', async (req, res) => {
+  const result = await new UserService().update(req);
+  res.status(result.status).send(result.message);
+});
+app.delete('/api/users/:id', async (req, res) => {
+  const result = await new UserService().delete(req);
+  res.status(result.status).send(result.message);
+});
 
-app.get('/api/users/:user_id/achievements', async (req, res) =>
-  new UserAchievementService().read(req, res)
-);
-app.post('/api/users/:user_id/achievements', async (req, res) =>
-  new UserAchievementService().create(req, res)
-);
+// Earned Achievements
+app.get('/api/users/:user_id/achievements', async (req, res) => {
+  const result = await new UserAchievementService().read(req);
+  res.status(result.status).send(result.message);
+});
+app.post('/api/users/:user_id/achievements', async (req, res) => {
+  const result = await new UserAchievementService().create(req);
+  res.status(result.status).send(result.message);
+});
 app.delete(
   '/api/users/:user_id/achievements/:achievement_id',
-  async (req, res) => new UserAchievementService().delete(req, res)
+  async (req, res) => {
+    const result = await new UserAchievementService().delete(req);
+    res.status(result.status).send(result.message);
+  }
 );
 
-app.get('/api/search/:query', async (req, res) =>
-  new SearchService().search(req, res)
-);
+// Search
+app.get('/api/search/:query', async (req, res) => {
+  const result = await new SearchService().search(req);
+  res.status(result.status).send(result.message);
+});
 
 app.listen(5007, () =>
   console.log(`⚡[bootup]: Server is running at port: 5007`)

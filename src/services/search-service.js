@@ -1,7 +1,10 @@
-const Repository = require('../data/repository');
+const AchievementService = require('./achievement-service');
+const ApiResult = require('../utils/api-result');
+const GroupService = require('./group-service');
+const UserService = require('./user-service');
 
 class SearchService {
-  async search(req, res) {
+  async search(req) {
     var results = {};
 
     // argument parsing
@@ -14,76 +17,34 @@ class SearchService {
     for (const f of filter) {
       switch (f) {
         case 'users':
-          try {
-            const searchResult = await this._searchTable(
-              'users',
-              query,
-              ['name', 'email'],
-              ['id', 'name', 'email', 'points']
-            );
-            results.users = searchResult;
-          } catch (error) {
-            res.status(error.status).send(error.message);
-            return;
-          }
+          const userResult = await new UserService().search(query, [
+            'name',
+            'email',
+          ]);
+          if (userResult.status != 200) return userResult;
+          results.users = userResult.message;
           break;
         case 'groups':
-          try {
-            const searchResult = await this._searchTable('groups', query, [
-              'name',
-              'description',
-            ]);
-            results.groups = searchResult;
-          } catch (error) {
-            res.status(error.status).send(error.message);
-            return;
-          }
+          const groupResult = await new GroupService().search(query, [
+            'name',
+            'description',
+          ]);
+          if (groupResult.status != 200) return groupResult;
+          results.groups = groupResult.message;
           break;
         case 'achievements':
-          try {
-            const searchResult = await this._searchTable(
-              'achievements',
-              query,
-              ['title', 'description']
-            );
-            results.achievements = searchResult;
-          } catch (error) {
-            console.error(error);
-            res.status(error.status).send(error.message);
-            return;
-          }
+          const achievementResult = await new AchievementService().search(
+            query,
+            ['title', 'description']
+          );
+          if (achievementResult.status != 200) return achievementResult;
+          results.achievements = achievementResult.message;
           break;
         default:
-          res.status(400).send(`Invalid filter parameter '${f}'`);
-          return;
+          return new ApiResult(400, `Invalid filter parameter '${f}'`);
       }
     }
-    res.send(results);
-  }
-
-  /**
-   * Searches `tableName` for rows matching a pattern in the specified columns.
-   *
-   * @param {string} tableName - The name of the table to search
-   * @param {string} pattern - The search pattern
-   * @param {string[]} searchColumns - The columns to search within, defaults to all.
-   * @param {string[]} returnColumns - The columns to return in the result, defaults to all.
-   * @returns {Promise<Array>} - A promise that resolves to an list of the search results.
-   */
-  async _searchTable(
-    tableName,
-    pattern,
-    searchColumns = ['*'],
-    returnColumns = ['*']
-  ) {
-    const repository = new Repository(tableName);
-    const result = await repository.search(
-      pattern,
-      searchColumns,
-      returnColumns
-    );
-    if (result.status != 200) throw result;
-    return result.message;
+    return new ApiResult(200, results);
   }
 }
 

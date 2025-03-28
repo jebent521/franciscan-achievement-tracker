@@ -149,7 +149,7 @@ class Repository {
   async search(pattern, searchColumns, returnColumns) {
     try {
       const client = await pool.connect();
-      const result = await client.query(`SELECT ${returnColumns.join(', ')}
+      const result = await client.query(`SELECT *
 FROM ${this.tableName}
 WHERE ${searchColumns.map((c) => `${c} ILIKE '%${pattern}%'`).join(' OR ')};`);
       client.release();
@@ -171,7 +171,7 @@ WHERE ${searchColumns.map((c) => `${c} ILIKE '%${pattern}%'`).join(' OR ')};`);
     // column does not exist in table
     if (error.code === '42703') return new ApiResult(400, error.toString());
     // any other error
-    log.error(error);
+    console.error(error);
     return new ApiResult(500, 'Internal Server Error', error);
   }
 }
