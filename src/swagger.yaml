@@ -255,6 +255,152 @@ paths:
           description: Unique field already exist in the database.
         '500':
           description: Internal Server Error
+  /api/groups/{group_id}/members:
+    get:
+      summary: Get members by group
+      description: Get all of a group's members.
+      parameters:
+        - in: path
+          name: group_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/group_members'
+              example:
+                - group_id: 1
+                  user_id: 3
+                - group_id: 1
+                  user_id: 2
+        '404':
+          description: Group not found
+        '500':
+          description: Internal Server Error
+    post:
+      summary: Add a member to a group.
+      parameters:
+        - in: path
+          name: group_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/group_members'
+            example:
+              user_id: 1
+      responses:
+        '201':
+          description: Successfully added user_id.
+        '400':
+          description: Missing criteria, invalid type, or invalid reference.
+        '409':
+          description: Unique field already exist in the database.
+        '500':
+          description: Internal Server Error
+  /api/groups/{group_id}/members/{user_id}:
+    delete:
+      summary: Delete a member from a group.
+      parameters:
+        - in: path
+          name: group_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted member.
+        '400':
+          description: member is invalid ID type.
+        '404':
+          description: ID not found.
+        '500':
+          description: Internal Server Error
+  /api/groups/{group_id}/officers:
+    get:
+      summary: Get officers by group
+      description: Get all of a group's officers.
+      parameters:
+        - in: path
+          name: group_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/group_members'
+              example:
+                - group_id: 1
+                  user_id: 3
+                - group_id: 1
+                  user_id: 2
+        '404':
+          description: Group not found
+        '500':
+          description: Internal Server Error
+    post:
+      summary: Add an officer to a group.
+      parameters:
+        - in: path
+          name: group_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/group_members'
+            example:
+              user_id: 1
+      responses:
+        '201':
+          description: Successfully added user_id.
+        '400':
+          description: Missing criteria, invalid type, or invalid reference.
+        '409':
+          description: Unique field already exist in the database.
+        '500':
+          description: Internal Server Error
+  /api/groups/{group_id}/officers/{user_id}:
+    delete:
+      summary: Delete an officer from a group.
+      parameters:
+        - in: path
+          name: group_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted an officer.
+        '400':
+          description: officer is invalid ID type.
+        '404':
+          description: ID not found.
+        '500':
+          description: Internal Server Error
   /api/users:
     get:
       summary: Get a list of users
@@ -538,6 +684,15 @@ components:
           type: string
         description:
           type: string
+    group_members:
+      type: object
+      properties:
+        group_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
     users:
       type: object
       properties:

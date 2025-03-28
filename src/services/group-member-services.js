@@ -1,9 +1,9 @@
 const CrudService = require('./crud-service');
 const ApiResult = require('../utils/api-result');
 
-class GroupOfficersService extends CrudService {
-  constructor() {
-    super('group_officers');
+class Group_Service extends CrudService {
+  constructor(tableName) {
+    super(tableName);
   }
 
   validate(req) {
@@ -33,4 +33,16 @@ class GroupOfficersService extends CrudService {
   }
 }
 
-module.exports = GroupOfficersService;
+class GroupMembersService extends Group_Service {
+  constructor() {
+    super('group_members');
+  }
+}
+
+class GroupOfficersService extends Group_Service {
+  constructor() {
+    super('group_officers');
+  }
+}
+
+module.exports = { GroupMembersService, GroupOfficersService };
