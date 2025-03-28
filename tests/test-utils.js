@@ -107,27 +107,8 @@ async function insertTableData(client, tableName, dataArray) {
   }
 }
 
-// Simple semaphore to prevent concurrent resets
-let isResetting = false;
-let resetPromise = null;
-
-// Streamlined database reset function
-async function resetDatabase() {
-  // If a reset is already in progress, wait for it to complete
-  if (isResetting) {
-    return resetPromise;
-  }
-
-  isResetting = true;
-  resetPromise = _resetDatabase().finally(() => {
-    isResetting = false;
-  });
-
-  return resetPromise;
-}
-
 // The actual database reset implementation
-async function _resetDatabase() {
+async function resetDatabase() {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');

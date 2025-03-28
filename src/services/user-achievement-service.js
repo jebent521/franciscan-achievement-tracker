@@ -17,22 +17,22 @@ class UserAchievementService extends CrudService {
     }
   }
 
-  async delete(req, res) {
+  async delete(req) {
     const result = await this.repository.deleteByCriteria({
       user_id: req.params.user_id,
       achievement_id: req.params.achievement_id,
     });
     if (result.error) console.error(result.error);
-    res.status(result.status).send(result.message);
+    return result;
   }
 
-  async read(req, res) {
+  async read(req) {
     const result = await this.repository.readByCustom(
       'user_id',
       req.params.user_id
     );
     if (result.error) console.error(result.error);
-    res.status(result.status).send(result.message);
+    return result;
   }
 }
 

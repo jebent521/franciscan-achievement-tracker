@@ -52,63 +52,71 @@ class CrudService {
     return obj;
   }
 
-  async create(req, res) {
+  async create(req) {
     const validateResult = this.validate(req);
-    if (validateResult) {
-      res.status(validateResult.status).send(validateResult.message);
-      return;
-    }
+    if (validateResult) return validateResult;
+
     const result = await this.repository.create(
       await this.preprocess(req.body)
     );
     if (result.error) console.error(result.error);
-    if (result.status == 201) {
-      res.status(result.status).send(this.filter(result.message));
-    } else {
-      res.status(result.status).send(result.message);
-    }
+
+    return result.status == 201
+      ? new ApiResult(result.status, this.filter(result.message))
+      : result;
   }
 
-  async read(res) {
+  async read() {
     const result = await this.repository.read();
     if (result.error) console.error(result.error);
-    if (result.status == 200) {
-      res
-        .status(result.status)
-        .send(result.message.map((row) => this.filter(row)));
-    } else {
-      res.status(result.status).send(result.message);
-    }
+
+    return result.status == 200
+      ? new ApiResult(
+          result.status,
+          result.message.map((row) => this.filter(row))
+        )
+      : result;
   }
 
-  async readById(req, res) {
+  async readById(req) {
     const result = await this.repository.readById(req.params.id);
     if (result.error) console.error(result.error);
-    if (result.status == 200) {
-      res.status(result.status).send(this.filter(result.message));
-    } else {
-      res.status(result.status).send(result.message);
-    }
+
+    return result.status == 200
+      ? new ApiResult(result.status, this.filter(result.message))
+      : result;
   }
 
-  async update(req, res) {
+  async update(req) {
     const validateResult = this.validate(req);
-    if (validateResult) {
-      res.status(validateResult.status).send(validateResult.message);
-      return;
-    }
+    if (validateResult) return validateResult;
+
     const result = await this.repository.update(
       req.params.id,
       this.preprocess(req.body)
     );
     if (result.error) console.error(result.error);
-    res.status(result.status).send(result.message);
+
+    return result;
   }
 
-  async delete(req, res) {
+  async delete(req) {
     const result = await this.repository.delete(req.params.id);
     if (result.error) console.error(result.error);
-    res.status(result.status).send(result.message);
+
+    return result;
+  }
+
+  async search(pattern, columns = ['*']) {
+    const result = await this.repository.search(pattern, columns);
+    if (result.error) console.error(result.error);
+
+    return result.status == 200
+      ? new ApiResult(
+          result.status,
+          result.message.map((row) => this.filter(row))
+        )
+      : result;
   }
 }
 
