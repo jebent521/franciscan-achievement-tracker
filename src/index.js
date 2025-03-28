@@ -8,6 +8,8 @@ const GroupService = require('./services/group-service');
 const SearchService = require('./services/search-service');
 const UserAchievementService = require('./services/user-achievement-service');
 const UserService = require('./services/user-service');
+const GroupMembersService = require('./services/group-members-service');
+const GroupOfficersService = require('./services/group-officers-service');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -109,6 +111,28 @@ app.get('/api/search/:query', async (req, res) => {
   const result = await new SearchService().search(req);
   res.status(result.status).send(result.message);
 });
+
+app.get('/api/groups/:group_id/members', async (req, res) =>
+  new GroupMembersService().read(req, res)
+);
+app.post('/api/groups/:group_id/members', async (req, res) =>
+  new GroupMembersService().create(req, res)
+);
+app.delete(
+  '/api/groups/:group_id/members/:user_id',
+  async (req, res) => new GroupMembersService().delete(req, res)
+);
+
+app.get('/api/groups/:group_id/officers', async (req, res) =>
+  new GroupOfficersService().read(req, res)
+);
+app.post('/api/groups/:group_id/officers', async (req, res) =>
+  new GroupOfficersService().create(req, res)
+);
+app.delete(
+  '/api/groups/:group_id/officers/:user_id',
+  async (req, res) => new GroupOfficersService().delete(req, res)
+);
 
 app.listen(5007, () =>
   console.log(`⚡[bootup]: Server is running at port: 5007`)

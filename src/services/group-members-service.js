@@ -1,0 +1,36 @@
+const CrudService = require('./crud-service');
+const ApiResult = require('../utils/api-result');
+
+class GroupMembersService extends CrudService {
+  constructor() {
+    super('group_members');
+  }
+
+  validate(req) {
+    req.body.group_id = req.params.group_id;
+
+    if (!req.body.hasOwnProperty('user_id')) {
+      return new ApiResult(400, 'Missing field: user_id');
+    }
+  }
+
+  async delete(req, res) {
+    const result = await this.repository.deleteByCriteria({
+      group_id: req.params.group_id,
+      user_id: req.params.user_id,
+    });
+    if (result.error) console.error(result.error);
+    res.status(result.status).send(result.message);
+  }
+
+  async read(req, res) {
+    const result = await this.repository.readByCustom(
+      'group_id',
+      req.params.group_id
+    );
+    if (result.error) console.error(result.error);
+    res.status(result.status).send(result.message);
+  }
+}
+
+module.exports = GroupMembersService;
