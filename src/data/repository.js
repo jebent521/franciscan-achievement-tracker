@@ -146,12 +146,15 @@ class Repository {
     }
   }
 
-  async search(pattern, searchColumns, returnColumns) {
+  async search(pattern, searchColumns) {
     try {
       const client = await pool.connect();
-      const result = await client.query(`SELECT *
+      const result = await client.query(
+        `SELECT *
 FROM ${this.tableName}
-WHERE ${searchColumns.map((c) => `${c} ILIKE '%${pattern}%'`).join(' OR ')};`);
+WHERE ${searchColumns.map((c) => `${c} ILIKE $1`).join(' OR ')};`,
+        [`%${pattern}%`]
+      );
       client.release();
       return new ApiResult(200, result.rows);
     } catch (error) {
