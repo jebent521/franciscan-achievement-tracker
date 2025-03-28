@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const { resetDatabase } = require('../test-utils');
 
 describe('GET /api/search', () => {
   const baseUrl = 'http://localhost:5007/api/search';
@@ -35,6 +36,10 @@ describe('GET /api/search', () => {
       },
     ],
   };
+
+  beforeAll(async () => {
+    await resetDatabase();
+  });
 
   it('should default to return users, groups, and achievements', async () => {
     const res = await fetch(`${baseUrl}/al`);
