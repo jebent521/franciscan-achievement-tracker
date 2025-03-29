@@ -90,6 +90,46 @@ const testData = {
       date_achieved: '2020-01-01',
     },
   ],
+  group_members: [
+    {
+      group_id: 1,
+      user_id: 1,
+    },
+    {
+      group_id: 1,
+      user_id: 2,
+    },
+    {
+      group_id: 1,
+      user_id: 3,
+    },
+    {
+      group_id: 2,
+      user_id: 1,
+    },
+    {
+      group_id: 2,
+      user_id: 2,
+    },
+    {
+      group_id: 3,
+      user_id: 1,
+    },
+  ],
+  group_officers: [
+    {
+      group_id: 1,
+      user_id: 3,
+    },
+    {
+      group_id: 2,
+      user_id: 2,
+    },
+    {
+      group_id: 3,
+      user_id: 1,
+    },
+  ],
 };
 
 // Simple function to insert data into tables
@@ -127,6 +167,8 @@ async function resetDatabase() {
     await insertTableData(client, 'users', testData.users);
     await insertTableData(client, 'groups', testData.groups);
     await insertTableData(client, 'achievements', testData.achievements);
+    await insertTableData(client, 'group_members', testData.group_members);
+    await insertTableData(client, 'group_officers', testData.group_officers);
     await insertTableData(
       client,
       'user_achievements',
