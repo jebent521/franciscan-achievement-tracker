@@ -119,11 +119,11 @@ app.get('/api/groups/:group_id/members', async (req, res) => {
   res.status(result.status).send(result.message);
 });
 app.post('/api/groups/:group_id/members', async (req, res) => {
-  const result = await new GroupMembersService().read(req);
+  const result = await new GroupMembersService().create(req);
   res.status(result.status).send(result.message);
 });
 app.delete('/api/groups/:group_id/members/:user_id', async (req, res) => {
-  const result = await new GroupMembersService().read(req);
+  const result = await new GroupMembersService().delete(req);
   res.status(result.status).send(result.message);
 });
 
