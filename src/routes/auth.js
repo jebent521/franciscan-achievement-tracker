@@ -5,15 +5,18 @@
 
 var express = require('express');
 
-const authProvider = require('../auth/AuthProvider');
-const { REDIRECT_URI, POST_LOGOUT_REDIRECT_URI } = require('../authConfig');
+const authProvider = require('../services/auth-provider');
+const {
+  REDIRECT_URI,
+  POST_LOGOUT_REDIRECT_URI,
+} = require('../utils/auth-config');
 
 const router = express.Router();
 
 router.get(
   '/signin',
   authProvider.login({
-    scopes: [],
+    scopes: ['User.Read'],
     redirectUri: REDIRECT_URI,
     successRedirect: '/',
   })
