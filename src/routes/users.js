@@ -22,7 +22,17 @@ function isAuthenticated(req, res, next) {
 }
 
 router.get('/id', isAuthenticated, async function (req, res, next) {
-  res.render('id', { idTokenClaims: req.session.account.idTokenClaims });
+  try {
+    res.status(200).json({
+      success: true,
+      idTokenClaims: req.session.account.idTokenClaims || {},
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
 });
 
 router.get('/profile', isAuthenticated, async function (req, res, next) {
@@ -31,9 +41,29 @@ router.get('/profile', isAuthenticated, async function (req, res, next) {
       GRAPH_ME_ENDPOINT,
       req.session.accessToken
     );
-    res.render('profile', { profile: graphResponse });
+
+    res.status(200).json({
+      success: true,
+      profile: graphResponse,
+    });
   } catch (error) {
-    next(error);
+    if (
+      error.message &&
+      error.message.includes('AxiosError') &&
+      error.message.includes('401')
+    ) {
+      return res.status(401).json({
+        success: false,
+        error: 'Access token expired or invalid',
+        redirect: '/auth/acquireToken',
+      });
+    }
+
+    // For other errors, return standard error response
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
   }
 });
 
