@@ -3,15 +3,29 @@
  * Licensed under the MIT License.
  */
 
-var express = require('express');
-
-const authProvider = require('../services/auth-provider');
+const express = require('express');
+const fetch = require('../utils/fetch');
 const {
+  GRAPH_ME_ENDPOINT,
   REDIRECT_URI,
   // POST_LOGOUT_REDIRECT_URI,
 } = require('../utils/auth-config');
 
+const authProvider = require('../services/auth-provider');
+
 const router = express.Router();
+
+function isAuthenticated(req, res, next) {
+  if (!req.session.isAuthenticated) {
+    return res.status(401).json({
+      success: false,
+      error: 'User not authenticated',
+      redirect: '/auth/signin',
+    });
+  }
+
+  next();
+}
 
 router.get(
   '/signin',
@@ -27,11 +41,57 @@ router.get(
   authProvider.acquireToken({
     scopes: ['User.Read'],
     redirectUri: REDIRECT_URI,
-    successRedirect: '/users/profile',
+    successRedirect: '/auth/profile',
   })
 );
 
 router.post('/redirect', authProvider.handleRedirect());
+
+router.get('/id', isAuthenticated, async (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      idTokenClaims: req.session.account.idTokenClaims || {},
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
+router.get('/profile', isAuthenticated, async (req, res) => {
+  try {
+    const graphResponse = await fetch(
+      GRAPH_ME_ENDPOINT,
+      req.session.accessToken
+    );
+
+    res.status(200).json({
+      success: true,
+      profile: graphResponse,
+    });
+  } catch (error) {
+    if (
+      error.message &&
+      error.message.includes('AxiosError') &&
+      error.message.includes('401')
+    ) {
+      return res.status(401).json({
+        success: false,
+        error: 'Access token expired or invalid',
+        redirect: '/auth/acquireToken',
+      });
+    }
+
+    // For other errors, return standard error response
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+});
 
 // router.get(
 //   '/signout',
