@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const { pool } = require('../../src/data/connection');
 const { resetDatabase } = require('../test-utils');
 
 describe('GET /api/search', () => {
@@ -40,6 +41,8 @@ describe('GET /api/search', () => {
   beforeAll(async () => {
     await resetDatabase();
   });
+
+  afterAll(async () => await pool.end());
 
   it('should default to return users, groups, and achievements', async () => {
     const res = await fetch(`${baseUrl}/al`);
