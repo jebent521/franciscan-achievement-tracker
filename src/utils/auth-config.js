@@ -3,7 +3,7 @@
  * Licensed under the MIT License.
  */
 
-require('dotenvx').config({ path: '.env.dev' });
+require('@dotenvx/dotenvx').config({ path: '.env.dev' });
 
 /**
  * Configuration object to be passed to MSAL instance on creation.
