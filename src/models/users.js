@@ -1,10 +1,11 @@
 class User {
-  constructor(id, username, password, email, points) {
+  constructor(id, username, password, email, oauth_id, points) {
     this.id = id;
     this.username = username;
     this.password = password;
     this.email = email;
     this.points = points;
+    this.oauth_id = oauth_id;
   }
 
   equals(other) {
@@ -14,13 +15,21 @@ class User {
       this.username == other.username &&
       this.password == other.password &&
       this.email == other.email &&
-      this.points == other.points
+      this.points == other.points &&
+      this.oauth_id == other.oauth_id
     );
   }
 
+  // This was never properly implemented: it was checking email before
+  // to implement, username must be unique in the DB
+  // usernameTaken(other) {
+  //   return this.username == other.username;
+  // }
   emailTaken(other) {
-    // maybe used when checking a list of users and seeing if any have the same email.
-    return this.username == other.username;
+    return this.email == other.email;
+  }
+  oauthExists(other) {
+    return this.oauth_id == other.oauth_id;
   }
 }
 

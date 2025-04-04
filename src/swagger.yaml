@@ -419,17 +419,17 @@ paths:
                   - id: 1
                     name: Angsty Alice
                     email: alice@angst.com
-                    password: password123
+                    oauth_id: null
                     points: 0
                   - id: 2
                     name: Boring Bob
                     email: bob@bored.com
-                    password: password123
+                    oauth_id: null
                     points: 0
                   - id: 3
                     name: Cranky Carol
                     email: carol@crank.com
-                    password: password123
+                    oauth_id: null
                     points: 0
     post:
       summary: Add an user to the database.
@@ -438,11 +438,19 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/users'
-            example:
-              name: Lazy Susan
-              email: susan@lazy.com
-              password: password123
-              points: 10
+            examples:
+              'Authentication with Password':
+                value:
+                  name: Lazy Susan
+                  email: susan@lazy.com
+                  password: password123
+                  points: 10
+              'Authentication with OAuth':
+                value:
+                  name: Lazy Susan
+                  email: susan@lazy.com
+                  oauth_id: 'my-oauth-id'
+                  points: 10
       responses:
         '201':
           description: Successfully created user.

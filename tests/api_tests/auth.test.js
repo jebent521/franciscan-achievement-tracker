@@ -239,7 +239,7 @@ describe('Auth Routes', () => {
         .get('/auth/profile')
         .expect(500);
 
-      expect(response.body).toEqual('Network error');
+      expect(response.body.error).toBe('Network error');
     });
   });
 
