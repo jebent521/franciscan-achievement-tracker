@@ -99,7 +99,6 @@ describe('Auth Routes', () => {
       const response = await request(app).get('/auth/id').expect(401);
 
       expect(response.body).toEqual({
-        success: false,
         error: 'User not authenticated',
         redirect: '/auth/signin',
       });
@@ -128,11 +127,8 @@ describe('Auth Routes', () => {
         .expect(200);
 
       expect(response.body).toEqual({
-        success: true,
-        idTokenClaims: {
-          name: 'Test User',
-          preferred_username: 'test.user@example.com',
-        },
+        name: 'Test User',
+        preferred_username: 'test.user@example.com',
       });
     });
 
@@ -150,9 +146,6 @@ describe('Auth Routes', () => {
       errorApp.use('/auth', authRouter);
 
       const response = await request(errorApp).get('/auth/id').expect(500);
-
-      expect(response.body.success).toBe(false);
-      expect(response.body.error).toBeTruthy();
     });
   });
 
@@ -161,7 +154,6 @@ describe('Auth Routes', () => {
       const response = await request(app).get('/auth/profile').expect(401);
 
       expect(response.body).toEqual({
-        success: false,
         error: 'User not authenticated',
         redirect: '/auth/signin',
       });
@@ -192,10 +184,7 @@ describe('Auth Routes', () => {
         .get('/auth/profile')
         .expect(200);
 
-      expect(response.body).toEqual({
-        success: true,
-        profile: mockProfile,
-      });
+      expect(response.body).toEqual(mockProfile);
       expect(fetchUtil).toHaveBeenCalledWith(
         'https://graph.microsoft.com/v1.0/me',
         'valid-access-token'
@@ -225,7 +214,6 @@ describe('Auth Routes', () => {
         .expect(401);
 
       expect(response.body).toEqual({
-        success: false,
         error: 'Access token expired or invalid',
         redirect: '/auth/acquireToken',
       });
@@ -251,10 +239,7 @@ describe('Auth Routes', () => {
         .get('/auth/profile')
         .expect(500);
 
-      expect(response.body).toEqual({
-        success: false,
-        error: 'Network error',
-      });
+      expect(response.body).toEqual('Network error');
     });
   });
 

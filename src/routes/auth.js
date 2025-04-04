@@ -18,7 +18,6 @@ const router = express.Router();
 function isAuthenticated(req, res, next) {
   if (!req.session.isAuthenticated) {
     return res.status(401).json({
-      success: false,
       error: 'User not authenticated',
       redirect: '/auth/signin',
     });
@@ -49,15 +48,9 @@ router.post('/redirect', authProvider.handleRedirect());
 
 router.get('/id', isAuthenticated, async (req, res) => {
   try {
-    res.status(200).json({
-      success: true,
-      idTokenClaims: req.session.account.idTokenClaims || {},
-    });
+    res.status(200).json(req.session.account.idTokenClaims || {});
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    res.status(500).json(error.message);
   }
 });
 
@@ -68,10 +61,7 @@ router.get('/profile', isAuthenticated, async (req, res) => {
       req.session.accessToken
     );
 
-    res.status(200).json({
-      success: true,
-      profile: graphResponse,
-    });
+    res.status(200).json(graphResponse);
   } catch (error) {
     if (
       error.message &&
@@ -79,17 +69,13 @@ router.get('/profile', isAuthenticated, async (req, res) => {
       error.message.includes('401')
     ) {
       return res.status(401).json({
-        success: false,
         error: 'Access token expired or invalid',
         redirect: '/auth/acquireToken',
       });
     }
 
     // For other errors, return standard error response
-    res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    res.status(500).json(error.message);
   }
 });
 
