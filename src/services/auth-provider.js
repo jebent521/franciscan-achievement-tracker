@@ -112,11 +112,10 @@ class AuthProvider {
         res.redirect(options.successRedirect);
       } catch (error) {
         if (error instanceof msal.InteractionRequiredAuthError) {
-          return this.login({
-            scopes: options.scopes || [],
-            redirectUri: options.redirectUri,
-            successRedirect: options.successRedirect || '/',
-          })(req, res, next);
+          return res.status(401).json({
+            error: 'Interactive authentication required',
+            loginUrl: '/auth/signin',
+          });
         }
 
         next(error);
@@ -148,15 +147,29 @@ class AuthProvider {
           req.body
         );
 
+        // Store all necessary token info in the session
         req.session.tokenCache = msalInstance.getTokenCache().serialize();
+        req.session.accessToken = tokenResponse.accessToken;
         req.session.idToken = tokenResponse.idToken;
         req.session.account = tokenResponse.account;
         req.session.isAuthenticated = true;
 
-        const state = JSON.parse(
-          this.cryptoProvider.base64Decode(req.body.state)
-        );
-        res.redirect(state.successRedirect);
+        try {
+          const state = JSON.parse(
+            this.cryptoProvider.base64Decode(req.body.state)
+          );
+
+          return res.status(200).json({
+            isAuthenticated: true,
+            redirectUrl: state.successRedirect || '/',
+            user: {
+              name: req.session.account.name,
+              username: req.session.account.username,
+            },
+          });
+        } catch (stateError) {
+          return res.status(400).json({ error: 'Invalid state' });
+        }
       } catch (error) {
         next(error);
       }

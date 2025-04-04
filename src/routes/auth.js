@@ -37,10 +37,10 @@ router.get(
 
 router.get(
   '/acquireToken',
+  isAuthenticated,
   authProvider.acquireToken({
     scopes: ['User.Read'],
     redirectUri: REDIRECT_URI,
-    successRedirect: '/auth/profile',
   })
 );
 
@@ -50,7 +50,7 @@ router.get('/id', isAuthenticated, async (req, res) => {
   try {
     res.status(200).json(req.session.account.idTokenClaims || {});
   } catch (error) {
-    res.status(500).json(error.message);
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -75,7 +75,7 @@ router.get('/profile', isAuthenticated, async (req, res) => {
     }
 
     // For other errors, return standard error response
-    res.status(500).json(error.message);
+    res.status(500).json({ error: error.message });
   }
 });
 
