@@ -12,6 +12,7 @@ const {
 } = require('../utils/auth-config');
 
 const authProvider = require('../services/auth-provider');
+const UserService = require('../services/user-service');
 
 const router = express.Router();
 
@@ -31,9 +32,97 @@ router.get(
   authProvider.login({
     scopes: ['User.Read'],
     redirectUri: REDIRECT_URI,
-    successRedirect: '/',
+    successRedirect: '/auth/success',
   })
 );
+
+router.get('/success', isAuthenticated, async (req, res) => {
+  try {
+    // Get the user profile from Microsoft Graph API
+    const graphResponse = await fetch(
+      GRAPH_ME_ENDPOINT,
+      req.session.accessToken
+    );
+
+    // Check if user already exists in our database
+    const userService = new UserService();
+
+    const existingUserQuery = await userService.repository.readByCustom(
+      'oauth_id',
+      graphResponse.id
+    );
+    const existingEmailQuery = await userService.repository.readByCustom(
+      'email',
+      graphResponse.mail || graphResponse.userPrincipalName
+    );
+
+    let userCreated = false;
+    let userData = null;
+
+    // Check if user exists by OAuth ID
+    if (
+      existingUserQuery.status === 200 &&
+      existingUserQuery.message.length > 0
+    ) {
+      userCreated = false;
+      userData = existingUserQuery.message[0];
+    }
+    // Check if user exists by email
+    else if (
+      existingEmailQuery.status === 200 &&
+      existingEmailQuery.message.length > 0
+    ) {
+      userCreated = false;
+      userData = existingUserQuery.message[0];
+    }
+    // Create new user with Microsoft profile data
+    else {
+      const createResult = await userService.repository.create({
+        name: graphResponse.displayName,
+        email: graphResponse.mail || graphResponse.userPrincipalName,
+        oauth_id: graphResponse.id,
+      });
+
+      if (createResult.status !== 201) {
+        throw new Error(
+          `Failed to create user: ${JSON.stringify(createResult.message)}`
+        );
+      }
+
+      userCreated = true;
+      userData = createResult.message;
+    }
+
+    return res.status(200).json({
+      success: true,
+      userCreated: userCreated,
+      userExists: !userCreated,
+      user: {
+        id: userData?.id,
+        name: graphResponse.displayName,
+        email: graphResponse.mail || graphResponse.userPrincipalName,
+        oauth_id: graphResponse.id,
+      },
+    });
+  } catch (error) {
+    // If token expired, include special error info
+    if (error.message && error.message.includes('401')) {
+      return res.status(401).json({
+        error: 'Access token expired or invalid',
+        userCreated: false,
+        userExists: false,
+        redirect: '/auth/acquireToken',
+      });
+    }
+
+    // For other errors, return standard error response
+    return res.status(500).json({
+      error: error.message,
+      userCreated: false,
+      userExists: false,
+    });
+  }
+});
 
 router.get(
   '/acquireToken',
