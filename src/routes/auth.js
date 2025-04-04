@@ -3,17 +3,33 @@
  * Licensed under the MIT License.
  */
 
-var express = require('express');
+const express = require('express');
+const fetch = require('../utils/fetch');
+const {
+  GRAPH_ME_ENDPOINT,
+  REDIRECT_URI,
+  // POST_LOGOUT_REDIRECT_URI,
+} = require('../utils/auth-config');
 
-const authProvider = require('../auth/AuthProvider');
-const { REDIRECT_URI, POST_LOGOUT_REDIRECT_URI } = require('../authConfig');
+const authProvider = require('../services/auth-provider');
 
 const router = express.Router();
+
+function isAuthenticated(req, res, next) {
+  if (!req.session.isAuthenticated) {
+    return res.status(401).json({
+      error: 'User not authenticated',
+      redirect: '/auth/signin',
+    });
+  }
+
+  next();
+}
 
 router.get(
   '/signin',
   authProvider.login({
-    scopes: [],
+    scopes: ['User.Read'],
     redirectUri: REDIRECT_URI,
     successRedirect: '/',
   })
@@ -24,17 +40,50 @@ router.get(
   authProvider.acquireToken({
     scopes: ['User.Read'],
     redirectUri: REDIRECT_URI,
-    successRedirect: '/users/profile',
+    successRedirect: '/auth/profile',
   })
 );
 
 router.post('/redirect', authProvider.handleRedirect());
 
-router.get(
-  '/signout',
-  authProvider.logout({
-    postLogoutRedirectUri: POST_LOGOUT_REDIRECT_URI,
-  })
-);
+router.get('/id', isAuthenticated, async (req, res) => {
+  try {
+    res.status(200).json(req.session.account.idTokenClaims || {});
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
+
+router.get('/profile', isAuthenticated, async (req, res) => {
+  try {
+    const graphResponse = await fetch(
+      GRAPH_ME_ENDPOINT,
+      req.session.accessToken
+    );
+
+    res.status(200).json(graphResponse);
+  } catch (error) {
+    if (
+      error.message &&
+      error.message.includes('AxiosError') &&
+      error.message.includes('401')
+    ) {
+      return res.status(401).json({
+        error: 'Access token expired or invalid',
+        redirect: '/auth/acquireToken',
+      });
+    }
+
+    // For other errors, return standard error response
+    res.status(500).json(error.message);
+  }
+});
+
+// router.get(
+//   '/signout',
+//   authProvider.logout({
+//     postLogoutRedirectUri: POST_LOGOUT_REDIRECT_URI,
+//   })
+// );
 
 module.exports = router;

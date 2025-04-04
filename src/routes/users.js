@@ -15,35 +15,57 @@ const UserService = require('../services/user-service');
 // custom middleware to check auth state
 function isAuthenticated(req, res, next) {
   if (!req.session.isAuthenticated) {
-    return res.redirect('/api/login'); // redirect to sign-in route
+    return res.redirect('/auth/signin');
   }
 
   next();
 }
 
-router.get(
-  '/id',
-  isAuthenticated, // check if user is authenticated
-  async function (req, res, next) {
-    res.render('id', { idTokenClaims: req.session.account.idTokenClaims });
+router.get('/id', isAuthenticated, async function (req, res, next) {
+  try {
+    res.status(200).json({
+      success: true,
+      idTokenClaims: req.session.account.idTokenClaims || {},
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
   }
-);
+});
 
-router.get(
-  '/profile',
-  isAuthenticated, // check if user is authenticated
-  async function (req, res, next) {
-    try {
-      const graphResponse = await fetch(
-        GRAPH_ME_ENDPOINT,
-        req.session.accessToken
-      );
-      res.render('profile', { profile: graphResponse });
-    } catch (error) {
-      next(error);
+router.get('/profile', isAuthenticated, async function (req, res, next) {
+  try {
+    const graphResponse = await fetch(
+      GRAPH_ME_ENDPOINT,
+      req.session.accessToken
+    );
+
+    res.status(200).json({
+      success: true,
+      profile: graphResponse,
+    });
+  } catch (error) {
+    if (
+      error.message &&
+      error.message.includes('AxiosError') &&
+      error.message.includes('401')
+    ) {
+      return res.status(401).json({
+        success: false,
+        error: 'Access token expired or invalid',
+        redirect: '/auth/acquireToken',
+      });
     }
+
+    // For other errors, return standard error response
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
   }
-);
+});
 
 // User CRUD
 
