@@ -53,7 +53,7 @@ router.get('/success', isAuthenticated, async (req, res) => {
     );
     const existingEmailQuery = await userService.repository.readByCustom(
       'email',
-      graphResponse.mail || graphResponse.userPrincipalName
+      graphResponse.mail
     );
 
     let userCreated = false;
@@ -79,7 +79,7 @@ router.get('/success', isAuthenticated, async (req, res) => {
     else {
       const createResult = await userService.repository.create({
         name: graphResponse.displayName,
-        email: graphResponse.mail || graphResponse.userPrincipalName,
+        email: graphResponse.mail,
         oauth_id: graphResponse.id,
       });
 
@@ -100,7 +100,7 @@ router.get('/success', isAuthenticated, async (req, res) => {
       user: {
         id: userData?.id,
         name: graphResponse.displayName,
-        email: graphResponse.mail || graphResponse.userPrincipalName,
+        email: graphResponse.mail,
         oauth_id: graphResponse.id,
       },
     });
