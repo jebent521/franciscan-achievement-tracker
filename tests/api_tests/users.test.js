@@ -18,18 +18,35 @@ describe('Users Endpoint Tests', () => {
           id: 1,
           name: 'Angsty Alice',
           email: 'alice@angst.com',
+          oauth_id: null,
           points: 0,
         },
         {
           id: 2,
           name: 'Boring Bob',
           email: 'bob@bored.com',
+          oauth_id: null,
           points: 0,
         },
         {
           id: 3,
           name: 'Cranky Carol',
           email: 'carol@crank.com',
+          oauth_id: null,
+          points: 0,
+        },
+        {
+          id: 4,
+          name: 'Depressed David',
+          email: 'david@depressed.com',
+          oauth_id: 'depressing-oauth-id',
+          points: 0,
+        },
+        {
+          id: 5,
+          name: 'Edgy Edward',
+          email: 'edgy@edward.com',
+          oauth_id: 'edgy-oauth-id',
           points: 0,
         },
       ]);
@@ -45,6 +62,7 @@ describe('Users Endpoint Tests', () => {
         id: 1,
         name: 'Angsty Alice',
         email: 'alice@angst.com',
+        oauth_id: null,
         points: 0,
       });
     });
@@ -70,10 +88,33 @@ describe('Users Endpoint Tests', () => {
       expect(res.status).toBe(201);
       const data = await res.json();
       expect(data).toEqual({
-        id: 4,
+        id: 6,
         name: 'Lazy Susan',
         email: 'susan@lazy.com',
+        oauth_id: null,
         points: 10,
+      });
+    });
+
+    it('should create a new user with oauth', async () => {
+      const res = await fetch(`${baseUrl}/api/users`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'Angry Jim',
+          email: 'jim@angry.com',
+          oauth_id: 'this-is-oauth-id',
+          points: 0,
+        }),
+      });
+      expect(res.status).toBe(201);
+      const data = await res.json();
+      expect(data).toEqual({
+        id: 6,
+        name: 'Angry Jim',
+        email: 'jim@angry.com',
+        oauth_id: 'this-is-oauth-id',
+        points: 0,
       });
     });
 
@@ -86,12 +127,26 @@ describe('Users Endpoint Tests', () => {
       expect(res.status).toBe(400);
     });
 
-    it('should return a 409 for a user with a duplicate name', async () => {
+    it('should fail to create oauth if email in DB', async () => {
       const res = await fetch(`${baseUrl}/api/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: 'Angsty Alice',
+          name: 'Placeholder Name',
+          email: 'bob@bored.com',
+          oauth_id: 'this-is-oauth-id',
+          points: 0,
+        }),
+      });
+      expect(res.status).toBe(409);
+    });
+
+    it('should return a 409 for a user with a duplicate email', async () => {
+      const res = await fetch(`${baseUrl}/api/users`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'Unique Name',
           email: 'alice@angst.com',
           password: 'password123',
           points: 10,

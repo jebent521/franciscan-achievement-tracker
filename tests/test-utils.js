@@ -57,6 +57,18 @@ const testData = {
       password: 'password123',
       points: 0,
     },
+    {
+      name: 'Depressed David',
+      email: 'david@depressed.com',
+      oauth_id: 'depressing-oauth-id',
+      points: 0,
+    },
+    {
+      name: 'Edgy Edward',
+      email: 'edgy@edward.com',
+      oauth_id: 'edgy-oauth-id',
+      points: 0,
+    },
   ],
   user_achievements: [
     {

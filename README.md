@@ -160,6 +160,7 @@ The following routes handle the OAuth flow and user information:
 | Route                | Method | Description                                                |
 | -------------------- | ------ | ---------------------------------------------------------- |
 | `/auth/signin`       | GET    | Initiates the OAuth sign-in flow with Microsoft Identity   |
+| `/auth/success`      | GET    | Handles successful authentication and user creation/lookup |
 | `/auth/acquireToken` | GET    | Acquires a fresh access token when the current one expires |
 | `/auth/redirect`     | POST   | Callback endpoint that handles the OAuth response          |
 | `/auth/id`           | GET    | Returns the user's ID token claims                         |
@@ -168,6 +169,7 @@ The following routes handle the OAuth flow and user information:
 ### Authentication Flow
 
 1. User is redirected to `/auth/signin` to begin authentication
-2. After successful authentication, they're redirected to the application
-3. If an access token expires when accessing protected resources, the API returns a redirect to `/auth/acquireToken`
-4. Protected routes will return a 401 error if a user is not authenticated
+2. After successful authentication, the callback redirects to `/auth/success`
+3. `/auth/success` retrieves the user profile and creates/finds the user in the database
+4. If an access token expires when accessing protected resources, the API returns a 401 with `redirect: '/auth/acquireToken'`
+5. Protected routes will return a 401 error with `redirect: '/auth/signin'` if a user is not authenticated

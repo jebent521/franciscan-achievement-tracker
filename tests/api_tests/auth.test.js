@@ -79,7 +79,21 @@ describe('Auth Routes', () => {
 
   describe('GET /acquireToken', () => {
     it('should redirect to the profile page', async () => {
-      const response = await request(app).get('/auth/acquireToken').expect(302);
+      // Create app with authenticated session
+      const authenticatedApp = express();
+      authenticatedApp.use((req, res, next) => {
+        req.session = {
+          isAuthenticated: true,
+          account: { idTokenClaims: { name: 'Test User' } },
+        };
+        next();
+      });
+
+      authenticatedApp.use('/auth', authRouter);
+
+      const response = await request(authenticatedApp)
+        .get('/auth/acquireToken')
+        .expect(302);
 
       // Only verify the behavior, not the function calls
       expect(response.headers.location).toBe('/auth/profile');
@@ -239,7 +253,7 @@ describe('Auth Routes', () => {
         .get('/auth/profile')
         .expect(500);
 
-      expect(response.body).toEqual('Network error');
+      expect(response.body.error).toBe('Network error');
     });
   });
 
