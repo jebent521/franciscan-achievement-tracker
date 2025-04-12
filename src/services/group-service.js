@@ -5,7 +5,14 @@ const CrudService = require('./crud-service');
 class GroupService extends CrudService {
   constructor() {
     super('groups');
-    this.sortByOptions = ['id', 'name', 'description'];
+  }
+
+  async preprocess(req) {
+    //check for a group with the same name
+    const group_name = req.body.name;
+
+    if (await this.repository.readByCustom('name', group_name))
+      return new ApiResult(409, 'Duplicate group name');
   }
 
   validate(req) {
@@ -16,6 +23,8 @@ class GroupService extends CrudService {
     if (!req.body.hasOwnProperty('officer_user_id'))
       missingFields.push('officer_user_id');
     if (missingFields.length > 0) {
+      console.log(req.body);
+      console.log(missingFields);
       return new ApiResult(400, `Missing fields: ${missingFields.join(', ')}`);
     }
     if (req.body.hasOwnProperty('id')) {
@@ -23,18 +32,14 @@ class GroupService extends CrudService {
     }
   }
 
-  async preprocess(req_body) {
-    return { name: req_body.name, description: req_body.description };
-  }
+  async create(req) {
+    const validateResult = this.validate(req);
+    if (validateResult) return validateResult;
 
-  /**
-   * For this service, post process takes the officer information
-   * from the request and adds them to the group as both a member and an officer
-   *
-   * @param {Object} req
-   * @returns {ApiResult} if there are any errors in the insertions
-   */
-  async postprocess(req) {
+    const preprocess = this.preprocess(req);
+    if (preprocess) return preprocess;
+
+    const group = { name: req.body.name, description: req.body.description };
     const creatingOfficer = { user_id: req.body.officer_user_id };
 
     const new_group = (
