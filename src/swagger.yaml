@@ -177,6 +177,7 @@ paths:
             example:
               name: Social
               description: Achievements related to social activities
+              officer_user_id: 1
       responses:
         '201':
           description: Successfully created group.
