@@ -69,6 +69,7 @@ describe('Groups Endpoint Tests', () => {
         body: JSON.stringify({
           name: 'Test Group',
           description: 'A test group',
+          officer_user_id: 1,
         }),
       });
       try {
@@ -101,6 +102,7 @@ describe('Groups Endpoint Tests', () => {
         body: JSON.stringify({
           name: 'General',
           description: 'A test group',
+          officer_user_id: 1,
         }),
       });
       expect(res.status).toBe(409);
@@ -115,6 +117,7 @@ describe('Groups Endpoint Tests', () => {
         body: JSON.stringify({
           name: 'Test Group',
           description: 'A test group',
+          officer_user_id: 1,
         }),
       });
       const res = await fetch(`${baseUrl}/api/groups/4`, { method: 'DELETE' });
