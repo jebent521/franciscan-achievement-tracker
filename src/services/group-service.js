@@ -33,7 +33,10 @@ class GroupService extends CrudService {
 
     //insert the group into the database
     const result = await this.repository.create(group);
-    if (result.error) console.error(result.error);
+    if (result.error) {
+      console.error(result.error); //returns error immediately, stops the other DB insertions
+      return error;
+    }
 
     //get the group id after creation, name is unique
     const new_group = (await this.repository.readByCustom('name', group.name))
@@ -42,17 +45,24 @@ class GroupService extends CrudService {
       user_id: creatingOfficer.user_id,
       group_id: new_group[0].id,
     };
-    //insert the creating officer into the members group, then the officers group
 
+    //insert the creating officer into the members group, then the officers group
     const memberRepository = new Repository('group_members');
-    await memberRepository.create(officerGroupPair);
+    const memberResult = await memberRepository.create(officerGroupPair);
+    if (memberResult.error) {
+      console.error(memberResult.error);
+      return new ApiResult(500, 'Error inserting group member');
+    }
 
     const officerRepository = new Repository('group_officers');
-    await officerRepository.create(officerGroupPair);
+    const officerResult = await officerRepository.create(officerGroupPair);
+    if (officerResult.error) {
+      console.error(officerResult.error);
+      return new ApiResult(500, 'Error inserting officer');
+    }
 
-    return result.status == 201
-      ? new ApiResult(result.status, this.filter(result.message))
-      : result;
+    //returns the original database API result message
+    return new ApiResult(result.status, this.filter(result.message));
   }
 }
 
