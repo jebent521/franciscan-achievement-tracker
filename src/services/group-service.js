@@ -7,16 +7,6 @@ class GroupService extends CrudService {
     super('groups');
   }
 
-  async preprocess(req) {
-    //check for a group with the same name
-    const group_name = req.body.name;
-    const group_with_same_name = (
-      await this.repository.readByCustom('name', group_name)
-    ).message[0];
-    if (group_with_same_name) return new ApiResult(409, 'Duplicate group name');
-    return null;
-  }
-
   validate(req) {
     const missingFields = [];
     if (!req.body.hasOwnProperty('name')) missingFields.push('name');
@@ -36,8 +26,7 @@ class GroupService extends CrudService {
     const validateResult = this.validate(req);
     if (validateResult) return validateResult;
 
-    const preprocess = await this.preprocess(req);
-    if (preprocess) return preprocess;
+    req = await this.preprocess(req);
 
     const group = { name: req.body.name, description: req.body.description };
     const creatingOfficer = { user_id: req.body.officer_user_id };
