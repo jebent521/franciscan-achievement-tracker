@@ -17,6 +17,23 @@ paths:
     get:
       summary: Get a list of achievements
       description: Get a list of achievements from the API.
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: offset
+          in: query
+          description: Number of items to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
       responses:
         '200':
           description: Successful response
@@ -78,6 +95,22 @@ paths:
           required: true
           schema:
             type: integer
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: offset
+          in: query
+          description: Number of items to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
       responses:
         '200':
           description: Successful response
@@ -147,6 +180,23 @@ paths:
     get:
       summary: Get a list of groups
       description: Get a list of groups from the API.
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: offset
+          in: query
+          description: Number of items to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
       responses:
         '200':
           description: Successful response
@@ -197,6 +247,22 @@ paths:
           required: true
           schema:
             type: integer
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: offset
+          in: query
+          description: Number of items to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
       responses:
         '200':
           description: Successful response
@@ -266,6 +332,22 @@ paths:
           required: true
           schema:
             type: integer
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: offset
+          in: query
+          description: Number of items to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
       responses:
         '200':
           description: Successful response
@@ -339,6 +421,22 @@ paths:
           required: true
           schema:
             type: integer
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: offset
+          in: query
+          description: Number of items to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
       responses:
         '200':
           description: Successful response
@@ -406,6 +504,23 @@ paths:
     get:
       summary: Get a list of users
       description: Get a list of users from the API.
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: offset
+          in: query
+          description: Number of items to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
       responses:
         '200':
           description: Successful response
@@ -471,6 +586,22 @@ paths:
           required: true
           schema:
             type: integer
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: offset
+          in: query
+          description: Number of items to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
       responses:
         '200':
           description: Successful response
@@ -546,6 +677,22 @@ paths:
           required: true
           schema:
             type: integer
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: offset
+          in: query
+          description: Number of items to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
       responses:
         '200':
           description: Successful response
@@ -572,6 +719,22 @@ paths:
           required: true
           schema:
             type: integer
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: offset
+          in: query
+          description: Number of items to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
       requestBody:
         content:
           application/json:
