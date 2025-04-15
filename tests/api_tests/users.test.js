@@ -51,11 +51,53 @@ describe('Users Endpoint Tests', () => {
         },
       ]);
     });
+
+    it('should support pagination', async () => {
+      const res = await fetch(`${baseUrl}/api/users?limit=3&offset=2`);
+      expect(res.status).toBe(200);
+      const data = await res.json();
+      expect(data).toEqual([
+        {
+          id: 3,
+          name: 'Cranky Carol',
+          email: 'carol@crank.com',
+          oauth_id: null,
+          points: 0,
+        },
+        {
+          id: 4,
+          name: 'Depressed David',
+          email: 'david@depressed.com',
+          oauth_id: 'depressing-oauth-id',
+          points: 0,
+        },
+        {
+          id: 5,
+          name: 'Edgy Edward',
+          email: 'edgy@edward.com',
+          oauth_id: 'edgy-oauth-id',
+          points: 0,
+        },
+      ]);
+    });
   });
 
   describe('GET /api/users/:id', () => {
     it('should return a single user by ID', async () => {
       const res = await fetch(`${baseUrl}/api/users/1`);
+      expect(res.status).toBe(200);
+      const data = await res.json();
+      expect(data).toEqual({
+        id: 1,
+        name: 'Angsty Alice',
+        email: 'alice@angst.com',
+        oauth_id: null,
+        points: 0,
+      });
+    });
+
+    it('should support pagination', async () => {
+      const res = await fetch(`${baseUrl}/api/users/1?limit=1`);
       expect(res.status).toBe(200);
       const data = await res.json();
       expect(data).toEqual({

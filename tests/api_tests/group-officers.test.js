@@ -17,6 +17,14 @@ describe('group_officers Endpoint Tests', () => {
       expect(data).toEqual([{ group_id: 1, user_id: 3 }]);
     });
 
+    it('should support pagination', async () => {
+      const res = await fetch(`${baseUrl}/api/groups/1/officers?limit=1`);
+
+      expect(res.status).toBe(200);
+      const data = await res.json();
+      expect(data).toEqual([{ group_id: 1, user_id: 3 }]);
+    });
+
     it('should return an empty list if the group has no officers', async () => {
       const res = await fetch(`${baseUrl}/api/groups/999/officers`);
 
