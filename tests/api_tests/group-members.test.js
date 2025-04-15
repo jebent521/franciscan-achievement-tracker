@@ -21,6 +21,19 @@ describe('group_members Endpoint Tests', () => {
       ]);
     });
 
+    it('should support pagination', async () => {
+      const res = await fetch(
+        `${baseUrl}/api/groups/1/members?limit=2&offset=1`
+      );
+
+      expect(res.status).toBe(200);
+      const data = await res.json();
+      expect(data).toEqual([
+        { group_id: 1, user_id: 2 },
+        { group_id: 1, user_id: 3 },
+      ]);
+    });
+
     it('should return an empty list if the group has no members', async () => {
       const res = await fetch(`${baseUrl}/api/groups/999/members`);
 
