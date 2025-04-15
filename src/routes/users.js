@@ -11,8 +11,8 @@ const UserService = require('../services/user-service');
 
 // User CRUD
 
-router.get('/', async (_, res) => {
-  const result = await new UserService().read();
+router.get('/', async (req, res) => {
+  const result = await new UserService().read(req);
   res.status(result.status).send(result.message);
 });
 

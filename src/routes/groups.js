@@ -9,8 +9,8 @@ const {
 
 // Group CRUD
 
-router.get('/', async (_, res) => {
-  const result = await new GroupService().read();
+router.get('/', async (req, res) => {
+  const result = await new GroupService().read(req);
   res.status(result.status).send(result.message);
 });
 
