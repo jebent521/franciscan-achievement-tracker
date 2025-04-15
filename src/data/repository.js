@@ -51,13 +51,16 @@ class Repository {
     }
   }
 
-  async readByCustom(column, value) {
+  async readByCustom(column, value, limit = null, offset = null) {
     try {
+      let searchString;
+      if (limit && offset)
+        searchString = `SELECT * FROM ${this.tableName} WHERE ${column} = $1 LIMIT $2 OFFSET $3`;
+      else
+        searchString = `SELECT * FROM ${this.tableName} WHERE ${column} = $1`;
+
       const client = await pool.connect();
-      const result = await client.query(
-        `SELECT * FROM ${this.tableName} WHERE ${column} = $1`,
-        [value]
-      );
+      const result = await client.query(searchString, [value]);
       client.release();
 
       return new ApiResult(200, result.rows);
