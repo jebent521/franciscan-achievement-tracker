@@ -23,10 +23,22 @@ class Repository {
     }
   }
 
-  async read() {
+  async read(limit = null, offset = null) {
     try {
+      let searchString = `SELECT * FROM ${this.tableName}`;
+      let dbParams = [];
+      if (limit) {
+        searchString += ' LIMIT $1';
+        dbParams.push(limit);
+      }
+
+      if (offset) {
+        searchString += ' OFFSET $2';
+        dbParams.push(offset);
+      }
+
       const client = await pool.connect();
-      const result = await client.query(`SELECT * FROM ${this.tableName}`);
+      const result = await client.query(searchString, dbParams);
       client.release();
       return new ApiResult(200, result.rows);
     } catch (error) {
@@ -34,13 +46,21 @@ class Repository {
     }
   }
 
-  async readById(id) {
+  async readById(id, limit = null, offset = null) {
     try {
+      let searchString = `SELECT * FROM ${this.tableName} WHERE id = $1`;
+      let dbParams = [id];
+      if (limit) {
+        searchString += ' LIMIT $2';
+        dbParams.push(limit);
+      }
+      if (offset) {
+        searchString += ' OFFSET $3';
+        dbParams.push(offset);
+      }
+
       const client = await pool.connect();
-      const result = await client.query(
-        `SELECT * FROM ${this.tableName} WHERE id = $1`,
-        [id]
-      );
+      const result = await client.query(searchString, dbParams);
       client.release();
       if (result.rowCount === 0) {
         return new ApiResult(404, 'Not found');
@@ -53,14 +73,19 @@ class Repository {
 
   async readByCustom(column, value, limit = null, offset = null) {
     try {
-      let searchString;
-      if (limit && offset)
-        searchString = `SELECT * FROM ${this.tableName} WHERE ${column} = $1 LIMIT $2 OFFSET $3`;
-      else
-        searchString = `SELECT * FROM ${this.tableName} WHERE ${column} = $1`;
+      let searchString = `SELECT * FROM ${this.tableName} WHERE ${column} = $1`;
+      let dbParams = [value];
+      if (limit) {
+        searchString += ' LIMIT $2';
+        dbParams.push(limit);
+      }
+      if (offset) {
+        searchString += ' OFFSET $3';
+        dbParams.push(offset);
+      }
 
       const client = await pool.connect();
-      const result = await client.query(searchString, [value]);
+      const result = await client.query(searchString, dbParams);
       client.release();
 
       return new ApiResult(200, result.rows);
