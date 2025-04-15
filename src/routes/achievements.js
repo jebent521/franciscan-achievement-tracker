@@ -3,8 +3,8 @@ const router = express.Router();
 
 const AchievementService = require('../services/achievement-service');
 
-router.get('/', async (_, res) => {
-  const result = await new AchievementService().read();
+router.get('/', async (req, res) => {
+  const result = await new AchievementService().read(req);
   res.status(result.status).send(result.message);
 });
 
