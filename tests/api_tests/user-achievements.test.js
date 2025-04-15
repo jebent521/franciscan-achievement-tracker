@@ -37,6 +37,27 @@ describe('user_achievement Endpoint Tests', () => {
         throw e;
       }
     });
+
+    it('should support pagination', async () => {
+      const res = await fetch(
+        `${baseUrl}/api/users/1/achievements?limit=1&offset=2`
+      );
+
+      try {
+        expect(res.status).toBe(200);
+        const data = await res.json();
+        expect(data).toEqual([
+          {
+            user_id: 1,
+            achievement_id: 3,
+            date_achieved: '2025-03-06',
+          },
+        ]);
+      } catch (e) {
+        console.log(res);
+        throw e;
+      }
+    });
   });
 
   describe('POST /api/users/:user_id/achievements', () => {
