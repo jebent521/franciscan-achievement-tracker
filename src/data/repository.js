@@ -32,7 +32,8 @@ class Repository {
         dbParams.push(limit);
       }
 
-      if (offset) {
+      //require limit to use offset
+      if (limit && offset) {
         searchString += ' OFFSET $2';
         dbParams.push(offset);
       }
@@ -46,21 +47,13 @@ class Repository {
     }
   }
 
-  async readById(id, limit = null, offset = null) {
+  async readById(id) {
     try {
-      let searchString = `SELECT * FROM ${this.tableName} WHERE id = $1`;
-      let dbParams = [id];
-      if (limit) {
-        searchString += ' LIMIT $2';
-        dbParams.push(limit);
-      }
-      if (offset) {
-        searchString += ' OFFSET $3';
-        dbParams.push(offset);
-      }
-
       const client = await pool.connect();
-      const result = await client.query(searchString, dbParams);
+      const result = await client.query(
+        `SELECT * FROM ${this.tableName} WHERE id = $1`,
+        [id]
+      );
       client.release();
       if (result.rowCount === 0) {
         return new ApiResult(404, 'Not found');
@@ -79,7 +72,9 @@ class Repository {
         searchString += ' LIMIT $2';
         dbParams.push(limit);
       }
-      if (offset) {
+
+      //require limit to use offset
+      if (limit && offset) {
         searchString += ' OFFSET $3';
         dbParams.push(offset);
       }
