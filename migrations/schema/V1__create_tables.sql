@@ -46,5 +46,6 @@ CREATE TABLE user_achievements (
 CREATE TABLE friends (
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     friend_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    accepted BOOLEAN DEFAULT TRUE,
     PRIMARY KEY (user_id, friend_id)
 );
