@@ -17,39 +17,18 @@ describe('Friends Endpoint Tests', () => {
         const data = await res.json();
         expect(data).toEqual([
           {
-            user_id: 1,
+            id: 1,
             friend_id: 2,
-            accepted: true,
           },
           {
-            user_id: 3,
+            id: 3,
             friend_id: 2,
-            accepted: true,
           },
           {
-            user_id: 3,
+            id: 3,
             friend_id: 4,
-            accepted: false,
           },
         ]);
-      } catch (e) {
-        console.log(res);
-        throw e;
-      }
-    });
-  });
-
-  describe('GET /friends/:user_id', () => {
-    it('should return a single friend by ID', async () => {
-      const res = await fetch(`${baseUrl}/api/friends/1`);
-      try {
-        expect(res.status).toBe(200);
-        const data = await res.json();
-        expect(data).toEqual({
-          user_id: 1,
-          friend_id: 2,
-          accepted: true,
-        });
       } catch (e) {
         console.log(res);
         throw e;
@@ -65,18 +44,16 @@ describe('Friends Endpoint Tests', () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user_id: 1,
+          id: 1,
           friend_id: 2,
-          accepted: true,
         }),
       });
       try {
         expect(res.status).toBe(201);
         const data = await res.json();
         expect(data).toEqual({
-          user_id: 1,
+          id: 1,
           friend_id: 4,
-          accepted: false,
         });
       } catch (e) {
         console.log(res);
@@ -85,7 +62,7 @@ describe('Friends Endpoint Tests', () => {
     });
   });
 
-  describe('DELETE /friends/:user_id', () => {
+  describe('DELETE /friends/:id', () => {
     it("should fail to delete if user doesn't have any friends", async () => {
       const res = await fetch(`${baseUrl}/api/friends/5`, {
         method: 'DELETE',

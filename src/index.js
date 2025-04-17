@@ -45,7 +45,7 @@ app.use('/auth', authRouter);
 
 app.use('/users', usersRouter);
 
-app.use('/friends', friendsRouter);
+app.use('/api/friends', friendsRouter);
 
 // Search
 app.get('/api/search/:query', async (req, res) => {
