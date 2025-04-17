@@ -23,10 +23,23 @@ class Repository {
     }
   }
 
-  async read() {
+  async read(limit = null, offset = null) {
     try {
+      let searchString = `SELECT * FROM ${this.tableName}`;
+      let dbParams = [];
+      if (limit) {
+        searchString += ' LIMIT $1';
+        dbParams.push(limit);
+      }
+
+      //require limit to use offset
+      if (limit && offset) {
+        searchString += ' OFFSET $2';
+        dbParams.push(offset);
+      }
+
       const client = await pool.connect();
-      const result = await client.query(`SELECT * FROM ${this.tableName}`);
+      const result = await client.query(searchString, dbParams);
       client.release();
       return new ApiResult(200, result.rows);
     } catch (error) {
@@ -51,13 +64,23 @@ class Repository {
     }
   }
 
-  async readByCustom(column, value) {
+  async readByCustom(column, value, limit = null, offset = null) {
     try {
+      let searchString = `SELECT * FROM ${this.tableName} WHERE ${column} = $1`;
+      let dbParams = [value];
+      if (limit) {
+        searchString += ' LIMIT $2';
+        dbParams.push(limit);
+      }
+
+      //require limit to use offset
+      if (limit && offset) {
+        searchString += ' OFFSET $3';
+        dbParams.push(offset);
+      }
+
       const client = await pool.connect();
-      const result = await client.query(
-        `SELECT * FROM ${this.tableName} WHERE ${column} = $1`,
-        [value]
-      );
+      const result = await client.query(searchString, dbParams);
       client.release();
 
       return new ApiResult(200, result.rows);

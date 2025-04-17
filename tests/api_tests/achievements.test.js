@@ -46,11 +46,51 @@ describe('Achievement Endpoint Tests', () => {
         throw e;
       }
     });
+
+    it('should support pagination', async () => {
+      const res = await fetch(`${baseUrl}/api/achievements?limit=1&offset=1`);
+      try {
+        expect(res.status).toBe(200);
+        const data = await res.json();
+        expect(data).toEqual([
+          {
+            id: 2,
+            title: 'The Grand Slam',
+            group_id: 2,
+            description: 'Attend all four daily masses in one day',
+            prerequisite: null,
+            points: 100,
+          },
+        ]);
+      } catch (e) {
+        console.log(res);
+        throw e;
+      }
+    });
   });
 
   describe('GET /achievements/:id', () => {
     it('should return a single achievement by ID', async () => {
       const res = await fetch(`${baseUrl}/api/achievements/1`);
+      try {
+        expect(res.status).toBe(200);
+        const data = await res.json();
+        expect(data).toEqual({
+          id: 1,
+          title: 'Cafarrhea',
+          group_id: 1,
+          description: 'Eat at the Caf',
+          prerequisite: null,
+          points: 10,
+        });
+      } catch (e) {
+        console.log(res);
+        throw e;
+      }
+    });
+
+    it('should support pagination', async () => {
+      const res = await fetch(`${baseUrl}/api/achievements/1?limit=1&offset=0`);
       try {
         expect(res.status).toBe(200);
         const data = await res.json();
