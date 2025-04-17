@@ -12,33 +12,6 @@ const Test = require('supertest/lib/test');
 //   beforeEach(async () => await resetDatabase());
 //   afterAll(async () => await pool.end());
 
-//   describe('GET /friends', () => {
-//     it('should return a list of friends', async () => {
-//       const res = await fetch(`${baseUrl}/api/friends`);
-//       try {
-//         expect(res.status).toBe(200);
-//         const data = await res.json();
-//         expect(data).toEqual([
-//           {
-//             id: 1,
-//             friend_id: 2,
-//           },
-//           {
-//             id: 3,
-//             friend_id: 2,
-//           },
-//           {
-//             id: 3,
-//             friend_id: 4,
-//           },
-//         ]);
-//       } catch (e) {
-//         console.log(res);
-//         throw e;
-//       }
-//     });
-//   });
-
 //   describe('POST /friends', () => {
 //     it('should add a friend to the database', async () => {
 //       const res = await fetch(`${baseUrl}/api/friends`, {

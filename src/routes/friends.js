@@ -3,11 +3,6 @@ const router = express.Router();
 
 const FriendService = require('../services/friends-service');
 
-router.get('/', async (_, res) => {
-  const result = await new FriendService().read();
-  res.status(result.status).send(result.message);
-});
-
 router.post('/', async (req, res) => {
   const result = await new FriendService().create(req);
   res.status(result.status).send(result.message);
