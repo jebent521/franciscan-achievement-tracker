@@ -143,6 +143,45 @@ paths:
           description: Unique field already exist in the database.
         '500':
           description: Internal Server Error
+  /api/friends:
+    post:
+      summary: Add a friend to the database.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/friends'
+            example:
+              id: 2
+              friend_id: 4
+      responses:
+        '201':
+          description: Successfully created friend.
+        '400':
+          description: Missing criteria, invalid type, or invalid reference.
+        '409':
+          description: Unique field already exist in the database.
+        '500':
+          description: Internal Server Error
+  /api/friends/{id}:
+    delete:
+      summary: Delete friend from database by ID.
+      description: Removed a single friend from the API.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted friend.
+        '400':
+          description: friend is invalid ID type.
+        '404':
+          description: ID not found.
+        '500':
+          description: Internal Server Error
   /api/groups:
     get:
       summary: Get a list of groups
@@ -729,3 +768,12 @@ components:
         date_earned:
           type: string
           format: date-time
+    friends:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        friend_id:
+          type: integer
+          format: int64

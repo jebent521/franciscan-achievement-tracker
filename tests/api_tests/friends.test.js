@@ -1,7 +1,7 @@
 // const fetch = require('node-fetch'); // Import node-fetch
 
-const { idleTimeoutMillis } = require('pg/lib/defaults');
-const Test = require('supertest/lib/test');
+// const { idleTimeoutMillis } = require('pg/lib/defaults');
+// const Test = require('supertest/lib/test');
 
 // const { resetDatabase } = require('../test-utils');
 // const { pool } = require('../../src/data/connection');
