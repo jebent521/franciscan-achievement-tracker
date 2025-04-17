@@ -42,3 +42,9 @@ CREATE TABLE user_achievements (
     date_achieved DATE DEFAULT CURRENT_DATE,
     PRIMARY KEY (user_id, achievement_id)
 );
+
+CREATE TABLE friends (
+    id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    friend_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY (id, friend_id)
+);

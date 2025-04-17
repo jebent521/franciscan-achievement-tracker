@@ -11,6 +11,7 @@ const connection = require('./data/connection');
 const achievementsRouter = require('./routes/achievements');
 const groupsRouter = require('./routes/groups');
 const SearchService = require('./services/search-service');
+const friendsRouter = require('./routes/friends');
 
 const app = express();
 
@@ -43,6 +44,8 @@ app.use('/api/users', usersRouter);
 app.use('/auth', authRouter);
 
 app.use('/users', usersRouter);
+
+app.use('/api/friends', friendsRouter);
 
 // Search
 app.get('/api/search/:query', async (req, res) => {
