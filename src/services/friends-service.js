@@ -8,9 +8,8 @@ class FriendService extends CrudService {
 
   validate(req) {
     const missingFields = [];
-    if (!req.body.hasOwnProperty('user_id')) missingFields.push('user_id');
+    if (!req.body.hasOwnProperty('id')) missingFields.push('id');
     if (!req.body.hasOwnProperty('friend_id')) missingFields.push('friend_id');
-    if (!req.body.hasOwnProperty('accepted')) missingFields.push('accepted');
     if (missingFields.length > 0) {
       return new ApiResult(400, 'Missing fields: ' + missingFields.join(', '));
     }
