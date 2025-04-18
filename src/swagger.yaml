@@ -650,6 +650,77 @@ paths:
           description: ID not found.
         '500':
           description: Internal Server Error
+  /api/users/{id}/friends:
+    get:
+      summary: Get friends by user
+      description: Get all of a users's friends.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_friends'
+              example:
+                - id: 1
+                  friend_id: 2
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+    post:
+      summary: Add a friend to a user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_friends'
+            example:
+              friend_id: 1
+      responses:
+        '201':
+          description: Successfully added user_friend.
+        '400':
+          description: Missing criteria, invalid type, or invalid reference.
+        '409':
+          description: Unique field already exist in the database.
+        '500':
+          description: Internal Server Error
+  /api/users/{id}/friends/{friend_id}:
+    delete:
+      summary: Delete a user's friend.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: friend_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted friend.
+        '400':
+          description: Friend is invalid ID type.
+        '404':
+          description: ID not found.
+        '500':
+          description: Internal Server Error
   /api/search/{query}:
     get:
       summary: Returns all the objects that match the search query.

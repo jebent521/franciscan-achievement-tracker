@@ -7,7 +7,7 @@ class UserFriendService extends CrudService {
   }
 
   validate(req) {
-    req.body.user_id = req.params.user_id;
+    req.body.id = req.params.id;
 
     if (!req.body.hasOwnProperty('id')) {
       return new ApiResult(400, 'Missing field: id');
@@ -18,17 +18,14 @@ class UserFriendService extends CrudService {
   }
 
   async read(req) {
-    const result = await this.repository.readByCustom(
-      'user_id',
-      req.params.user_id
-    );
+    const result = await this.repository.readByCustom('id', req.params.id);
     if (result.error) console.error(result.error);
     return result;
   }
 
   async delete(req) {
-    const userId = req.params.user_id;
-    const achievementId = req.params.achievement_id;
+    const Id = req.params.id;
+    const friendId = req.params.friend_id;
 
     // delete row
     const deleteResult = await this.repository.deleteByCriteria({

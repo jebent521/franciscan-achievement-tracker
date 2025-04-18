@@ -54,17 +54,17 @@ router.delete('/:user_id/achievements/:achievement_id', async (req, res) => {
   res.status(result.status).send(result.message);
 });
 
-router.get('/:user_id/friends', async (req, res) => {
+router.get('/:id/friends', async (req, res) => {
   const result = await new UserFriendService().read(req);
   res.status(result.status).send(result.message);
 });
 
-router.post('/:user_id/friends', async (req, res) => {
+router.post('/:id/friends', async (req, res) => {
   const result = await new UserFriendService().create(req);
   res.status(result.status).send(result.message);
 });
 
-router.delete('/:user_id/friends/:id', async (req, res) => {
+router.delete('/:id/friends/:friend_id', async (req, res) => {
   const result = await new UserFriendService().delete(req);
   res.status(result.status).send(result.message);
 });
