@@ -53,4 +53,19 @@ router.delete('/:user_id/achievements/:achievement_id', async (req, res) => {
   res.status(result.status).send(result.message);
 });
 
+router.get('/:id/friends', async (req, res) => {
+  const result = await new UserFriendService().read(req);
+  res.status(result.status).send(result.message);
+});
+
+router.post('/:id/friends', async (req, res) => {
+  const result = await new UserFriendService().create(req);
+  res.status(result.status).send(result.message);
+});
+
+router.delete('/:id/friends/:friend_id', async (req, res) => {
+  const result = await new UserFriendService().delete(req);
+  res.status(result.status).send(result.message);
+});
+
 module.exports = router;
