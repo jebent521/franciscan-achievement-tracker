@@ -2,8 +2,8 @@ const CrudService = require('./crud-service');
 const ApiResult = require('../utils/api-result');
 
 class FriendService extends CrudService {
-  constructor() {
-    super('friends');
+  constructor(tablename) {
+    super(tablename);
   }
 
   validate(req) {
