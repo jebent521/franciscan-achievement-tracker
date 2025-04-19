@@ -9,7 +9,7 @@ class UserFriendService extends CrudService {
   validate(req) {
     req.body.id = req.params.id;
 
-    if (!req.body.hasOwnProperty('id')) {
+    if (req.body.hasOwnProperty('id')) {
       return new ApiResult(400, 'Missing field: id');
     }
     if (req.body.hasOwnProperty('friend_id')) {
