@@ -73,7 +73,7 @@ router.get('/success', isAuthenticated, async (req, res) => {
       existingEmailQuery.message.length > 0
     ) {
       userCreated = false;
-      userData = existingUserQuery.message[0];
+      userData = existingEmailQuery.message[0];
     }
     // Create new user with Microsoft profile data
     else {
