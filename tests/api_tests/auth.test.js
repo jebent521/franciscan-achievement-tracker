@@ -9,6 +9,10 @@ jest.mock('../../src/utils/auth-config', () => ({
   POST_LOGOUT_REDIRECT_URI: 'http://localhost:5007',
 }));
 
+const {
+  GRAPH_ME_ENDPOINT
+} = require('../../src/utils/auth-config')
+
 // Define mock variables with 'mock' prefix (allowed by Jest)
 const mockLogin = jest.fn();
 const mockAcquireToken = jest.fn();
