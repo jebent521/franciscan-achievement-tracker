@@ -30,7 +30,7 @@ class UserFriendService extends CrudService {
     // delete row
     const deleteResult = await this.repository.deleteByCriteria({
       id: Id,
-      friend_id: friend_id,
+      friend_id: friendId,
     });
     if (deleteResult.error) console.error(deleteResult.error);
     if (deleteResult.status != 200) return deleteResult;
