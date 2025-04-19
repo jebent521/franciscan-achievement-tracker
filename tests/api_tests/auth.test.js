@@ -304,7 +304,7 @@ describe('Auth Routes', () => {
       // Mock the entire repository
       userService.repository = {
         mockReadByCustom: jest.fn().mockImplementation((field, value) => {
-          // Your mock implementation
+          // Mock implementation
           if (field === 'display_name' && value === 'Non-existent User') {
             return Promise.resolve(null); // No user found
           }
@@ -357,4 +357,58 @@ describe('Auth Routes', () => {
     });
   });
   })
+
+  describe('GET/ Login success', () => {
+    it('should test for login success', async () => {
+      // Initializing test user
+      const mockProfile = {
+        displayName: 'Test User',
+        mail: 'testuser@example.com'
+      }
+
+      // Mock functions
+      const mockReadByCustom = jest.fn(readByCustom);
+
+      // Check if user already exists in our database
+      const userService = new UserService();
+
+      // Mock the entire repository
+      userService.repository = {
+        mockReadByCustom: jest.fn().mockImplementation((field, value) => {
+          // Mock implementation
+          if (field === 'display_name' && value === 'Test User') {
+            return Promise.resolve(200); // User found
+          }
+          (field === 'email' && value === 'testuser@example.com'); {
+            return Promise.resolve(200); // Email found
+          }
+          return Promise.resolve({
+            displayName: 'Test User',
+            mail: 'testuser@example.com'
+          });
+        }),
+      };
+
+      const existingUserQuery = await userService.repository.mockReadByCustom(
+        'display_name',
+        mockProfile.displayName
+      );
+      const existingEmailQuery = await userService.repository.mockReadByCustom(
+        'email',
+        mockProfile.mail
+      );
+
+      let userExists = false;
+
+      if (
+        existingUserQuery === 200 &&
+        existingEmailQuery === 200
+      ) {
+        userExists = true;
+      }
+      
+      expect(userExists).toEqual(true)
+    })
+  })
+
 });
