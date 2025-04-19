@@ -160,26 +160,6 @@ paths:
           description: Unique field already exist in the database.
         '500':
           description: Internal Server Error
-  /api/friends:
-    post:
-      summary: Add a friend to the database.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/friends'
-            example:
-              id: 2
-              friend_id: 4
-      responses:
-        '201':
-          description: Successfully created friend.
-        '400':
-          description: Missing criteria, invalid type, or invalid reference.
-        '409':
-          description: Unique field already exist in the database.
-        '500':
-          description: Internal Server Error
   /api/friends/{id}:
     delete:
       summary: Delete friend from database by ID.
