@@ -303,6 +303,7 @@ describe('Auth Routes', () => {
       userService.repository = {
         mockReadByCustom: jest.fn().mockImplementation((field, value) => {
           // Mock implementation
+          // Mock implementation
           if (field === 'display_name' && value === 'Non-existent User') {
             return Promise.resolve(null); // No user found
           }
@@ -404,4 +405,5 @@ describe('Auth Routes', () => {
       expect(userExists).toEqual(true);
     });
   });
+  })
 });
