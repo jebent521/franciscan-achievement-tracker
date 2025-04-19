@@ -8,6 +8,7 @@ const router = express.Router();
 
 const UserAchievementService = require('../services/user-achievement-service');
 const UserService = require('../services/user-service');
+const UserFriendService = require('../services/user-friend-service');
 
 // User CRUD
 
@@ -50,6 +51,21 @@ router.post('/:user_id/achievements', async (req, res) => {
 
 router.delete('/:user_id/achievements/:achievement_id', async (req, res) => {
   const result = await new UserAchievementService().delete(req);
+  res.status(result.status).send(result.message);
+});
+
+router.get('/:id/friends', async (req, res) => {
+  const result = await new UserFriendService().read(req);
+  res.status(result.status).send(result.message);
+});
+
+router.post('/:id/friends', async (req, res) => {
+  const result = await new UserFriendService().create(req);
+  res.status(result.status).send(result.message);
+});
+
+router.delete('/:id/friends/:friend_id', async (req, res) => {
+  const result = await new UserFriendService().delete(req);
   res.status(result.status).send(result.message);
 });
 
