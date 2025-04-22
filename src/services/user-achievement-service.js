@@ -41,7 +41,11 @@ class UserAchievementService extends CrudService {
   }
 
   async read(req) {
-    const achievementResult = await this.repository.readUserAchievement(req.params.user_id, "user_id", "achievements");
+    const achievementResult = await this.repository.readUserAchievement(
+      req.params.user_id,
+      'user_id',
+      'achievements'
+    );
     if (achievementResult.error) console.error(achievementResult.error);
     return achievementResult;
   }
