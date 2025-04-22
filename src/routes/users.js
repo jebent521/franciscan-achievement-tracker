@@ -9,6 +9,7 @@ const router = express.Router();
 const UserAchievementService = require('../services/user-achievement-service');
 const UserService = require('../services/user-service');
 const UserFriendService = require('../services/user-friend-service');
+const AchievementService = require('../services/achievement-service');
 
 // User CRUD
 
