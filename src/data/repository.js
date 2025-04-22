@@ -213,6 +213,33 @@ WHERE ${searchColumns.map((c) => `${c} ILIKE $1`).join(' OR ')};`,
     console.error(error);
     return new ApiResult(500, 'Internal Server Error', error);
   }
+
+  async readUserAchievement(req, column, table) {
+    try {
+      // Query to get all achievements for the user with full achievement details
+      const query = `
+      SELECT a.*, ua.date_achieved 
+      FROM ${table} a
+      JOIN user_achievements ua ON a.id = ua.achievement_id
+      WHERE ua.${column} = $1
+      ORDER BY ua.date_achieved DESC
+    `;
+
+      // Execute the query
+      const { rows } = await pool.query(query, [req]);
+
+      return {
+        status: 200,
+        message: rows,
+      };
+    } catch (error) {
+      console.error('Error fetching user achievements:', error);
+      return {
+        status: 500,
+        message: { error: 'Internal server error' },
+      };
+    }
+  }
 }
 
 module.exports = Repository;

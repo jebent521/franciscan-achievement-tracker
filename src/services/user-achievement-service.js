@@ -2,7 +2,6 @@ const AchievementService = require('./achievement-service');
 const ApiResult = require('../utils/api-result');
 const CrudService = require('./crud-service');
 const UserService = require('./user-service');
-const { pool } = require('../data/connection');
 
 class UserAchievementService extends CrudService {
   constructor() {
@@ -42,32 +41,9 @@ class UserAchievementService extends CrudService {
   }
 
   async read(req) {
-    try {
-      const userId = req.params.user_id;
-
-      // Query to get all achievements for the user with full achievement details
-      const query = `
-      SELECT a.*, ua.date_achieved 
-      FROM achievements a
-      JOIN user_achievements ua ON a.id = ua.achievement_id
-      WHERE ua.user_id = $1
-      ORDER BY ua.date_achieved DESC
-    `;
-
-      // Execute the query
-      const { rows } = await pool.query(query, [userId]);
-
-      return {
-        status: 200,
-        message: rows,
-      };
-    } catch (error) {
-      console.error('Error fetching user achievements:', error);
-      return {
-        status: 500,
-        message: { error: 'Internal server error' },
-      };
-    }
+    const achievementResult = await this.repository.readUserAchievement(req.params.user_id, "user_id", "achievements");
+    if (achievementResult.error) console.error(achievementResult.error);
+    return achievementResult;
   }
 
   async delete(req) {
