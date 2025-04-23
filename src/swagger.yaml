@@ -672,12 +672,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/user_achievements'
               example:
-                - user_id: 1
-                  achievement_id: 3
-                  date_achieved: 2025-03-05
-                - user_id: 1
-                  achievement_id: 2
-                  date_achieved: 2025-05-05
+                - id: 1,
+                  title: Cafarrhea
+                  group_id: 1
+                  description: Eat at the Caf
+                  prerequisite: null
+                  points: 10
+                  date_achieved: 2025-03-06
+                - id: 2
+                  title: The Grand Slam
+                  group_id: 2
+                  description: Attend all four daily masses in one day
+                  prerequisite: null
+                  points: 100
+                  date_achieved: 2025-03-06
+                - id: 3,
+                  title: Four Years of B.S.
+                  group_id: 3
+                  description: Be a STEM major
+                  prerequisite: null
+                  points: 20
+                  date_achieved: 2025-03-06
         '404':
           description: User not found
         '500':
