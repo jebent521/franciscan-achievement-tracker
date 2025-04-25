@@ -265,7 +265,6 @@ WHERE ${searchColumns.map((c) => `${c} ILIKE $1`).join(' OR ')};`,
         dbParams.push(offset);
       }
 
-      //console.log(queryString);
       const client = await pool.connect();
       const result = await client.query(queryString, dbParams);
       client.release();

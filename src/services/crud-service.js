@@ -60,7 +60,7 @@ class CrudService {
    * after it is validated without having to override create()
    *
    * @param {Object} obj
-   * @returns  {ApiResult?}
+   * @returns  {Promise<ApiResult>?}
    */
   async postprocess(obj) {
     return null;
