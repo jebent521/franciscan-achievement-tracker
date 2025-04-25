@@ -36,11 +36,45 @@ describe('Groups Endpoint Tests', () => {
         throw e;
       }
     });
+
+    it('should support pagination', async () => {
+      const res = await fetch(`${baseUrl}/api/groups?limit=1&offset=2`);
+      try {
+        expect(res.status).toBe(200);
+        const data = await res.json();
+        expect(data).toEqual([
+          {
+            id: 3,
+            name: 'Academic',
+            description: 'Achievements related to academics',
+          },
+        ]);
+      } catch (e) {
+        console.error(await res.text());
+        throw e;
+      }
+    });
   });
 
   describe('GET /api/groups/:id', () => {
     it('should return a single group by ID', async () => {
       const res = await fetch(`${baseUrl}/api/groups/1`);
+      try {
+        expect(res.status).toBe(200);
+        const data = await res.json();
+        expect(data).toEqual({
+          id: 1,
+          name: 'General',
+          description: 'General achievements',
+        });
+      } catch (e) {
+        console.error(await res.text());
+        throw e;
+      }
+    });
+
+    it('should support pagination', async () => {
+      const res = await fetch(`${baseUrl}/api/groups/1?limit=1`);
       try {
         expect(res.status).toBe(200);
         const data = await res.json();
@@ -69,6 +103,7 @@ describe('Groups Endpoint Tests', () => {
         body: JSON.stringify({
           name: 'Test Group',
           description: 'A test group',
+          officer_user_id: 1,
         }),
       });
       try {
@@ -101,6 +136,7 @@ describe('Groups Endpoint Tests', () => {
         body: JSON.stringify({
           name: 'General',
           description: 'A test group',
+          officer_user_id: 1,
         }),
       });
       expect(res.status).toBe(409);
@@ -115,6 +151,7 @@ describe('Groups Endpoint Tests', () => {
         body: JSON.stringify({
           name: 'Test Group',
           description: 'A test group',
+          officer_user_id: 1,
         }),
       });
       const res = await fetch(`${baseUrl}/api/groups/4`, { method: 'DELETE' });

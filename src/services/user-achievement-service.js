@@ -41,12 +41,18 @@ class UserAchievementService extends CrudService {
   }
 
   async read(req) {
-    const result = await this.repository.readByCustom(
+    const limit = req.query?.limit || null;
+    const offset = req.query?.offset || null;
+
+    const achievementResult = await this.repository.readUserAchievement(
+      req.params.user_id,
       'user_id',
-      req.params.user_id
+      'achievements',
+      limit,
+      offset
     );
-    if (result.error) console.error(result.error);
-    return result;
+    if (achievementResult.error) console.error(achievementResult.error);
+    return achievementResult;
   }
 
   async delete(req) {

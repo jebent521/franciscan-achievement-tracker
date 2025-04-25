@@ -66,8 +66,10 @@ class CrudService {
       : result;
   }
 
-  async read() {
-    const result = await this.repository.read();
+  async read(req) {
+    const limit = req.query?.limit || null;
+    const offset = req.query?.offset || null;
+    const result = await this.repository.read(limit, offset);
     if (result.error) console.error(result.error);
 
     return result.status == 200

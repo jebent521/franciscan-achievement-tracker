@@ -23,10 +23,23 @@ class Repository {
     }
   }
 
-  async read() {
+  async read(limit = null, offset = null) {
     try {
+      let searchString = `SELECT * FROM ${this.tableName}`;
+      let dbParams = [];
+      if (limit) {
+        searchString += ' LIMIT $1';
+        dbParams.push(limit);
+      }
+
+      //require limit to use offset
+      if (limit && offset) {
+        searchString += ' OFFSET $2';
+        dbParams.push(offset);
+      }
+
       const client = await pool.connect();
-      const result = await client.query(`SELECT * FROM ${this.tableName}`);
+      const result = await client.query(searchString, dbParams);
       client.release();
       return new ApiResult(200, result.rows);
     } catch (error) {
@@ -51,13 +64,23 @@ class Repository {
     }
   }
 
-  async readByCustom(column, value) {
+  async readByCustom(column, value, limit = null, offset = null) {
     try {
+      let searchString = `SELECT * FROM ${this.tableName} WHERE ${column} = $1`;
+      let dbParams = [value];
+      if (limit) {
+        searchString += ' LIMIT $2';
+        dbParams.push(limit);
+      }
+
+      //require limit to use offset
+      if (limit && offset) {
+        searchString += ' OFFSET $3';
+        dbParams.push(offset);
+      }
+
       const client = await pool.connect();
-      const result = await client.query(
-        `SELECT * FROM ${this.tableName} WHERE ${column} = $1`,
-        [value]
-      );
+      const result = await client.query(searchString, dbParams);
       client.release();
 
       return new ApiResult(200, result.rows);
@@ -189,6 +212,46 @@ WHERE ${searchColumns.map((c) => `${c} ILIKE $1`).join(' OR ')};`,
     // any other error
     console.error(error);
     return new ApiResult(500, 'Internal Server Error', error);
+  }
+
+  async readUserAchievement(req, column, table, limit = null, offset = null) {
+    try {
+      let queryString = `
+        SELECT a.*, ua.date_achieved 
+        FROM ${table} a
+        JOIN user_achievements ua ON a.id = ua.achievement_id
+        WHERE ua.${column} = $1
+        ORDER BY ua.date_achieved DESC
+      `;
+
+      let dbParams = [req];
+
+      if (limit) {
+        queryString += ' LIMIT $2';
+        dbParams.push(limit);
+      }
+
+      // Require limit to use offset
+      if (limit && offset) {
+        queryString += ' OFFSET $3';
+        dbParams.push(offset);
+      }
+
+      const client = await pool.connect();
+      const result = await client.query(queryString, dbParams);
+      client.release();
+
+      return {
+        status: 200,
+        message: result.rows,
+      };
+    } catch (error) {
+      console.error('Error fetching user achievements:', error);
+      return {
+        status: 500,
+        message: { error: 'Internal server error' },
+      };
+    }
   }
 }
 
