@@ -23,25 +23,23 @@ class GroupService extends CrudService {
     }
   }
 
-  async create(req) {
-    const validateResult = this.validate(req);
-    if (validateResult) return validateResult;
+  async preprocess(req_body) {
+    return { name: req_body.name, description: req_body.description };
+  }
 
-    req = await this.preprocess(req);
+  /**
+   * For this service, post process takes the officer information
+   * from the request and adds them to the group as both a member and an officer
+   *
+   * @param {Object} req_body
+   * @returns {ApiResult} if there are any errors in the insertions
+   */
+  async postprocess(req_body) {
+    const creatingOfficer = { user_id: req_body.officer_user_id };
 
-    const group = { name: req.body.name, description: req.body.description };
-    const creatingOfficer = { user_id: req.body.officer_user_id };
-
-    //insert the group into the database
-    const result = await this.repository.create(group);
-    if (result.error) {
-      console.error(result.error); //returns error immediately, stops the other DB insertions
-      return error;
-    }
-
-    //get the group id after creation, name is unique
-    const new_group = (await this.repository.readByCustom('name', group.name))
-      .message;
+    const new_group = (
+      await this.repository.readByCustom('name', req_body.name)
+    ).message;
     const officerGroupPair = {
       user_id: creatingOfficer.user_id,
       group_id: new_group[0].id,
@@ -61,9 +59,6 @@ class GroupService extends CrudService {
       console.error(officerResult.error);
       return new ApiResult(500, 'Error inserting officer');
     }
-
-    //returns the original database API result message
-    return new ApiResult(result.status, this.filter(result.message));
   }
 }
 
