@@ -54,7 +54,8 @@ class UserAchievementService extends CrudService {
       'user_id',
       'achievements',
       limit,
-      offset
+      offset,
+      sort
     );
     if (achievementResult.error) console.error(achievementResult.error);
     return achievementResult;

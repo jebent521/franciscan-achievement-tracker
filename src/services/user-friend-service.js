@@ -4,7 +4,6 @@ const CrudService = require('./crud-service');
 class UserFriendService extends CrudService {
   constructor() {
     super('friends');
-    this.sortByOptions = ['id', 'friend_id'];
   }
 
   validate(req) {

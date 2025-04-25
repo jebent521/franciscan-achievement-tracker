@@ -49,6 +49,50 @@ describe('user_achievement Endpoint Tests', () => {
         throw e;
       }
     });
+
+    it('should support sorting', async () => {
+      const res = await fetch(
+        `${baseUrl}/api/users/1/achievements?sort=points`
+      );
+
+      try {
+        expect(res.status).toBe(200);
+        const data = await res.json();
+        expect(data).toEqual([
+          {
+            id: 1,
+            title: 'Cafarrhea',
+            group_id: 1,
+            description: 'Eat at the Caf',
+            prerequisite: null,
+            points: 10,
+            date_achieved: '2025-03-06',
+          },
+          {
+            id: 3,
+            title: 'Four Years of B.S.',
+            group_id: 3,
+            description: 'Be a STEM major',
+            prerequisite: null,
+            points: 20,
+            date_achieved: '2025-03-06',
+          },
+          {
+            id: 2,
+            title: 'The Grand Slam',
+            group_id: 2,
+            description: 'Attend all four daily masses in one day',
+            prerequisite: null,
+            points: 100,
+            date_achieved: '2025-03-06',
+          },
+        ]);
+      } catch (e) {
+        console.log(res);
+        throw e;
+      }
+    });
+
     it('should support pagination', async () => {
       const res = await fetch(
         `${baseUrl}/api/users/1/achievements?limit=1&offset=2`

@@ -4,7 +4,6 @@ const ApiResult = require('../utils/api-result');
 class FriendService extends CrudService {
   constructor() {
     super('friends');
-    this.sortByOptions = ['id', 'friend_id'];
   }
 
   validate(req) {
