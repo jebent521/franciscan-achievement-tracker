@@ -41,14 +41,12 @@ class Group_Service extends CrudService {
 class GroupMembersService extends Group_Service {
   constructor() {
     super('group_members');
-    this.sortByOptions = ['group_id', 'user_id'];
   }
 }
 
 class GroupOfficersService extends Group_Service {
   constructor() {
     super('group_officers');
-    this.sortByOptions = ['group_id', 'user_id'];
   }
 }
 

@@ -23,19 +23,26 @@ class Repository {
     }
   }
 
-  async read(limit = null, offset = null) {
+  async read(limit = null, offset = null, sort = null) {
     try {
       let searchString = `SELECT * FROM ${this.tableName}`;
       let dbParams = [];
+      let paramCount = 0;
       if (limit) {
-        searchString += ' LIMIT $1';
+        paramCount++;
+        searchString += ` LIMIT $${paramCount}`;
         dbParams.push(limit);
       }
 
       //require limit to use offset
       if (limit && offset) {
-        searchString += ' OFFSET $2';
+        paramCount++;
+        searchString += ` OFFSET $${paramCount}`;
         dbParams.push(offset);
+      }
+
+      if (sort) {
+        searchString += ` ORDER BY ${sort}`;
       }
 
       const client = await pool.connect();
@@ -64,19 +71,27 @@ class Repository {
     }
   }
 
-  async readByCustom(column, value, limit = null, offset = null) {
+  async readByCustom(column, value, limit = null, offset = null, sort = null) {
     try {
       let searchString = `SELECT * FROM ${this.tableName} WHERE ${column} = $1`;
       let dbParams = [value];
+      let paramCount = 1;
+
       if (limit) {
-        searchString += ' LIMIT $2';
+        paramCount++;
+        searchString += ` LIMIT $${paramCount}`;
         dbParams.push(limit);
       }
 
       //require limit to use offset
       if (limit && offset) {
-        searchString += ' OFFSET $3';
+        paramCount++;
+        searchString += ` OFFSET $${paramCount}`;
         dbParams.push(offset);
+      }
+
+      if (sort) {
+        searchString += ` ORDER BY ${sort}`;
       }
 
       const client = await pool.connect();

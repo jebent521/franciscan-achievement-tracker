@@ -69,6 +69,43 @@ describe('Achievement Endpoint Tests', () => {
     });
   });
 
+  it('should support sorting the achievements', async () => {
+    const res = await fetch(`${baseUrl}/api/achievements?sort=title`);
+    try {
+      expect(res.status).toBe(200);
+      const data = await res.json();
+      expect(data).toEqual([
+        {
+          id: 1,
+          title: 'Cafarrhea',
+          group_id: 1,
+          description: 'Eat at the Caf',
+          prerequisite: null,
+          points: 10,
+        },
+        {
+          id: 3,
+          title: 'Four Years of B.S.',
+          group_id: 3,
+          description: 'Be a STEM major',
+          prerequisite: null,
+          points: 20,
+        },
+        {
+          id: 2,
+          title: 'The Grand Slam',
+          group_id: 2,
+          description: 'Attend all four daily masses in one day',
+          prerequisite: null,
+          points: 100,
+        },
+      ]);
+    } catch (e) {
+      console.log(res);
+      throw e;
+    }
+  });
+
   describe('GET /achievements/:id', () => {
     it('should return a single achievement by ID', async () => {
       const res = await fetch(`${baseUrl}/api/achievements/1`);

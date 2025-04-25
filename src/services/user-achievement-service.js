@@ -44,6 +44,10 @@ class UserAchievementService extends CrudService {
   async read(req) {
     const limit = req.query?.limit || null;
     const offset = req.query?.offset || null;
+    const sort = req.query?.sort || null;
+
+    if (sort && !this.sortByOptions.includes(sort))
+      return new ApiResult(400, 'Invalid sort parameter');
 
     const achievementResult = await this.repository.readUserAchievement(
       req.params.user_id,

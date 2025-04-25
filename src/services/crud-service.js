@@ -70,7 +70,12 @@ class CrudService {
   async read(req) {
     const limit = req.query?.limit || null;
     const offset = req.query?.offset || null;
-    const result = await this.repository.read(limit, offset);
+    const sortBy = req.query?.sort || null;
+
+    if (sortBy && !this.sortByOptions.includes(sortBy))
+      return new ApiResult(400, 'Invalid sort parameter');
+
+    const result = await this.repository.read(limit, offset, sortBy);
     if (result.error) console.error(result.error);
 
     return result.status == 200
