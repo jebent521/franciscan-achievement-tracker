@@ -142,6 +142,20 @@ const testData = {
       user_id: 1,
     },
   ],
+  friends: [
+    {
+      id: 1,
+      friend_id: 2,
+    },
+    {
+      id: 3,
+      friend_id: 2,
+    },
+    {
+      id: 3,
+      friend_id: 4,
+    },
+  ],
 };
 
 // Simple function to insert data into tables
@@ -171,7 +185,8 @@ async function resetDatabase() {
         user_achievements,
         achievements,
         groups,
-        users
+        users,
+        friends
       RESTART IDENTITY CASCADE
     `);
 
@@ -186,6 +201,7 @@ async function resetDatabase() {
       'user_achievements',
       testData.user_achievements
     );
+    await insertTableData(client, 'friends', testData.friends);
 
     await client.query('COMMIT');
     return true;
