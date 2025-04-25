@@ -5,6 +5,7 @@ const CrudService = require('./crud-service');
 class GroupService extends CrudService {
   constructor() {
     super('groups');
+    this.sortByOptions = ['id', 'name', 'description'];
   }
 
   validate(req) {

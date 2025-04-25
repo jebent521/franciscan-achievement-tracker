@@ -9,6 +9,7 @@ class CrudService {
       );
     }
     this.repository = new Repository(tableName);
+    this.sortByOptions = [];
   }
 
   /**

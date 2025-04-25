@@ -6,6 +6,7 @@ const UserService = require('./user-service');
 class UserAchievementService extends CrudService {
   constructor() {
     super('user_achievements');
+    this.sortByOptions = ['id', 'title', 'group_id', 'points', 'date_achieved'];
   }
 
   validate(req) {
