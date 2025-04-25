@@ -31,14 +31,14 @@ class GroupService extends CrudService {
    * For this service, post process takes the officer information
    * from the request and adds them to the group as both a member and an officer
    *
-   * @param {Object} req_body
+   * @param {Object} req
    * @returns {ApiResult} if there are any errors in the insertions
    */
-  async postprocess(req_body) {
-    const creatingOfficer = { user_id: req_body.officer_user_id };
+  async postprocess(req) {
+    const creatingOfficer = { user_id: req.body.officer_user_id };
 
     const new_group = (
-      await this.repository.readByCustom('name', req_body.name)
+      await this.repository.readByCustom('name', req.body.name)
     ).message;
     const officerGroupPair = {
       user_id: creatingOfficer.user_id,

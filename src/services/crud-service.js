@@ -75,7 +75,7 @@ class CrudService {
     );
     if (result.error) console.error(result.error);
 
-    const postprocess = await this.postprocess(req.body);
+    const postprocess = await this.postprocess(req);
     if (postprocess) return postprocess;
 
     return result.status == 201
