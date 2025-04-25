@@ -144,15 +144,15 @@ const testData = {
   ],
   friends: [
     {
-      id: 1, 
+      id: 1,
       friend_id: 2,
     },
     {
-      id: 3, 
+      id: 3,
       friend_id: 2,
     },
     {
-      id: 3, 
+      id: 3,
       friend_id: 4,
     },
   ],
