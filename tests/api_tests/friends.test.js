@@ -43,18 +43,18 @@ describe('Friends Endpoint Tests', () => {
       }
     });
 
-    // it('should delete a friend by ID', async () => {
-    //   const res = await fetch(`${baseUrl}/api/friends/1`, {
-    //     method: 'DELETE',
-    //   });
+    it('should delete a friend by ID', async () => {
+      const res = await fetch(`${baseUrl}/api/friends/1`, {
+        method: 'DELETE',
+      });
 
-    //   try {
-    //     expect(res.status).toBe(200);
-    //     expect(await res.text()).toBe('Success');
-    //   } catch (e) {
-    //     console.log(await res.text());
-    //     throw e;
-    //   }
-    // });
+      try {
+        expect(res.status).toBe(200);
+        expect(await res.text()).toBe('Success');
+      } catch (e) {
+        console.log(await res.text());
+        throw e;
+      }
+    });
   });
 });
