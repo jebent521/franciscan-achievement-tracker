@@ -23,18 +23,26 @@ class Repository {
     }
   }
 
-  async read(limit = null, offset = null) {
+  async read(limit = null, offset = null, sort = null) {
     try {
       let searchString = `SELECT * FROM ${this.tableName}`;
       let dbParams = [];
+      let paramCount = 0;
+
+      if (sort) {
+        searchString += ` ORDER BY ${sort}`;
+      }
+
       if (limit) {
-        searchString += ' LIMIT $1';
+        paramCount++;
+        searchString += ` LIMIT $${paramCount}`;
         dbParams.push(limit);
       }
 
       //require limit to use offset
       if (limit && offset) {
-        searchString += ' OFFSET $2';
+        paramCount++;
+        searchString += ` OFFSET $${paramCount}`;
         dbParams.push(offset);
       }
 
@@ -64,18 +72,26 @@ class Repository {
     }
   }
 
-  async readByCustom(column, value, limit = null, offset = null) {
+  async readByCustom(column, value, limit = null, offset = null, sort = null) {
     try {
       let searchString = `SELECT * FROM ${this.tableName} WHERE ${column} = $1`;
       let dbParams = [value];
+      let paramCount = 1;
+
+      if (sort) {
+        searchString += ` ORDER BY ${sort}`;
+      }
+
       if (limit) {
-        searchString += ' LIMIT $2';
+        paramCount++;
+        searchString += ` LIMIT $${paramCount}`;
         dbParams.push(limit);
       }
 
       //require limit to use offset
       if (limit && offset) {
-        searchString += ' OFFSET $3';
+        paramCount++;
+        searchString += ` OFFSET $${paramCount}`;
         dbParams.push(offset);
       }
 
@@ -214,17 +230,29 @@ WHERE ${searchColumns.map((c) => `${c} ILIKE $1`).join(' OR ')};`,
     return new ApiResult(500, 'Internal Server Error', error);
   }
 
-  async readUserAchievement(req, column, table, limit = null, offset = null) {
+  async readUserAchievement(
+    req,
+    column,
+    table,
+    limit = null,
+    offset = null,
+    sort = null
+  ) {
     try {
       let queryString = `
         SELECT a.*, ua.date_achieved 
         FROM ${table} a
         JOIN user_achievements ua ON a.id = ua.achievement_id
         WHERE ua.${column} = $1
-        ORDER BY ua.date_achieved DESC
       `;
 
       let dbParams = [req];
+
+      if (sort) {
+        queryString += ` ORDER BY ${sort}`;
+      } else {
+        queryString += ` ORDER BY ua.date_achieved DESC`;
+      }
 
       if (limit) {
         queryString += ' LIMIT $2';
@@ -237,6 +265,7 @@ WHERE ${searchColumns.map((c) => `${c} ILIKE $1`).join(' OR ')};`,
         dbParams.push(offset);
       }
 
+      console.log(queryString);
       const client = await pool.connect();
       const result = await client.query(queryString, dbParams);
       client.release();

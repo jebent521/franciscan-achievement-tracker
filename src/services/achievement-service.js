@@ -4,6 +4,7 @@ const ApiResult = require('../utils/api-result');
 class AchievementService extends CrudService {
   constructor() {
     super('achievements');
+    this.sortByOptions = ['id', 'title', 'group_id', 'description', 'points'];
   }
 
   validate(req) {

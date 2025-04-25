@@ -37,6 +37,34 @@ describe('Groups Endpoint Tests', () => {
       }
     });
 
+    it('should support sorting', async () => {
+      const res = await fetch(`${baseUrl}/api/groups?sort=name`);
+      try {
+        expect(res.status).toBe(200);
+        const data = await res.json();
+        expect(data).toEqual([
+          {
+            id: 3,
+            name: 'Academic',
+            description: 'Achievements related to academics',
+          },
+          {
+            id: 1,
+            name: 'General',
+            description: 'General achievements',
+          },
+          {
+            id: 2,
+            name: 'Spiritual',
+            description: 'Achievements related to spirituality',
+          },
+        ]);
+      } catch (e) {
+        console.error(await res.text());
+        throw e;
+      }
+    });
+
     it('should support pagination', async () => {
       const res = await fetch(`${baseUrl}/api/groups?limit=1&offset=2`);
       try {

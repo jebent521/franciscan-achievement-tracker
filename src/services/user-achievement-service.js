@@ -6,6 +6,7 @@ const UserService = require('./user-service');
 class UserAchievementService extends CrudService {
   constructor() {
     super('user_achievements');
+    this.sortByOptions = ['id', 'title', 'group_id', 'points', 'date_achieved'];
   }
 
   validate(req) {
@@ -43,13 +44,18 @@ class UserAchievementService extends CrudService {
   async read(req) {
     const limit = req.query?.limit || null;
     const offset = req.query?.offset || null;
+    const sort = req.query?.sort || null;
+
+    if (sort && !this.sortByOptions.includes(sort))
+      return new ApiResult(400, 'Invalid sort parameter');
 
     const achievementResult = await this.repository.readUserAchievement(
       req.params.user_id,
       'user_id',
       'achievements',
       limit,
-      offset
+      offset,
+      sort
     );
     if (achievementResult.error) console.error(achievementResult.error);
     return achievementResult;

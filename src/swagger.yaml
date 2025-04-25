@@ -18,6 +18,13 @@ paths:
       summary: Get a list of achievements
       description: Get a list of achievements from the API.
       parameters:
+        - name: sort
+          in: query
+          description: Sort the items based on the given column
+          required: false
+          schema:
+            type: string
+            example: id, title, group_id, description, points
         - name: limit
           in: query
           description: Maximum number of items to return
@@ -184,6 +191,13 @@ paths:
       summary: Get a list of groups
       description: Get a list of groups from the API.
       parameters:
+        - name: sort
+          in: query
+          description: Sort the items based on the given column
+          required: false
+          schema:
+            type: string
+            example: id, name, description
         - name: limit
           in: query
           description: Maximum number of items to return
@@ -492,6 +506,13 @@ paths:
       summary: Get a list of users
       description: Get a list of users from the API.
       parameters:
+        - name: sort
+          in: query
+          description: Sort the items based on the given column
+          required: false
+          schema:
+            type: string
+            example: id, name, email, points
         - name: limit
           in: query
           description: Maximum number of items to return
@@ -648,6 +669,13 @@ paths:
           required: true
           schema:
             type: integer
+        - name: sort
+          in: query
+          description: Sort the items based on the given column
+          required: false
+          schema:
+            type: string
+            example: id, title, group_id, description, points, date_achieved
         - name: limit
           in: query
           description: Maximum number of items to return

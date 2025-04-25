@@ -7,6 +7,7 @@ const saltRounds = 10;
 class UserService extends CrudService {
   constructor() {
     super('users');
+    this.sortByOptions = ['id', 'name', 'email', 'points'];
   }
 
   validate(req) {
