@@ -20,10 +20,7 @@ class UserAchievementService extends CrudService {
     }
   }
 
-  async create(req) {
-    // create row
-    const createResult = await super.create(req);
-
+  async postprocess(req) {
     // get achievement's points
     const achievementResult = await new AchievementService().readById({
       params: { id: req.body.achievement_id },
@@ -37,8 +34,6 @@ class UserAchievementService extends CrudService {
       points
     );
     if (pointsResult.status != 200) return pointsResult;
-
-    return createResult;
   }
 
   async read(req) {

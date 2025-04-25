@@ -53,6 +53,19 @@ class CrudService {
     return obj;
   }
 
+  /**
+   * Method used for processing the request
+   * after the repository.create() has been called.
+   * This allows for inserting data into the database
+   * after it is validated without having to override create()
+   *
+   * @param {Object} obj
+   * @returns  {Promise<ApiResult>?}
+   */
+  async postprocess(obj) {
+    return null;
+  }
+
   async create(req) {
     const validateResult = this.validate(req);
     if (validateResult) return validateResult;
@@ -61,6 +74,9 @@ class CrudService {
       await this.preprocess(req.body)
     );
     if (result.error) console.error(result.error);
+
+    const postprocess = await this.postprocess(req);
+    if (postprocess) return postprocess;
 
     return result.status == 201
       ? new ApiResult(result.status, this.filter(result.message))
