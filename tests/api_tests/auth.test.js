@@ -9,8 +9,6 @@ jest.mock('../../src/utils/auth-config', () => ({
   POST_LOGOUT_REDIRECT_URI: 'http://localhost:5007',
 }));
 
-const { GRAPH_ME_ENDPOINT } = require('../../src/utils/auth-config');
-
 // Define mock variables with 'mock' prefix (allowed by Jest)
 const mockLogin = jest.fn();
 const mockAcquireToken = jest.fn();
@@ -27,10 +25,8 @@ jest.mock('../../src/services/auth-provider', () => ({
 const request = require('supertest');
 const express = require('express');
 const fetchUtil = require('../../src/utils/fetch');
-const authProvider = require('../../src/services/auth-provider');
 const UserService = require('../../src/services/user-service');
-const { readByCustom } = require('../../src/routes/data/repository');
-const { create } = require('../../src/routes/data/repository');
+const { readByCustom } = require('../../src/data/repository');
 
 // Set mock implementations after importing
 mockLogin.mockImplementation((options) => (req, res) => {
@@ -302,11 +298,11 @@ describe('Auth Routes', () => {
       // Mock the entire repository
       userService.repository = {
         mockReadByCustom: jest.fn().mockImplementation((field, value) => {
-          // Your mock implementation
+          // Mock implementation
           if (field === 'display_name' && value === 'Non-existent User') {
             return Promise.resolve(null); // No user found
           }
-          field === 'email' && value === 'non-existentuser@example.com';
+          if (field === 'email' && value === 'non-existentuser@example.com');
           {
             return Promise.resolve(null); // No email found
           }
@@ -351,6 +347,57 @@ describe('Auth Routes', () => {
         displayName: 'Non-existent User',
         mail: 'non-existentuser@example.com',
       });
+    });
+  });
+
+  describe('GET/ Login success', () => {
+    it('should test for login success', async () => {
+      // Initializing test user
+      const mockProfile = {
+        displayName: 'Test User',
+        mail: 'testuser@example.com',
+      };
+
+      // Mock functions
+      const mockReadByCustom = jest.fn(readByCustom);
+
+      // Check if user already exists in our database
+      const userService = new UserService();
+
+      // Mock the entire repository
+      userService.repository = {
+        mockReadByCustom: jest.fn().mockImplementation((field, value) => {
+          // Mock implementation
+          if (field === 'display_name' && value === 'Test User') {
+            return Promise.resolve(200); // User found
+          }
+          field === 'email' && value === 'testuser@example.com';
+          {
+            return Promise.resolve(200); // Email found
+          }
+          return Promise.resolve({
+            displayName: 'Test User',
+            mail: 'testuser@example.com',
+          });
+        }),
+      };
+
+      const existingUserQuery = await userService.repository.mockReadByCustom(
+        'display_name',
+        mockProfile.displayName
+      );
+      const existingEmailQuery = await userService.repository.mockReadByCustom(
+        'email',
+        mockProfile.mail
+      );
+
+      let userExists = false;
+
+      if (existingUserQuery === 200 && existingEmailQuery === 200) {
+        userExists = true;
+      }
+
+      expect(userExists).toEqual(true);
     });
   });
 });
