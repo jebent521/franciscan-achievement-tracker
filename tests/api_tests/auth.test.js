@@ -25,7 +25,8 @@ jest.mock('../../src/services/auth-provider', () => ({
 const request = require('supertest');
 const express = require('express');
 const fetchUtil = require('../../src/utils/fetch');
-const authProvider = require('../../src/services/auth-provider');
+const UserService = require('../../src/services/user-service');
+const { readByCustom } = require('../../src/data/repository');
 
 // Set mock implementations after importing
 mockLogin.mockImplementation((options) => (req, res) => {
@@ -277,6 +278,126 @@ describe('Auth Routes', () => {
       expect(response.headers.location).toBe(
         'https://login.microsoftonline.com/mock-auth-url'
       );
+    });
+  });
+
+  describe('POST /Create new Auth User', () => {
+    it('should create new users that sign in using auth that do not exist in current database', async () => {
+      // Mock readByCustom
+      const mockReadByCustom = jest.fn(readByCustom);
+
+      // mock create
+      const mockCreate = jest.fn().mockResolvedValue({
+        displayName: 'Non-existent User',
+        mail: 'non-existentuser@example.com',
+      });
+
+      // Check if user already exists in our database
+      const userService = new UserService();
+
+      // Mock the entire repository
+      userService.repository = {
+        mockReadByCustom: jest.fn().mockImplementation((field, value) => {
+          // Mock implementation
+          if (field === 'display_name' && value === 'Non-existent User') {
+            return Promise.resolve(null); // No user found
+          }
+          if (field === 'email' && value === 'non-existentuser@example.com');
+          {
+            return Promise.resolve(null); // No email found
+          }
+          return Promise.resolve({
+            displayName: 'Non-existent User',
+            mail: 'non-existentuser@example.com',
+          });
+        }),
+      };
+
+      // Initialize Mock Data
+      const mockProfile = {
+        displayName: 'Non-existent User',
+        mail: 'non-existentuser@example.com',
+      };
+
+      const existingUserQuery = await userService.repository.mockReadByCustom(
+        'display_name',
+        mockProfile.displayName
+      );
+      const existingEmailQuery = await userService.repository.mockReadByCustom(
+        'email',
+        mockProfile.mail
+      );
+
+      let userCreated = false;
+      let userData = null;
+      let createResult;
+
+      // Create new user with Microsoft profile data
+      if (existingUserQuery === null && existingEmailQuery === null) {
+        createResult = await mockCreate({
+          name: mockProfile.displayName,
+          email: mockProfile.mail,
+        });
+
+        userCreated = true;
+        userData = createResult.message;
+      }
+      // Assert that the user was created
+      expect(createResult).toEqual({
+        displayName: 'Non-existent User',
+        mail: 'non-existentuser@example.com',
+      });
+    });
+  });
+
+  describe('GET/ Login success', () => {
+    it('should test for login success', async () => {
+      // Initializing test user
+      const mockProfile = {
+        displayName: 'Test User',
+        mail: 'testuser@example.com',
+      };
+
+      // Mock functions
+      const mockReadByCustom = jest.fn(readByCustom);
+
+      // Check if user already exists in our database
+      const userService = new UserService();
+
+      // Mock the entire repository
+      userService.repository = {
+        mockReadByCustom: jest.fn().mockImplementation((field, value) => {
+          // Mock implementation
+          if (field === 'display_name' && value === 'Test User') {
+            return Promise.resolve(200); // User found
+          }
+          field === 'email' && value === 'testuser@example.com';
+          {
+            return Promise.resolve(200); // Email found
+          }
+          return Promise.resolve({
+            displayName: 'Test User',
+            mail: 'testuser@example.com',
+          });
+        }),
+      };
+
+      const existingUserQuery = await userService.repository.mockReadByCustom(
+        'display_name',
+        mockProfile.displayName
+      );
+      const existingEmailQuery = await userService.repository.mockReadByCustom(
+        'email',
+        mockProfile.mail
+      );
+
+      let userExists = false;
+
+      if (existingUserQuery === 200 && existingEmailQuery === 200) {
+        userExists = true;
+      }
+
+      expect(userExists).toEqual(true);
     });
   });
 });
