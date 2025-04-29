@@ -9,9 +9,7 @@ jest.mock('../../src/utils/auth-config', () => ({
   POST_LOGOUT_REDIRECT_URI: 'http://localhost:5007',
 }));
 
-const {
-  GRAPH_ME_ENDPOINT
-} = require('../../src/utils/auth-config')
+const { GRAPH_ME_ENDPOINT } = require('../../src/utils/auth-config');
 
 // Define mock variables with 'mock' prefix (allowed by Jest)
 const mockLogin = jest.fn();
@@ -303,11 +301,10 @@ describe('Auth Routes', () => {
       userService.repository = {
         mockReadByCustom: jest.fn().mockImplementation((field, value) => {
           // Mock implementation
-          // Mock implementation
           if (field === 'display_name' && value === 'Non-existent User') {
             return Promise.resolve(null); // No user found
           }
-          if (field === 'email' && value === 'non-existentuser@example.com');
+          field === 'email' && value === 'non-existentuser@example.com';
           {
             return Promise.resolve(null); // No email found
           }
@@ -405,5 +402,4 @@ describe('Auth Routes', () => {
       expect(userExists).toEqual(true);
     });
   });
-  })
 });
