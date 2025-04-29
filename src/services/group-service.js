@@ -1,4 +1,5 @@
 const Repository = require('../data/repository');
+const Repository = require('../data/repository');
 const ApiResult = require('../utils/api-result');
 const CrudService = require('./crud-service');
 
@@ -20,6 +21,8 @@ class GroupService extends CrudService {
     if (!req.body.hasOwnProperty('name')) missingFields.push('name');
     if (!req.body.hasOwnProperty('description'))
       missingFields.push('description');
+    if (!req.body.hasOwnProperty('officer_user_id'))
+      missingFields.push('officer_user_id');
     if (!req.body.hasOwnProperty('officer_user_id'))
       missingFields.push('officer_user_id');
     if (missingFields.length > 0) {

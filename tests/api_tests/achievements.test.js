@@ -144,6 +144,25 @@ describe('Achievement Endpoint Tests', () => {
         throw e;
       }
     });
+
+    it('should support pagination', async () => {
+      const res = await fetch(`${baseUrl}/api/achievements/1?limit=1&offset=0`);
+      try {
+        expect(res.status).toBe(200);
+        const data = await res.json();
+        expect(data).toEqual({
+          id: 1,
+          title: 'Cafarrhea',
+          group_id: 1,
+          description: 'Eat at the Caf',
+          prerequisite: null,
+          points: 10,
+        });
+      } catch (e) {
+        console.log(res);
+        throw e;
+      }
+    });
   });
 
   describe('POST /achievements', () => {

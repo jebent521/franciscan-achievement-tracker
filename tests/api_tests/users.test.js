@@ -152,6 +152,19 @@ describe('Users Endpoint Tests', () => {
       });
     });
 
+    it('should support pagination', async () => {
+      const res = await fetch(`${baseUrl}/api/users/1?limit=1`);
+      expect(res.status).toBe(200);
+      const data = await res.json();
+      expect(data).toEqual({
+        id: 1,
+        name: 'Angsty Alice',
+        email: 'alice@angst.com',
+        oauth_id: null,
+        points: 0,
+      });
+    });
+
     it('should return a 404 for a user that does not exist', async () => {
       const res = await fetch(`${baseUrl}/api/users/999`);
       expect(res.status).toBe(404);

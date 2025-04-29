@@ -117,6 +117,22 @@ describe('Groups Endpoint Tests', () => {
       }
     });
 
+    it('should support pagination', async () => {
+      const res = await fetch(`${baseUrl}/api/groups/1?limit=1`);
+      try {
+        expect(res.status).toBe(200);
+        const data = await res.json();
+        expect(data).toEqual({
+          id: 1,
+          name: 'General',
+          description: 'General achievements',
+        });
+      } catch (e) {
+        console.error(await res.text());
+        throw e;
+      }
+    });
+
     it('should return a 404 for a group that does not exist', async () => {
       const res = await fetch(`${baseUrl}/api/groups/999`);
       expect(res.status).toBe(404);
@@ -131,6 +147,7 @@ describe('Groups Endpoint Tests', () => {
         body: JSON.stringify({
           name: 'Test Group',
           description: 'A test group',
+          officer_user_id: 1,
           officer_user_id: 1,
         }),
       });
@@ -165,6 +182,7 @@ describe('Groups Endpoint Tests', () => {
           name: 'General',
           description: 'A test group',
           officer_user_id: 1,
+          officer_user_id: 1,
         }),
       });
       expect(res.status).toBe(409);
@@ -179,6 +197,7 @@ describe('Groups Endpoint Tests', () => {
         body: JSON.stringify({
           name: 'Test Group',
           description: 'A test group',
+          officer_user_id: 1,
           officer_user_id: 1,
         }),
       });

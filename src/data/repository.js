@@ -48,6 +48,7 @@ class Repository {
 
       const client = await pool.connect();
       const result = await client.query(searchString, dbParams);
+      const result = await client.query(searchString, dbParams);
       client.release();
       return new ApiResult(200, result.rows);
     } catch (error) {
@@ -96,6 +97,7 @@ class Repository {
       }
 
       const client = await pool.connect();
+      const result = await client.query(searchString, dbParams);
       const result = await client.query(searchString, dbParams);
       client.release();
 

@@ -54,6 +54,8 @@ class UserAchievementService extends CrudService {
     );
     if (achievementResult.error) console.error(achievementResult.error);
     return achievementResult;
+    if (achievementResult.error) console.error(achievementResult.error);
+    return achievementResult;
   }
 
   async delete(req) {

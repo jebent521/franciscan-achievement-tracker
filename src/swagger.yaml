@@ -186,6 +186,25 @@ paths:
           description: ID not found.
         '500':
           description: Internal Server Error
+  /api/friends/{id}:
+    delete:
+      summary: Delete friend from database by ID.
+      description: Removed a single friend from the API.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted friend.
+        '400':
+          description: friend is invalid ID type.
+        '404':
+          description: ID not found.
+        '500':
+          description: Internal Server Error
   /api/groups:
     get:
       summary: Get a list of groups
@@ -244,6 +263,7 @@ paths:
             example:
               name: Social
               description: Achievements related to social activities
+              officer_user_id: 1
               officer_user_id: 1
       responses:
         '201':
@@ -349,6 +369,22 @@ paths:
             type: integer
             default: 0
             minimum: 0
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: null
+            minimum: 0
+        - name: offset
+          in: query
+          description: Only used when limit param provided. Number of items to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
       responses:
         '200':
           description: Successful response
@@ -422,6 +458,22 @@ paths:
           required: true
           schema:
             type: integer
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: null
+            minimum: 0
+        - name: offset
+          in: query
+          description: Only used when limit param provided. Number of items to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
         - name: limit
           in: query
           description: Maximum number of items to return
@@ -721,6 +773,27 @@ paths:
                   prerequisite: null
                   points: 20
                   date_achieved: 2025-03-06
+                - id: 1,
+                  title: Cafarrhea
+                  group_id: 1
+                  description: Eat at the Caf
+                  prerequisite: null
+                  points: 10
+                  date_achieved: 2025-03-06
+                - id: 2
+                  title: The Grand Slam
+                  group_id: 2
+                  description: Attend all four daily masses in one day
+                  prerequisite: null
+                  points: 100
+                  date_achieved: 2025-03-06
+                - id: 3,
+                  title: Four Years of B.S.
+                  group_id: 3
+                  description: Be a STEM major
+                  prerequisite: null
+                  points: 20
+                  date_achieved: 2025-03-06
         '404':
           description: User not found
         '500':
@@ -768,6 +841,77 @@ paths:
           description: Successfully deleted achievement.
         '400':
           description: Achievement is prerequisite or invalid ID type.
+        '404':
+          description: ID not found.
+        '500':
+          description: Internal Server Error
+  /api/users/{id}/friends:
+    get:
+      summary: Get friends by user
+      description: Get all of a users's friends.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/friends'
+              example:
+                - id: 1
+                  friend_id: 2
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+    post:
+      summary: Add a friend to a user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/friends'
+            example:
+              friend_id: 1
+      responses:
+        '201':
+          description: Successfully added friend.
+        '400':
+          description: Missing criteria, invalid type, or invalid reference.
+        '409':
+          description: Unique field already exist in the database.
+        '500':
+          description: Internal Server Error
+  /api/users/{id}/friends/{friend_id}:
+    delete:
+      summary: Delete a user's friend.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: friend_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted friend.
+        '400':
+          description: Friend is invalid ID type.
         '404':
           description: ID not found.
         '500':
@@ -961,6 +1105,15 @@ components:
         date_earned:
           type: string
           format: date-time
+    friends:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        friend_id:
+          type: integer
+          format: int64
     friends:
       type: object
       properties:
